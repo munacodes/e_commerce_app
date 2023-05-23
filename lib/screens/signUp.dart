@@ -11,24 +11,16 @@ class SignUp extends StatefulWidget {
   State<SignUp> createState() => _SignUpState();
 }
 
-class _SignUpState extends State<SignUp> {
-  final _scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
-  final _formKey = GlobalKey<FormState>();
+final _scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
+final _formKey = GlobalKey<FormState>();
 
+class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
 // Invaild Email Strings/Letters
     String p =
         r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
     RegExp regExp = RegExp(p);
-
-    bool obscureText = true;
-
-    var email;
-    var username;
-    var phoneNumber;
-    var password;
-    bool isMale = true;
 
     // A popup message that displays at the bottom of the screen scaffoldMessengerKey
     const snackBarValid = SnackBar(
@@ -50,35 +42,147 @@ class _SignUpState extends State<SignUp> {
       ),
     );
 
-    void validation() async {
-      bool isvalid;
-      isvalid = _formKey.currentState!.validate();
+    bool isMale = true;
+    final TextEditingController email = TextEditingController();
+    final TextEditingController phoneNumber = TextEditingController();
+    final TextEditingController password = TextEditingController();
+    final TextEditingController userName = TextEditingController();
 
-      if (isvalid) {
-        _formKey.currentState!.save();
-        ScaffoldMessenger.of(context).showSnackBar(snackBarValid);
-        try {
-          final UserCredential result =
-              await FirebaseAuth.instance.createUserWithEmailAndPassword(
-            email: email.trim(),
-            password: password.trim(),
-          );
-          FirebaseFirestore.instance
-              .collection('Users')
-              .doc(result.user!.uid)
-              .set({
-            'UserName': username,
-            'UserId': result.user!.uid,
-            'UserEmail': email,
-            'UserGender': isMale == true ? 'Male' : 'Female',
-            'Phone Number': phoneNumber,
-          });
-        } on FirebaseAuthException catch (e) {
-          print('Failed with error code: ${e.code.toString()}');
-          print(e.message);
+    void validation() async {
+      if (userName.text.isEmpty &&
+          email.text.isEmpty &&
+          password.text.isEmpty &&
+          phoneNumber.text.isEmpty) {
+        _scaffoldMessengerKey.currentState!.showSnackBar(
+          const SnackBar(
+            content: Text('All Field Are Empty'),
+          ),
+        );
+      } else if (userName.text.length < 6) {
+        _scaffoldMessengerKey.currentState!.showSnackBar(
+          const SnackBar(
+            content: Text('Name Must Be 6'),
+          ),
+        );
+      } else if (email.text.isEmpty) {
+        _scaffoldMessengerKey.currentState!.showSnackBar(
+          const SnackBar(
+            content: Text("Email Is Empty"),
+          ),
+        );
+      } else if (!regExp.hasMatch(email.text)) {
+        _scaffoldMessengerKey.currentState!.showSnackBar(
+          const SnackBar(
+            content: Text('Please Try Valid Email'),
+          ),
+        );
+      } else if (password.text.isEmpty) {
+        _scaffoldMessengerKey.currentState!.showSnackBar(
+          const SnackBar(
+            content: Text('Password Is Empty'),
+          ),
+        );
+      } else if (password.text.length < 8) {
+        _scaffoldMessengerKey.currentState!.showSnackBar(
+          const SnackBar(
+            content: Text('Password Is Too Short'),
+          ),
+        );
+      } else if (phoneNumber.text.length < 11 || phoneNumber.text.isEmpty) {
+        _scaffoldMessengerKey.currentState!.showSnackBar(
+          const SnackBar(
+            content: Text('Phone Number Must Be 11'),
+          ),
+        );
+      } else {
+        bool isvalid = true;
+        isvalid = _formKey.currentState!.validate();
+
+        if (isvalid) {
+          _formKey.currentState!.save();
+          ScaffoldMessenger.of(context).showSnackBar(snackBarValid);
+          try {
+            final UserCredential result =
+                await FirebaseAuth.instance.createUserWithEmailAndPassword(
+              email: email.text,
+              password: password.text,
+            );
+            FirebaseFirestore.instance
+                .collection('Users')
+                .doc(result.user!.uid)
+                .set({
+              'UserName': userName.text,
+              'UserId': result.user!.uid,
+              'UserEmail': email.text,
+              'UserGender': isMale == true ? 'Male' : 'Female',
+              'Phone Number': phoneNumber.text,
+            });
+          } on FirebaseAuthException catch (e) {
+            _scaffoldMessengerKey.currentState!.showSnackBar(
+              SnackBar(
+                content:
+                    Text('Failed with error code: ${e.message.toString()}'),
+              ),
+            );
+          }
         }
       }
     }
+
+//  on FirebaseAuthException catch (e) {
+//             print('Failed with error code: ${e.code.toString()}');
+//             print(e.message);
+//           }
+
+    // A popup message that displays at the bottom of the screen scaffoldMessengerKey
+    // const snackBarValid = SnackBar(
+    //   content: Center(
+    //     child: Text(
+    //       'Processing...',
+    //       style: TextStyle(
+    //         fontWeight: FontWeight.bold,
+    //       ),
+    //     ),
+    //   ),
+    //   backgroundColor: Color(0xff746bc9),
+    //   shape: StadiumBorder(),
+    //   padding: EdgeInsets.all(10),
+    //   margin: EdgeInsets.only(right: 100, left: 100),
+    //   behavior: SnackBarBehavior.floating,
+    //   duration: Duration(
+    //     seconds: 1,
+    //   ),
+    // );
+
+    // void validation() async {
+    //   bool isvalid;
+    //   isvalid = _formKey.currentState!.validate();
+
+    //   if (isvalid) {
+    //     _formKey.currentState!.save();
+    //     ScaffoldMessenger.of(context).showSnackBar(snackBarValid);
+    //     try {
+    //       final UserCredential result =
+    //           await FirebaseAuth.instance.createUserWithEmailAndPassword(
+    //         email: email.trim(),
+    //         password: password.trim(),
+    //       );
+    //       FirebaseFirestore.instance
+    //           .collection('Users')
+    //           .doc(result.user!.uid)
+    //           .set({
+    //         'UserName': username,
+    //         'UserId': result.user!.uid,
+    //         'UserEmail': email,
+    //         'UserGender': isMale == true ? 'Male' : 'Female',
+    //         'Phone Number': phoneNumber,
+    //       });
+    //     } on FirebaseAuthException catch (e) {
+    //       print('Failed with error code: ${e.code.toString()}');
+    //       print(e.message);
+    //     }
+    //   }
+    // }
 
     Widget _buildAllTextFormField() {
       return Padding(
@@ -88,102 +192,18 @@ class _SignUpState extends State<SignUp> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              TextFormField(
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return "Field is Empty";
-                  } else if (value.length < 5) {
-                    return "UserName is Too Short";
-                  }
-                  {
-                    return null;
-                  }
-                },
-                onChanged: (value) {
-                  setState(() {
-                    username = value;
-                  });
-                },
+              const MyTextFormField(
+                name: 'UserName',
                 keyboardType: TextInputType.name,
-                decoration: const InputDecoration(
-                  labelText: "UserName",
-                  labelStyle: TextStyle(
-                    color: Colors.black,
-                  ),
-                  border: OutlineInputBorder(),
-                ),
-                onSaved: (newValue) {
-                  username = newValue;
-                },
               ),
-              TextFormField(
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return "Field Is Empty";
-                  } else if (!regExp.hasMatch(value)) {
-                    return "Please Enter A Valid Email";
-                  }
-                  {
-                    return null;
-                  }
-                },
-                onChanged: (value) {
-                  setState(() {
-                    email = value;
-                  });
-                },
+              const MyTextFormField(
+                name: 'Email',
                 keyboardType: TextInputType.emailAddress,
-                decoration: const InputDecoration(
-                  labelText: "Email",
-                  labelStyle: TextStyle(
-                    color: Colors.black,
-                  ),
-                  border: OutlineInputBorder(),
-                ),
-                onSaved: (value) {
-                  email = value.toString();
-                },
               ),
-              TextFormField(
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return "Field Is Empty";
-                  } else if (value.length < 8) {
-                    return "Password must have at least 8 characters";
-                  }
-                  {
-                    return null;
-                  }
-                },
-                onChanged: (value) {
-                  setState(() {
-                    password = value;
-                  });
-                },
-                obscureText: obscureText,
-                decoration: InputDecoration(
-                  labelText: "Password",
-                  labelStyle: const TextStyle(
-                    color: Colors.black,
-                  ),
-                  border: const OutlineInputBorder(),
-                  suffixIcon: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        obscureText = !obscureText;
-                      });
-                      FocusScope.of(context).unfocus();
-                    },
-                    child: Icon(
-                      obscureText ? Icons.visibility : Icons.visibility_off,
-                      color: Colors.grey,
-                    ),
-                  ),
-                ),
-                onSaved: (value) {
-                  password = value;
-                },
-                keyboardType: const TextInputType.numberWithOptions(
+              const MyTextFormField(
+                obscureText: true,
+                name: 'Password',
+                keyboardType: TextInputType.numberWithOptions(
                   signed: true,
                   decimal: true,
                 ),
@@ -216,32 +236,8 @@ class _SignUpState extends State<SignUp> {
                   ),
                 ),
               ),
-              TextFormField(
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return "Field Is Empty";
-                  } else if (value.length < 8) {
-                    return "Phone Number must have at least 8 characters";
-                  }
-                  {
-                    return null;
-                  }
-                },
-                onChanged: (value) {
-                  setState(() {
-                    phoneNumber = value;
-                  });
-                },
-                decoration: const InputDecoration(
-                  labelText: "Phone Number",
-                  labelStyle: TextStyle(
-                    color: Colors.black,
-                  ),
-                  border: OutlineInputBorder(),
-                ),
-                onSaved: (value) {
-                  phoneNumber = value;
-                },
+              const MyTextFormField(
+                name: 'Phone Number',
                 keyboardType: TextInputType.phone,
               ),
             ],

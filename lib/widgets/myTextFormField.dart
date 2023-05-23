@@ -1,31 +1,24 @@
 import 'package:flutter/material.dart';
 
 class MyTextFormField extends StatelessWidget {
-  final String? Function(dynamic value) validator;
-  final Function(String? value) onChanged;
-  final String name;
-  final TextInputType? keyboardType;
-  final Function(String? value) onSaved;
+  final TextEditingController? controller;
+  final String? name;
 
-  final Function? onTap;
+  final TextInputType? keyboardType;
+  final bool? obscureText;
 
   const MyTextFormField({
     Key? key,
-    required this.validator,
-    required this.onChanged,
-    required this.name,
+    this.controller,
+    this.name,
     this.keyboardType,
-    required this.onSaved,
-    this.onTap,
+    this.obscureText,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      validator: validator,
-      onChanged: ((value) {
-        onChanged(value);
-      }),
+      controller: controller,
       decoration: InputDecoration(
         border: const OutlineInputBorder(),
         labelText: name,
@@ -34,9 +27,7 @@ class MyTextFormField extends StatelessWidget {
         ),
       ),
       keyboardType: keyboardType,
-      onSaved: ((value) {
-        onSaved(value);
-      }),
+      obscureText: true,
     );
   }
 }

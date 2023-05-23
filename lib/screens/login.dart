@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_commerce_app/screens/signUp.dart';
 import 'package:e_commerce_app/widgets/widgetsExports.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -22,12 +23,8 @@ class _LoginState extends State<Login> {
     RegExp regExp = RegExp(p);
 
     FirebaseAuth auth = FirebaseAuth.instance;
-    var email;
-    var username;
-    var password;
-    var phoneNumber;
-
-    bool obscureText = true;
+    final TextEditingController email = TextEditingController();
+    final TextEditingController password = TextEditingController();
 
 // A popup message that displays at the bottom of the screen using scaffoldMessengerKey
     const snackBarValid = SnackBar(
@@ -49,22 +46,58 @@ class _LoginState extends State<Login> {
       ),
     );
 
-    void _validation() async {
-      bool isvalid;
-      isvalid = _formKey.currentState!.validate();
-      print(isvalid);
-      if (isvalid) {
-        _formKey.currentState!.save();
-        ScaffoldMessenger.of(context).showSnackBar(snackBarValid);
+    void validation() async {
+      if (email.text.isEmpty && password.text.isEmpty) {
+        _scaffoldMessengerKey.currentState!.showSnackBar(
+          const SnackBar(
+            content: Text('Both Field Are Empty'),
+          ),
+        );
+      } else if (email.text.isEmpty) {
+        _scaffoldMessengerKey.currentState!.showSnackBar(
+          const SnackBar(
+            content: Text("Email Is Empty"),
+          ),
+        );
+      } else if (!regExp.hasMatch(email.text)) {
+        _scaffoldMessengerKey.currentState!.showSnackBar(
+          const SnackBar(
+            content: Text('Please Try Valid Email'),
+          ),
+        );
+      } else if (password.text.isEmpty) {
+        _scaffoldMessengerKey.currentState!.showSnackBar(
+          const SnackBar(
+            content: Text('Password Is Empty'),
+          ),
+        );
+      } else if (password.text.length < 8) {
+        _scaffoldMessengerKey.currentState!.showSnackBar(
+          const SnackBar(
+            content: Text('Password Is Too Short'),
+          ),
+        );
+      } else {
+        bool isvalid;
+        isvalid = _formKey.currentState!.validate();
+        print(isvalid);
+        if (isvalid) {
+          _formKey.currentState!.save();
+          ScaffoldMessenger.of(context).showSnackBar(snackBarValid);
 
-        try {
-          final UserCredential result = await auth.signInWithEmailAndPassword(
-            email: email.trim(),
-            password: password.trim(),
-          );
-        } on FirebaseAuthException catch (e) {
-          print('Failed with error code: ${e.code}');
-          print(e.message);
+          try {
+            final UserCredential result = await auth.signInWithEmailAndPassword(
+              email: email.text,
+              password: password.text,
+            );
+          } on FirebaseAuthException catch (e) {
+            _scaffoldMessengerKey.currentState!.showSnackBar(
+              SnackBar(
+                content:
+                    Text('Failed with error code: ${e.message.toString()}'),
+              ),
+            );
+          }
         }
       }
     }
@@ -83,70 +116,13 @@ class _LoginState extends State<Login> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            TextFormField(
-              validator: (value) {
-                if (value!.isEmpty) {
-                  return "Field Is Empty";
-                } else if (!regExp.hasMatch(value)) {
-                  return "Please Enter A Valid Email";
-                }
-                {
-                  return null;
-                }
-              },
+            const MyTextFormField(
+              name: 'Email',
               keyboardType: TextInputType.emailAddress,
-              decoration: const InputDecoration(
-                labelText: "Email",
-                labelStyle: TextStyle(
-                  color: Colors.black,
-                ),
-                border: OutlineInputBorder(),
-              ),
-              onSaved: (value) {
-                email = value;
-              },
             ),
-            TextFormField(
-              validator: (value) {
-                if (value!.isEmpty) {
-                  return "Field Is Empty";
-                } else if (value.length < 8) {
-                  return "Password must have at least 8 characters";
-                }
-                {
-                  return null;
-                }
-              },
-              onChanged: (value) {
-                password = value;
-                print(password);
-              },
-              obscureText: obscureText,
-              decoration: InputDecoration(
-                labelText: "Password",
-                labelStyle: const TextStyle(
-                  color: Colors.black,
-                ),
-                border: const OutlineInputBorder(),
-                suffixIcon: GestureDetector(
-                  onTap: () {
-                    FocusScope.of(context).unfocus();
-                    setState(() {
-                      obscureText = !obscureText;
-                    });
-                  },
-                  child: Icon(
-                    obscureText == true
-                        ? Icons.visibility
-                        : Icons.visibility_off,
-                    color: Colors.grey,
-                  ),
-                ),
-              ),
-              onSaved: (value) {
-                password = value;
-              },
-              keyboardType: const TextInputType.numberWithOptions(
+            const MyTextFormField(
+              obscureText: true,
+              keyboardType: TextInputType.numberWithOptions(
                 signed: true,
                 decimal: true,
               ),
@@ -154,7 +130,7 @@ class _LoginState extends State<Login> {
             MyButton(
               name: 'Login',
               onPressed: () {
-                _validation();
+                validation();
               },
             ),
             ChangeScreen(
