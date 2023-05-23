@@ -365,11 +365,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     width: double.infinity,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
+                      children: const [
                         CircleAvatar(
                           maxRadius: 65,
                           backgroundImage:
-                              const AssetImage('assets/images/User Image.png'),
+                              AssetImage('assets/images/User Image.png'),
                         ),
                       ],
                     ),

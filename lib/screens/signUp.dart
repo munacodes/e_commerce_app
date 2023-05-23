@@ -70,7 +70,7 @@ class _SignUpState extends State<SignUp> {
             'UserName': username,
             'UserId': result.user!.uid,
             'UserEmail': email,
-            'UserGender': isMale, //== true ? 'Male' : 'Female',
+            'UserGender': isMale == true ? 'Male' : 'Female',
             'Phone Number': phoneNumber,
           });
         } on FirebaseAuthException catch (e) {
