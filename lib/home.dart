@@ -19,7 +19,9 @@ class _HomeState extends State<Home> {
     return StreamBuilder(
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
-        if (snapshot.hasData) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const WelcomeScreen();
+        } else if (snapshot.hasData) {
           return const HomePage();
         } else {
           return Login();

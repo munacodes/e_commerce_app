@@ -30,7 +30,9 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'E-Commerce',
-        theme: ThemeData(),
+        theme: ThemeData(
+          iconTheme: const IconThemeData(color: Colors.black),
+        ),
         debugShowCheckedModeBanner: false,
         home: const Home(),
       ),

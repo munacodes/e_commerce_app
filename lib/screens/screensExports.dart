@@ -6,3 +6,4 @@ export 'package:e_commerce_app/screens/profileScreen.dart';
 export 'package:e_commerce_app/screens/listProduct.dart';
 export 'package:e_commerce_app/screens/detailScreen.dart';
 export 'package:e_commerce_app/screens/checkOut.dart';
+export 'package:e_commerce_app/screens/search.dart';

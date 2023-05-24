@@ -69,8 +69,10 @@ class _HomePageState extends State<HomePage> {
           decoration: const BoxDecoration(
             color: Color(0xfff8f8f8),
           ),
-          currentAccountPicture: const CircleAvatar(
-            backgroundImage: AssetImage('assets/images/User Image.png'),
+          currentAccountPicture: CircleAvatar(
+            backgroundImage: e.userImage == null
+                ? const AssetImage('assets/images/User Image.png')
+                : NetworkImage(e.userImage) as ImageProvider,
           ),
         );
       }).toList(),
@@ -573,7 +575,12 @@ class _HomePageState extends State<HomePage> {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              showSearch(
+                context: context,
+                delegate: Search(),
+              );
+            },
             icon: const Icon(
               Icons.search,
               color: Colors.black,

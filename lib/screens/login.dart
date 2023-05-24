@@ -51,30 +51,35 @@ class _LoginState extends State<Login> {
         _scaffoldMessengerKey.currentState!.showSnackBar(
           const SnackBar(
             content: Text('Both Field Are Empty'),
+            backgroundColor: Color(0xff746bc9),
           ),
         );
       } else if (email.text.isEmpty) {
         _scaffoldMessengerKey.currentState!.showSnackBar(
           const SnackBar(
             content: Text("Email Is Empty"),
+            backgroundColor: Color(0xff746bc9),
           ),
         );
       } else if (!regExp.hasMatch(email.text)) {
         _scaffoldMessengerKey.currentState!.showSnackBar(
           const SnackBar(
             content: Text('Please Try Valid Email'),
+            backgroundColor: Color(0xff746bc9),
           ),
         );
       } else if (password.text.isEmpty) {
         _scaffoldMessengerKey.currentState!.showSnackBar(
           const SnackBar(
             content: Text('Password Is Empty'),
+            backgroundColor: Color(0xff746bc9),
           ),
         );
       } else if (password.text.length < 8) {
         _scaffoldMessengerKey.currentState!.showSnackBar(
           const SnackBar(
             content: Text('Password Is Too Short'),
+            backgroundColor: Color(0xff746bc9),
           ),
         );
       } else {
@@ -84,7 +89,6 @@ class _LoginState extends State<Login> {
         if (isvalid) {
           _formKey.currentState!.save();
           ScaffoldMessenger.of(context).showSnackBar(snackBarValid);
-
           try {
             final UserCredential result = await auth.signInWithEmailAndPassword(
               email: email.text,
@@ -93,8 +97,7 @@ class _LoginState extends State<Login> {
           } on FirebaseAuthException catch (e) {
             _scaffoldMessengerKey.currentState!.showSnackBar(
               SnackBar(
-                content:
-                    Text('Failed with error code: ${e.message.toString()}'),
+                content: Text('Failed with error code: ${e.code.toString()}'),
               ),
             );
           }
@@ -116,13 +119,22 @@ class _LoginState extends State<Login> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const MyTextFormField(
+            MyTextFormField(
               name: 'Email',
+              controller: email,
               keyboardType: TextInputType.emailAddress,
             ),
-            const MyTextFormField(
+            PasswordTextFormField(
               obscureText: true,
-              keyboardType: TextInputType.numberWithOptions(
+              controller: password,
+              onTap: () {
+                FocusScope.of(context).unfocus();
+                setState(() {
+                  //obscureText = !obscureText;
+                });
+              },
+              name: 'Password',
+              keyboardType: const TextInputType.numberWithOptions(
                 signed: true,
                 decimal: true,
               ),

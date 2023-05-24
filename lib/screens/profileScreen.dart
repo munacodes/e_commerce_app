@@ -24,82 +24,55 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   ProductProvider? productProvider;
+  final _scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
+  final _formKey = GlobalKey<FormState>();
 
-//   FirebaseStorage storage = FirebaseStorage.instance;
-//   File? pickedImage;
-//   var imageMap;
-//   var imagePath;
-//   PickedFile? image;
-//   Future<void> getImage({required ImageSource source}) async {
-//     final image = await ImagePicker().pickImage(source: source);
-//     if (image == null) {
-//       pickedImage = File(image!.path);
-//     }
-//   }
+  // Invaild Email Strings/Letters
+  static String p =
+      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
+  RegExp regExp = RegExp(p);
 
-  Widget _buildSingleContainer(
-      {required String startText, required String endText}) {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(30),
-      ),
-      child: Container(
-        height: 50,
-        width: double.infinity,
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(30),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              startText,
-              style: const TextStyle(
-                fontSize: 17,
-                color: Colors.black45,
-              ),
-            ),
-            Text(
-              endText,
-              style: const TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+  bool edit = false;
+  String? userImage;
+  bool isMale = false;
+
+  TextEditingController? phoneNumber;
+  TextEditingController? userName;
+  TextEditingController? address;
+
+  void _finalValidation() async {
+    await _uploadImage(image: _pickedImage!);
+    await _userDetailUpdate();
   }
 
-  Widget _buildSingleTextFormField({required String name}) {
-    return TextFormField(
-      decoration: InputDecoration(
-        hintText: name,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-      ),
-    );
+  Future<void> _userDetailUpdate() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    await FirebaseFirestore.instance.collection('Users').doc(user!.uid).set({
+      'UserName': userName!.text,
+      'UserGender': isMale == true ? 'Male' : 'Female',
+      'UserNumber': phoneNumber!.text,
+      'userImage': imageUrl,
+      'UserAddress': address!.text,
+    });
   }
 
   FirebaseStorage storage = FirebaseStorage.instance;
+  File? _pickedImage;
   String? imageUrl;
-  File? _imageFile;
+  PickedFile? _image;
   Future<void> _getImage({required ImageSource source}) async {
     final picker = ImagePicker();
-    final pickedImage = await picker.pickImage(source: source);
-    if (pickedImage != null) {
+    final _image = await picker.pickImage(source: source);
+    if (_image != null) {
       setState(() {
-        _imageFile = File(pickedImage.path);
+        _pickedImage = File(_image.path);
       });
     }
   }
 
-  Future<void> _uploadAndSetProfilePicture() async {
+  Future<void> _uploadImage({required File image}) async {
     User? user = FirebaseAuth.instance.currentUser;
-    if (_imageFile == null) {
+    if (_image == null) {
       return;
     }
     // Reference the profile picture path in Firebase Storage
@@ -107,7 +80,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         .ref()
         .child('UserImage/${user!.uid}')
         // Upload the image file to Firebase Storage
-        .putFile(_imageFile!);
+        .putFile(image);
     TaskSnapshot snapshot = await uploadTask;
     imageUrl = await snapshot.ref.getDownloadURL();
     // Listen for state changes, errors, and completion of the upload.
@@ -135,39 +108,117 @@ class _ProfileScreenState extends State<ProfileScreen> {
     });
   }
 
-  bool edit = false;
+// A popup message that displays at the bottom of the screen scaffoldMessengerKey
+  final snackBarValid = const SnackBar(
+    content: Center(
+      child: Text(
+        'Processing...',
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    ),
+    backgroundColor: Color(0xff746bc9),
+    shape: StadiumBorder(),
+    padding: EdgeInsets.all(10),
+    margin: EdgeInsets.only(right: 100, left: 100),
+    behavior: SnackBarBehavior.floating,
+    duration: Duration(
+      seconds: 1,
+    ),
+  );
 
-  Widget _buildContainerPart() {
-    List<UserModel> userModel = productProvider!.userModeList;
-    return Column(
-      children: userModel.map((e) {
-        return Container(
-          height: 300,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              _buildSingleContainer(
-                endText: e.userName,
-                startText: 'Name',
+  void validation() async {
+    if (userName!.text.isEmpty && phoneNumber!.text.isEmpty) {
+      _scaffoldMessengerKey.currentState!.showSnackBar(
+        const SnackBar(
+          content: Text('All Field Are Empty'),
+          backgroundColor: Color(0xff746bc9),
+        ),
+      );
+    } else if (userName!.text.isEmpty) {
+      _scaffoldMessengerKey.currentState!.showSnackBar(
+        const SnackBar(
+          content: Text('Name Is Empty'),
+          backgroundColor: Color(0xff746bc9),
+        ),
+      );
+    } else if (userName!.text.length < 6) {
+      _scaffoldMessengerKey.currentState!.showSnackBar(
+        const SnackBar(
+          content: Text('Name Must Be 6'),
+          backgroundColor: Color(0xff746bc9),
+        ),
+      );
+    } else if (phoneNumber!.text.length < 11 || phoneNumber!.text.isEmpty) {
+      _scaffoldMessengerKey.currentState!.showSnackBar(
+        const SnackBar(
+          content: Text('Phone Number Must Be 11'),
+          backgroundColor: Color(0xff746bc9),
+        ),
+      );
+    } else {
+      _finalValidation();
+    }
+  }
+
+  Widget _buildSingleContainer(
+      {required String startText, required String endText, Color? color}) {
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(30),
+      ),
+      child: Container(
+        height: 50,
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        decoration: BoxDecoration(
+          color: edit == true ? color : Colors.white,
+          borderRadius: BorderRadius.circular(30),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              startText,
+              style: const TextStyle(
+                fontSize: 17,
+                color: Colors.black45,
               ),
-              _buildSingleContainer(
-                endText: e.userEmail,
-                startText: 'Email',
+            ),
+            Expanded(
+              child: Text(
+                endText,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-              _buildSingleContainer(
-                endText: e.userGender,
-                startText: 'Gender',
-              ),
-              _buildSingleContainer(
-                endText: e.userPhoneNumber,
-                startText: 'Phone Number',
-              ),
-            ],
-          ),
-        );
-      }).toList(),
+            ),
+          ],
+        ),
+      ),
     );
   }
+
+  // Widget _buildSingleTextFormField({
+  //   required String name,
+  //   required Function onChanged,
+  //   required Function validator,
+  //   required String initialValue,
+  // }) {
+  //   return TextFormField(
+  //     initialValue: initialValue,
+  //     onChanged: onChanged(),
+  //     validator: validator(),
+  //     decoration: InputDecoration(
+  //       hintText: name,
+  //       border: OutlineInputBorder(
+  //         borderRadius: BorderRadius.circular(20),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Future<void> myDialogBox() {
     return showDialog<void>(
@@ -202,6 +253,55 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
+  Widget _buildContainerPart() {
+    List<UserModel> userModel = productProvider!.userModeList;
+    return Column(
+      children: userModel.map((e) {
+        userImage = e.userImage;
+        address = TextEditingController(text: e.userAddress);
+        userName = TextEditingController(text: e.userName);
+        phoneNumber = TextEditingController(text: e.userPhoneNumber);
+        if (e.userGender == 'Male') {
+          setState(() {
+            isMale = true;
+          });
+        } else {
+          setState(() {
+            isMale = false;
+          });
+        }
+        return Container(
+          height: 300,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _buildSingleContainer(
+                endText: e.userName,
+                startText: 'Name',
+              ),
+              _buildSingleContainer(
+                endText: e.userEmail,
+                startText: 'Email',
+              ),
+              _buildSingleContainer(
+                endText: e.userGender,
+                startText: 'Gender',
+              ),
+              _buildSingleContainer(
+                endText: e.userPhoneNumber,
+                startText: 'Phone Number',
+              ),
+              _buildSingleContainer(
+                endText: e.userAddress,
+                startText: 'Address',
+              ),
+            ],
+          ),
+        );
+      }).toList(),
+    );
+  }
+
   Widget _buildTextFormFieldPart() {
     List<UserModel> userModel = productProvider!.userModeList;
     return Column(
@@ -211,17 +311,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              _buildSingleTextFormField(
-                name: e.userName,
+              MyTextFormField(
+                name: 'UserName',
+                controller: userName,
+                keyboardType: TextInputType.name,
               ),
-              _buildSingleTextFormField(
-                name: e.userEmail,
+              _buildSingleContainer(
+                color: Colors.grey[300],
+                endText: e.userEmail,
+                startText: 'Email',
               ),
-              _buildSingleTextFormField(
-                name: e.userGender,
+              _buildSingleContainer(
+                color: Colors.white,
+                endText: e.userGender,
+                startText: 'Gender',
               ),
-              _buildSingleTextFormField(
-                name: e.userPhoneNumber,
+              MyTextFormField(
+                name: 'Phone Number',
+                controller: phoneNumber,
+                keyboardType: TextInputType.phone,
+              ),
+              MyTextFormField(
+                name: 'Address',
+                controller: address,
+                keyboardType: TextInputType.streetAddress,
               ),
             ],
           ),
@@ -232,8 +345,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print(isMale);
     productProvider = Provider.of(context);
     return Scaffold(
+      key: _formKey,
       backgroundColor: const Color(0xfff8f8f8),
       appBar: AppBar(
         leading: edit == true
@@ -271,10 +386,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ? const NotificationButton()
               : IconButton(
                   onPressed: () {
-                    _uploadAndSetProfilePicture();
-                    setState(() {
-                      edit = false;
-                    });
+                    validation();
                   },
                   icon: const Icon(
                     Icons.check,
@@ -303,8 +415,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       children: [
                         CircleAvatar(
                           maxRadius: 65,
-                          backgroundImage:
-                              const AssetImage('assets/images/User Image.png'),
+                          backgroundImage: userImage == null
+                              ? const AssetImage('assets/images/User Image.png')
+                              : NetworkImage(userImage!) as ImageProvider,
                         ),
                       ],
                     ),

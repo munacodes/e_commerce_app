@@ -9,15 +9,17 @@ class CartSingleProduct extends StatefulWidget {
   int quantity;
   final double price;
   bool? isCount;
+  final int index;
 
-  CartSingleProduct(
-      {Key? key,
-      required this.image,
-      required this.name,
-      required this.quantity,
-      required this.price,
-      this.isCount})
-      : super(key: key);
+  CartSingleProduct({
+    Key? key,
+    required this.image,
+    required this.name,
+    required this.quantity,
+    required this.price,
+    this.isCount,
+    required this.index,
+  }) : super(key: key);
 
   @override
   State<CartSingleProduct> createState() => _CartSingleProductState();
@@ -50,15 +52,33 @@ class _CartSingleProductState extends State<CartSingleProduct> {
                 ),
                 Container(
                   height: 140,
-                  width: 200,
+                  width: widget.isCount == true ? 200 : 244,
                   child: ListTile(
                     title: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          widget.name,
-                          style: myStyle,
+                        Container(
+                          height: 20,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                widget.name,
+                                style: myStyle,
+                              ),
+                              IconButton(
+                                onPressed: () {
+                                  widget.isCount == false
+                                      ? productProvider!
+                                          .deleteCartProduct(widget.index)
+                                      : productProvider!
+                                          .deleteCheckoutProduct(widget.index);
+                                },
+                                icon: const Icon(Icons.close),
+                              ),
+                            ],
+                          ),
                         ),
                         const Text('Cloths'),
                         Text(

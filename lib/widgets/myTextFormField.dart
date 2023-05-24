@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 class MyTextFormField extends StatelessWidget {
   final TextEditingController? controller;
   final String? name;
-
   final TextInputType? keyboardType;
   final bool? obscureText;
 

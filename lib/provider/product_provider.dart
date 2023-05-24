@@ -23,20 +23,38 @@ class ProductProvider with ChangeNotifier {
       (element) {
         if (currentUser.uid == element['UserId']) {
           userModel = UserModel(
+            userAddress: element['UserAddress'],
+            userImage: element['UserImage'],
             userEmail: element['UserEmail'],
             userGender: element['UserGender'],
             userName: element['UserName'],
-            userPhoneNumber: element['Phone Number'],
+            userPhoneNumber: element['UserNumber'],
           );
           newList.add(userModel!);
         }
         userModeList = newList;
       },
     );
+    notifyListeners();
   }
 
   List<UserModel> get getUserModelList {
     return userModeList;
+  }
+
+  void deleteCartProduct(int index) {
+    cartModelList.removeAt(index);
+    notifyListeners();
+  }
+
+  void deleteCheckoutProduct(int index) {
+    checkOutModelList.removeAt(index);
+    notifyListeners();
+  }
+
+  void clearCheckoutProduct() {
+    checkOutModelList.clear();
+    notifyListeners();
   }
 
   void getCheckOutData({

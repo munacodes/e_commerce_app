@@ -77,6 +77,7 @@ class _CartScreenState extends State<CartScreen> {
         child: ListView.builder(
           itemCount: productProvider!.getCardModelListLength,
           itemBuilder: (context, index) => CartSingleProduct(
+            index: index,
             isCount: false,
             image: productProvider!.getCardModelList[index].image,
             name: productProvider!.getCardModelList[index].name,
