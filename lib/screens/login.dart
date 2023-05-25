@@ -30,7 +30,7 @@ class _LoginState extends State<Login> {
     const snackBarValid = SnackBar(
       content: Center(
         child: Text(
-          'Successful',
+          'Processing...',
           style: TextStyle(
             fontWeight: FontWeight.bold,
           ),

@@ -36,6 +36,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String? userImage;
   bool isMale = false;
 
+  UserModel? userModel;
+
   TextEditingController? phoneNumber;
   TextEditingController? userName;
   TextEditingController? address;
@@ -347,6 +349,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     print(isMale);
     productProvider = Provider.of(context);
+    User? user = FirebaseAuth.instance.currentUser;
     return Scaffold(
       key: _formKey,
       backgroundColor: const Color(0xfff8f8f8),
@@ -398,93 +401,118 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
       resizeToAvoidBottomInset: false,
       body: SafeArea(
-        child: Container(
-          height: double.infinity,
-          width: double.infinity,
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Stack(
-                children: [
-                  Container(
-                    height: 130,
-                    width: double.infinity,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        CircleAvatar(
-                          maxRadius: 65,
-                          backgroundImage: userImage == null
-                              ? const AssetImage('assets/images/User Image.png')
-                              : NetworkImage(userImage!) as ImageProvider,
-                        ),
-                      ],
-                    ),
-                  ),
-                  edit == true
-                      ? Padding(
-                          padding: const EdgeInsets.only(left: 200, top: 85),
-                          child: Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: GestureDetector(
-                              onTap: () {
-                                myDialogBox();
-                              },
-                              child: const CircleAvatar(
-                                backgroundColor: Colors.transparent,
-                                child: Icon(
-                                  Icons.camera_alt,
-                                  color: Color(0xff746bc9),
-                                ),
-                              ),
-                            ),
-                          ),
-                        )
-                      : Container(),
-                ],
-              ),
-              Container(
-                height: 300,
+        child: StreamBuilder(
+            stream: FirebaseFirestore.instance.collection('Users').snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              var myDoc = snapshot.data!.docs;
+              myDoc.forEach((checkDocs) {
+                if (checkDocs.data()['UserId'] == user!.uid) {
+                  userModel = UserModel(
+                    userEmail: checkDocs.data()['UserId'],
+                    userGender: checkDocs.data()['UserId'],
+                    userName: checkDocs.data()['UserId'],
+                    userPhoneNumber: checkDocs.data()['UserId'],
+                    userImage: checkDocs.data()['UserId'],
+                    userAddress: checkDocs.data()['UserId'],
+                  );
+                }
+              });
+              return Container(
+                height: double.infinity,
                 width: double.infinity,
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
+                    Stack(
+                      children: [
+                        Container(
+                          height: 130,
+                          width: double.infinity,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              CircleAvatar(
+                                maxRadius: 65,
+                                backgroundImage: userImage == null
+                                    ? const AssetImage(
+                                        'assets/images/User Image.png')
+                                    : NetworkImage(userImage!) as ImageProvider,
+                              ),
+                            ],
+                          ),
+                        ),
+                        edit == true
+                            ? Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 200, top: 85),
+                                child: Card(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      myDialogBox();
+                                    },
+                                    child: const CircleAvatar(
+                                      backgroundColor: Colors.transparent,
+                                      child: Icon(
+                                        Icons.camera_alt,
+                                        color: Color(0xff746bc9),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : Container(),
+                      ],
+                    ),
                     Container(
                       height: 300,
-                      child: edit == true
-                          ? _buildTextFormFieldPart()
-                          : _buildContainerPart(),
+                      width: double.infinity,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Container(
+                            height: 300,
+                            child: edit == true
+                                ? _buildTextFormFieldPart()
+                                //  _buildContainerPart(),
+                                : Container(),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      child: Container(
+                        width: 200,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: edit == false
+                            ? MyButton(
+                                name: 'Edit Profile',
+                                onPressed: () {
+                                  setState(() {
+                                    edit = true;
+                                  });
+                                },
+                              )
+                            : Container(),
+                      ),
                     ),
                   ],
                 ),
-              ),
-              Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                child: Container(
-                  width: 200,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: edit == false
-                      ? MyButton(
-                          name: 'Edit Profile',
-                          onPressed: () {
-                            setState(() {
-                              edit = true;
-                            });
-                          },
-                        )
-                      : Container(),
-                ),
-              ),
-            ],
-          ),
-        ),
+              );
+            }),
       ),
     );
   }

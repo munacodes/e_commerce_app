@@ -1,15 +1,27 @@
 import 'package:e_commerce_app/model/modelExports.dart';
+import 'package:e_commerce_app/provider/providerExports.dart';
 import 'package:e_commerce_app/screens/homePage.dart';
+import 'package:e_commerce_app/screens/screensExports.dart';
+import 'package:e_commerce_app/screens/search_category.dart';
 import 'package:e_commerce_app/widgets/singleProduct.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ListProduct extends StatelessWidget {
   final String name;
   final List<Product> snapShot;
-  const ListProduct({Key? key, required this.name, required this.snapShot})
-      : super(key: key);
+  bool? isCategory = true;
+  ListProduct({
+    Key? key,
+    required this.name,
+    required this.snapShot,
+    this.isCategory,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    CategoryProvider categoryProvider = Provider.of<CategoryProvider>(context);
+    ProductProvider productProvider = Provider.of<ProductProvider>(context);
+    final Orientation orientation = MediaQuery.of(context).orientation;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -26,13 +38,33 @@ class ListProduct extends StatelessWidget {
           },
         ),
         actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.search,
-              color: Colors.black,
-            ),
-          ),
+          isCategory == true
+              ? IconButton(
+                  onPressed: () {
+                    categoryProvider.getSearchList(list: snapShot);
+                    showSearch(
+                      context: context,
+                      delegate: SearchCategory(),
+                    );
+                  },
+                  icon: const Icon(
+                    Icons.search,
+                    color: Colors.black,
+                  ),
+                )
+              : IconButton(
+                  onPressed: () {
+                    productProvider.getSearchList(list: snapShot);
+                    showSearch(
+                      context: context,
+                      delegate: SearchProduct(),
+                    );
+                  },
+                  icon: const Icon(
+                    Icons.search,
+                    color: Colors.black,
+                  ),
+                ),
           IconButton(
             onPressed: () {},
             icon: const Icon(
@@ -75,15 +107,29 @@ class ListProduct extends StatelessWidget {
                   Container(
                     height: 640,
                     child: GridView.count(
-                      crossAxisCount: 2,
+                      crossAxisCount:
+                          orientation == Orientation.portrait ? 2 : 3,
                       childAspectRatio: 0.6,
                       scrollDirection: Axis.vertical,
                       children: snapShot
                           .map(
-                            (e) => SingleProduct(
-                              image: e.image,
-                              price: e.price,
-                              name: e.name,
+                            (e) => GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                    builder: (context) => DetailScreen(
+                                      image: e.image,
+                                      name: e.name,
+                                      price: e.price,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: SingleProduct(
+                                image: e.image,
+                                price: e.price,
+                                name: e.name,
+                              ),
                             ),
                           )
                           .toList(),

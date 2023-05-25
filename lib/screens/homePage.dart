@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_commerce_app/provider/providerExports.dart';
+import 'package:e_commerce_app/screens/cartScreen.dart';
+import 'package:e_commerce_app/screens/contactUs.dart';
 import 'package:e_commerce_app/screens/detailScreen.dart';
 import 'package:e_commerce_app/screens/listProduct.dart';
 import 'package:e_commerce_app/screens/screensExports.dart';
@@ -94,6 +96,11 @@ class _HomePageState extends State<HomePage> {
                 aboutColor = false;
                 profileColor = false;
               });
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => const CartScreen(),
+                ),
+              );
             },
             leading: const Icon(Icons.home),
             title: const Text('Home'),
@@ -155,6 +162,11 @@ class _HomePageState extends State<HomePage> {
                 aboutColor = false;
                 profileColor = false;
               });
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => ContactUs(),
+                ),
+              );
             },
             leading: const Icon(Icons.phone),
             title: const Text('Contact Us'),
@@ -356,6 +368,7 @@ class _HomePageState extends State<HomePage> {
                   MaterialPageRoute(
                     builder: (context) => ListProduct(
                       name: 'Featured',
+                      isCategory: false,
                       snapShot: featureProduct,
                     ),
                   ),
@@ -450,6 +463,7 @@ class _HomePageState extends State<HomePage> {
                         MaterialPageRoute(
                           builder: (context) => ListProduct(
                             name: 'New Achives',
+                            isCategory: false,
                             snapShot: newAchivesProduct,
                           ),
                         ),
@@ -573,20 +587,8 @@ class _HomePageState extends State<HomePage> {
             _key.currentState!.openDrawer();
           },
         ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              showSearch(
-                context: context,
-                delegate: Search(),
-              );
-            },
-            icon: const Icon(
-              Icons.search,
-              color: Colors.black,
-            ),
-          ),
-          const NotificationButton(),
+        actions: const [
+          NotificationButton(),
         ],
       ),
       body: SafeArea(

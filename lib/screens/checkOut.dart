@@ -71,12 +71,13 @@ class _CheckOutState extends State<CheckOut> {
                   .set({
                 'Product': productProvider!.checkOutModelList
                     .map((c) => {
-                          'Product Name': c.name,
-                          'Product Price': c.price,
-                          'Product Quantity': c.quantity,
+                          'ProductName': c.name,
+                          'ProductPrice': c.price,
+                          'ProductQuantity': c.quantity,
+                          'ProductImage': c.image,
                         })
                     .toList(),
-                'Total Price': total!.toStringAsFixed(2),
+                'TotalPrice': total!.toStringAsFixed(2),
                 'UserName': e.userName,
                 'UserEmail': e.userEmail,
                 'UserNumber': e.userPhoneNumber,

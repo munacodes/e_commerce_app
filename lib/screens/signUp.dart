@@ -147,7 +147,7 @@ class _SignUpState extends State<SignUp> {
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Container(
-        height: 360,
+        height: 400,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -168,7 +168,7 @@ class _SignUpState extends State<SignUp> {
               onTap: () {
                 FocusScope.of(context).unfocus();
                 setState(() {
-                  //obscureText = !obscureText;
+                  // obscureText = !obscureText;
                 });
               },
               keyboardType: const TextInputType.numberWithOptions(
@@ -222,7 +222,7 @@ class _SignUpState extends State<SignUp> {
 
   Widget _buildButtonPart() {
     return Container(
-      height: 100,
+      height: 150,
       margin: const EdgeInsets.symmetric(horizontal: 10),
       width: double.infinity,
       child: Column(
@@ -263,7 +263,7 @@ class _SignUpState extends State<SignUp> {
             child: Column(
               children: [
                 Container(
-                  height: 200,
+                  height: 150,
                   width: double.infinity,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,

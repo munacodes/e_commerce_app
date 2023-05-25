@@ -10,7 +10,6 @@ class ProductProvider with ChangeNotifier {
   CartModel? cartModel;
   List<CartModel> checkOutModelList = [];
   CartModel? checkOutModel;
-  List<CartModel>? myCheckOut;
   List<UserModel> userModeList = [];
   UserModel? userModel;
 
@@ -147,6 +146,7 @@ class ProductProvider with ChangeNotifier {
       },
     );
     homeFeature = newList;
+    notifyListeners();
   }
 
   List<Product> get getHomeFeatureList {
@@ -169,6 +169,7 @@ class ProductProvider with ChangeNotifier {
       },
     );
     homeAchive = newList;
+    notifyListeners();
   }
 
   List<Product> get getHomeAchiveList {
@@ -194,6 +195,7 @@ class ProductProvider with ChangeNotifier {
       },
     );
     newAchives = newList;
+    notifyListeners();
   }
 
   List<Product> get getNewAchivesList {
@@ -207,5 +209,19 @@ class ProductProvider with ChangeNotifier {
 
   int get getNotificationIndex {
     return notificationList.length;
+  }
+
+  List<Product>? searchList;
+  void getSearchList({List<Product>? list}) {
+    searchList = list;
+    notifyListeners();
+  }
+
+  List<Product> searchProductList(String query) {
+    List<Product> searchShirt = searchList!.where((element) {
+      return element.name.toUpperCase().contains(query) ||
+          element.name.toLowerCase().contains(query);
+    }).toList();
+    return searchShirt;
   }
 }
