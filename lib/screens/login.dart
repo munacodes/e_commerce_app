@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {
-  Login({Key? key}) : super(key: key);
+  const Login({Key? key}) : super(key: key);
 
   @override
   State<Login> createState() => _LoginState();
@@ -83,7 +83,7 @@ class _LoginState extends State<Login> {
           ),
         );
       } else {
-        bool isvalid;
+        bool isvalid = true;
         isvalid = _formKey.currentState!.validate();
         print(isvalid);
         if (isvalid) {
@@ -94,6 +94,7 @@ class _LoginState extends State<Login> {
               email: email.text,
               password: password.text,
             );
+            print(result.user!.uid);
           } on FirebaseAuthException catch (e) {
             _scaffoldMessengerKey.currentState!.showSnackBar(
               SnackBar(

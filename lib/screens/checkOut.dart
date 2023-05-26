@@ -75,6 +75,8 @@ class _CheckOutState extends State<CheckOut> {
                           'ProductPrice': c.price,
                           'ProductQuantity': c.quantity,
                           'ProductImage': c.image,
+                          'Product Color': c.color,
+                          'Prduct Size': c.size,
                         })
                     .toList(),
                 'TotalPrice': total!.toStringAsFixed(2),
@@ -85,6 +87,7 @@ class _CheckOutState extends State<CheckOut> {
                 'UserUid': user!.uid,
               });
               productProvider!.clearCheckoutProduct();
+              productProvider!.addNotification('Notification');
             } else {
               _scaffoldMessengerKey.currentState!.showSnackBar(
                 const SnackBar(
@@ -173,6 +176,10 @@ class _CheckOutState extends State<CheckOut> {
                         CartSingleProduct(
                           isCount: true,
                           index: myIndex,
+                          color: productProvider!
+                              .getCheckOutModelList[myIndex].color,
+                          size: productProvider!
+                              .getCheckOutModelList[myIndex].size,
                           image: productProvider!
                               .getCheckOutModelList[myIndex].image,
                           name: productProvider!

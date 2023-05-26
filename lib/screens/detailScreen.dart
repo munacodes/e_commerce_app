@@ -24,21 +24,6 @@ class DetailScreen extends StatefulWidget {
 class _DetailScreenState extends State<DetailScreen> {
   int count = 1;
   ProductProvider? productProvider;
-  // Widget _buildSizeProduct({required String name}) {
-  //   return Container(
-  //     height: 60,
-  //     width: 60,
-  //     color: const Color(0xfff2f2f2),
-  //     child: Center(
-  //       child: Text(
-  //         name,
-  //         style: const TextStyle(
-  //           fontSize: 17,
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
 
   Widget _buildColorProduct({required Color color}) {
     return Container(
@@ -124,8 +109,52 @@ class _DetailScreenState extends State<DetailScreen> {
     );
   }
 
-  List<bool> isSelected = [true, false, false, false];
+  List<bool> sized = [true, false, false, false];
   List<bool> colored = [true, false, false, false];
+
+  int sizeIndex = 0;
+  String? size;
+  void getSize() {
+    if (sizeIndex == 0) {
+      setState(() {
+        size = 'S';
+      });
+    } else if (sizeIndex == 1) {
+      setState(() {
+        size = 'M';
+      });
+    } else if (sizeIndex == 2) {
+      setState(() {
+        size = 'L';
+      });
+    } else if (sizeIndex == 3) {
+      setState(() {
+        size = 'XL';
+      });
+    }
+  }
+
+  int colorIndex = 0;
+  String? color;
+  void getColor() {
+    if (colorIndex == 0) {
+      setState(() {
+        color = 'Light Blue';
+      });
+    } else if (colorIndex == 1) {
+      setState(() {
+        color = 'Light Green';
+      });
+    } else if (colorIndex == 2) {
+      setState(() {
+        color = 'Light Yellow';
+      });
+    } else if (colorIndex == 3) {
+      setState(() {
+        color = 'Cyan';
+      });
+    }
+  }
 
   Widget _buildSizePart() {
     return Column(
@@ -138,33 +167,22 @@ class _DetailScreenState extends State<DetailScreen> {
         const SizedBox(
           height: 15,
         ),
-        // Container(
-        //   width: 265,
-        //   child: Row(
-        //     mainAxisAlignment: MainAxisAlignment.spaceAround,
-        //     children: [
-        //       _buildSizeProduct(name: 'S'),
-        //       _buildSizeProduct(name: 'M'),
-        //       _buildSizeProduct(name: 'L'),
-        //       _buildSizeProduct(name: 'XXL'),
-        //     ],
-        //   ),
-        // ),
         Container(
           width: 265,
           child: ToggleButtons(
-            isSelected: isSelected,
+            isSelected: sized,
             onPressed: (int index) {
               setState(() {
-                for (int indexBtn = 0;
-                    indexBtn < isSelected.length;
-                    indexBtn++) {
+                for (int indexBtn = 0; indexBtn < sized.length; indexBtn++) {
                   if (indexBtn == index) {
-                    isSelected[indexBtn] = true;
+                    sized[indexBtn] = true;
                   } else {
-                    isSelected[indexBtn] = false;
+                    sized[indexBtn] = false;
                   }
                 }
+              });
+              setState(() {
+                sizeIndex = index;
               });
             },
             children: const [
@@ -193,18 +211,6 @@ class _DetailScreenState extends State<DetailScreen> {
         const SizedBox(
           height: 15,
         ),
-        // Container(
-        //   width: 265,
-        //   child: Row(
-        //     mainAxisAlignment: MainAxisAlignment.spaceAround,
-        //     children: [
-        //       _buildColorProduct(color: Colors.blue[200]!),
-        //       _buildColorProduct(color: Colors.green[200]!),
-        //       _buildColorProduct(color: Colors.yellow[200]!),
-        //       _buildColorProduct(color: Colors.cyan[300]!),
-        //     ],
-        //   ),
-        // ),
         Container(
           width: 265,
           child: ToggleButtons(
@@ -220,6 +226,9 @@ class _DetailScreenState extends State<DetailScreen> {
                     colored[indexBtn] = false;
                   }
                 }
+              });
+              setState(() {
+                colorIndex = index;
               });
             },
             children: [
@@ -251,9 +260,8 @@ class _DetailScreenState extends State<DetailScreen> {
         Container(
           height: 40,
           width: 130,
-          decoration: BoxDecoration(
-            color: Colors.blue[200]!,
-            borderRadius: BorderRadius.circular(20),
+          decoration: const BoxDecoration(
+            color: Color(0xff746bc9),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -266,14 +274,23 @@ class _DetailScreenState extends State<DetailScreen> {
                     }
                   });
                 },
-                child: const Icon(Icons.remove),
+                child: const Icon(
+                  Icons.remove,
+                  color: Colors.white,
+                ),
               ),
               Text(
                 count.toString(),
-                style: myStyle,
+                style: const TextStyle(
+                  fontSize: 18,
+                  color: Colors.white,
+                ),
               ),
               GestureDetector(
-                child: const Icon(Icons.add),
+                child: const Icon(
+                  Icons.add,
+                  color: Colors.white,
+                ),
                 onTap: () {
                   setState(() {
                     count++;
@@ -291,13 +308,17 @@ class _DetailScreenState extends State<DetailScreen> {
     return Container(
       height: 60,
       child: MyButton(
-        name: 'CheckOut',
+        name: 'Add To Cart',
         onPressed: () {
+          getSize();
+          getColor();
           productProvider!.getCartData(
             name: widget.name,
             image: widget.image,
             quantity: count,
             price: widget.price,
+            color: color!,
+            size: size!,
           );
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(

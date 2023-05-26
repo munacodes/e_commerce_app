@@ -11,6 +11,7 @@ class SignUp extends StatefulWidget {
   State<SignUp> createState() => _SignUpState();
 }
 
+bool obscureText = true;
 bool isMale = true;
 final TextEditingController email = TextEditingController();
 final TextEditingController phoneNumber = TextEditingController();
@@ -162,13 +163,13 @@ class _SignUpState extends State<SignUp> {
               keyboardType: TextInputType.emailAddress,
             ),
             PasswordTextFormField(
-              obscureText: true,
+              obscureText: obscureText,
               controller: password,
               name: 'Password',
               onTap: () {
                 FocusScope.of(context).unfocus();
                 setState(() {
-                  // obscureText = !obscureText;
+                  obscureText = !obscureText;
                 });
               },
               keyboardType: const TextInputType.numberWithOptions(

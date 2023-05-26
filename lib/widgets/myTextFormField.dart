@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 class MyTextFormField extends StatelessWidget {
   final TextEditingController? controller;
-  final String? name;
-  final TextInputType? keyboardType;
+  final String name;
+  final TextInputType keyboardType;
 
   const MyTextFormField({
     Key? key,
-    this.controller,
-    this.name,
-    this.keyboardType,
+    required this.controller,
+    required this.name,
+    required this.keyboardType,
   }) : super(key: key);
 
   @override

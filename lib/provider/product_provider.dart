@@ -15,12 +15,12 @@ class ProductProvider with ChangeNotifier {
 
   Future<void> getUserData() async {
     List<UserModel> newList = [];
-    User currentUser = FirebaseAuth.instance.currentUser!;
+    Stream<User?> currentUser = FirebaseAuth.instance.userChanges();
     QuerySnapshot userSnapShot =
         await FirebaseFirestore.instance.collection('Users').get();
     userSnapShot.docs.forEach(
       (element) {
-        if (currentUser.uid == element['UserId']) {
+        if (currentUser == element['UserId']) {
           userModel = UserModel(
             userAddress: element['UserAddress'],
             userImage: element['UserImage'],
@@ -61,12 +61,16 @@ class ProductProvider with ChangeNotifier {
     required double price,
     required String name,
     required String image,
+    required String color,
+    required String size,
   }) {
     checkOutModel = CartModel(
       price: price,
       name: name,
       image: image,
       quantity: quantity,
+      color: color,
+      size: size,
     );
     checkOutModelList.add(checkOutModel!);
   }
@@ -84,12 +88,16 @@ class ProductProvider with ChangeNotifier {
     required String image,
     required int quantity,
     required double price,
+    required String color,
+    required String size,
   }) {
     cartModel = CartModel(
       price: price,
       name: name,
       image: image,
       quantity: quantity,
+      color: color,
+      size: size,
     );
     cartModelList.add(cartModel!);
   }
@@ -203,12 +211,17 @@ class ProductProvider with ChangeNotifier {
   }
 
   List<String> notificationList = [];
+
   void addNotification(String notification) {
     notificationList.add(notification);
   }
 
   int get getNotificationIndex {
     return notificationList.length;
+  }
+
+  get getNotificationList {
+    return notificationList;
   }
 
   List<Product>? searchList;

@@ -32,7 +32,6 @@ class _CartScreenState extends State<CartScreen> {
             ),
           ),
           onPressed: () {
-            productProvider!.addNotification('Notification');
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(
                 builder: (context) => const CheckOut(),
@@ -78,6 +77,8 @@ class _CartScreenState extends State<CartScreen> {
           itemCount: productProvider!.getCardModelListLength,
           itemBuilder: (context, index) => CartSingleProduct(
             index: index,
+            color: productProvider!.getCardModelList[index].color,
+            size: productProvider!.getCardModelList[index].size,
             isCount: false,
             image: productProvider!.getCardModelList[index].image,
             name: productProvider!.getCardModelList[index].name,

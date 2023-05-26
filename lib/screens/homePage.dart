@@ -98,7 +98,7 @@ class _HomePageState extends State<HomePage> {
               });
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
-                  builder: (context) => const CartScreen(),
+                  builder: (context) => const HomePage(),
                 ),
               );
             },
@@ -115,6 +115,11 @@ class _HomePageState extends State<HomePage> {
                 profileColor = false;
                 aboutColor = false;
               });
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => const CartScreen(),
+                ),
+              );
             },
             leading: const Icon(Icons.shopping_cart),
             title: const Text('Cart'),
@@ -164,7 +169,7 @@ class _HomePageState extends State<HomePage> {
               });
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
-                  builder: (context) => ContactUs(),
+                  builder: (context) => const ContactUs(),
                 ),
               );
             },

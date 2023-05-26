@@ -19,7 +19,9 @@ class NotificationButton extends StatelessWidget {
           fontWeight: FontWeight.bold,
         ),
       ),
-      badgeStyle: const badges.BadgeStyle(badgeColor: Colors.red),
+      badgeStyle: const badges.BadgeStyle(
+        badgeColor: Colors.red,
+      ),
       child: IconButton(
         onPressed: () {},
         icon: const Icon(

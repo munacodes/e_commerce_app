@@ -23,7 +23,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  ProductProvider? productProvider;
   final _scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
   final _formKey = GlobalKey<FormState>();
 
@@ -42,9 +41,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
   TextEditingController? userName;
   TextEditingController? address;
 
-  void _finalValidation() async {
-    await _uploadImage(image: _pickedImage!);
-    await _userDetailUpdate();
+  void _finalValidation() {
+    _uploadImage(image: _pickedImage!);
+    _userDetailUpdate();
+    setState(() {
+      edit = false;
+    });
   }
 
   Future<void> _userDetailUpdate() async {
@@ -256,99 +258,89 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget _buildContainerPart() {
-    List<UserModel> userModel = productProvider!.userModeList;
-    return Column(
-      children: userModel.map((e) {
-        userImage = e.userImage;
-        address = TextEditingController(text: e.userAddress);
-        userName = TextEditingController(text: e.userName);
-        phoneNumber = TextEditingController(text: e.userPhoneNumber);
-        if (e.userGender == 'Male') {
-          setState(() {
-            isMale = true;
-          });
-        } else {
-          setState(() {
-            isMale = false;
-          });
-        }
-        return Container(
-          height: 300,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              _buildSingleContainer(
-                endText: e.userName,
-                startText: 'Name',
-              ),
-              _buildSingleContainer(
-                endText: e.userEmail,
-                startText: 'Email',
-              ),
-              _buildSingleContainer(
-                endText: e.userGender,
-                startText: 'Gender',
-              ),
-              _buildSingleContainer(
-                endText: e.userPhoneNumber,
-                startText: 'Phone Number',
-              ),
-              _buildSingleContainer(
-                endText: e.userAddress,
-                startText: 'Address',
-              ),
-            ],
+    address = TextEditingController(text: userModel!.userAddress);
+    userName = TextEditingController(text: userModel!.userName);
+    phoneNumber = TextEditingController(text: userModel!.userPhoneNumber);
+    if (userModel!.userGender == 'Male') {
+      isMale = true;
+    } else {
+      isMale = false;
+    }
+    return Container(
+      height: 300,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          _buildSingleContainer(
+            endText: userModel!.userName,
+            startText: 'Name',
           ),
-        );
-      }).toList(),
+          _buildSingleContainer(
+            endText: userModel!.userEmail,
+            startText: 'Email',
+          ),
+          _buildSingleContainer(
+            endText: userModel!.userGender,
+            startText: 'Gender',
+          ),
+          _buildSingleContainer(
+            endText: userModel!.userPhoneNumber,
+            startText: 'Phone Number',
+          ),
+          _buildSingleContainer(
+            endText: userModel!.userAddress,
+            startText: 'Address',
+          ),
+        ],
+      ),
     );
   }
 
   Widget _buildTextFormFieldPart() {
-    List<UserModel> userModel = productProvider!.userModeList;
-    return Column(
-      children: userModel.map((e) {
-        return Container(
-          height: 300,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              MyTextFormField(
-                name: 'UserName',
-                controller: userName,
-                keyboardType: TextInputType.name,
-              ),
-              _buildSingleContainer(
-                color: Colors.grey[300],
-                endText: e.userEmail,
-                startText: 'Email',
-              ),
-              _buildSingleContainer(
-                color: Colors.white,
-                endText: e.userGender,
-                startText: 'Gender',
-              ),
-              MyTextFormField(
-                name: 'Phone Number',
-                controller: phoneNumber,
-                keyboardType: TextInputType.phone,
-              ),
-              MyTextFormField(
-                name: 'Address',
-                controller: address,
-                keyboardType: TextInputType.streetAddress,
-              ),
-            ],
+    return Container(
+      height: 300,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          MyTextFormField(
+            name: 'UserName',
+            controller: userName,
+            keyboardType: TextInputType.name,
           ),
-        );
-      }).toList(),
+          _buildSingleContainer(
+            color: Colors.grey[300],
+            endText: userModel!.userEmail,
+            startText: 'Email',
+          ),
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                isMale = !isMale;
+              });
+            },
+            child: _buildSingleContainer(
+              color: Colors.white,
+              endText: isMale == true ? 'Male' : 'Female',
+              startText: 'Gender',
+            ),
+          ),
+          MyTextFormField(
+            name: 'Phone Number',
+            controller: phoneNumber,
+            keyboardType: TextInputType.phone,
+          ),
+          MyTextFormField(
+            name: 'Address',
+            controller: address,
+            keyboardType: TextInputType.streetAddress,
+          ),
+        ],
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    print(isMale);
-    productProvider = Provider.of(context);
     User? user = FirebaseAuth.instance.currentUser;
     return Scaffold(
       key: _formKey,
@@ -421,6 +413,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     userAddress: checkDocs.data()['UserId'],
                   );
                 }
+                print(userModel!.userImage);
               });
               return Container(
                 height: double.infinity,
@@ -438,12 +431,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               CircleAvatar(
-                                maxRadius: 65,
-                                backgroundImage: userImage == null
-                                    ? const AssetImage(
-                                        'assets/images/User Image.png')
-                                    : NetworkImage(userImage!) as ImageProvider,
-                              ),
+                                  maxRadius: 65,
+                                  backgroundImage: _pickedImage == null
+                                      ? userModel!.userImage == null
+                                          ? const AssetImage(
+                                              'assets/images/User Image.png')
+                                          : NetworkImage(userModel!.userImage)
+                                              as ImageProvider
+                                      : FileImage(_pickedImage!)),
                             ],
                           ),
                         ),
@@ -482,8 +477,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             height: 300,
                             child: edit == true
                                 ? _buildTextFormFieldPart()
-                                //  _buildContainerPart(),
-                                : Container(),
+                                : _buildContainerPart(),
                           ),
                         ],
                       ),
