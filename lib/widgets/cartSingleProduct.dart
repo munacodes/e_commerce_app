@@ -46,7 +46,7 @@ class _CartSingleProductState extends State<CartSingleProduct> {
               children: [
                 Container(
                   height: 130,
-                  width: 150,
+                  width: 100,
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       fit: BoxFit.fill,
@@ -56,7 +56,7 @@ class _CartSingleProductState extends State<CartSingleProduct> {
                 ),
                 Container(
                   height: 140,
-                  width: widget.isCount == true ? 244 : 230,
+                  width: widget.isCount == true ? 244 : 330,
                   child: ListTile(
                     title: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,

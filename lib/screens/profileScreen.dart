@@ -431,14 +431,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               CircleAvatar(
-                                  maxRadius: 65,
-                                  backgroundImage: _pickedImage == null
-                                      ? userModel!.userImage == null
-                                          ? const AssetImage(
-                                              'assets/images/User Image.png')
-                                          : NetworkImage(userModel!.userImage)
-                                              as ImageProvider
-                                      : FileImage(_pickedImage!)),
+                                maxRadius: 65,
+                                backgroundImage: _pickedImage == null
+                                    ? userModel!.userImage == null
+                                        ? const AssetImage(
+                                            'assets/images/User Image.png')
+                                        : NetworkImage(userModel!.userImage)
+                                            as ImageProvider
+                                    : FileImage(_pickedImage!),
+                              ),
                             ],
                           ),
                         ),

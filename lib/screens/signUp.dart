@@ -110,7 +110,7 @@ class _SignUpState extends State<SignUp> {
         ),
       );
     } else {
-      bool isvalid = true;
+      bool isvalid;
       isvalid = _formKey.currentState!.validate();
 
       if (isvalid) {
