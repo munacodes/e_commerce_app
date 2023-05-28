@@ -22,7 +22,9 @@ class _LoginState extends State<Login> {
         r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
     RegExp regExp = RegExp(p);
 
-    FirebaseAuth auth = FirebaseAuth.instance;
+    bool isvalid = true;
+
+    final FirebaseAuth auth = FirebaseAuth.instance;
     final TextEditingController email = TextEditingController();
     final TextEditingController password = TextEditingController();
 
@@ -82,29 +84,68 @@ class _LoginState extends State<Login> {
             backgroundColor: Color(0xff746bc9),
           ),
         );
-      } else {
-        bool isvalid;
+      } else if (isvalid) {
         isvalid = _formKey.currentState!.validate();
-        print(isvalid);
-        if (isvalid) {
-          _formKey.currentState!.save();
-          ScaffoldMessenger.of(context).showSnackBar(snackBarValid);
-          try {
-            final UserCredential result = await auth.signInWithEmailAndPassword(
-              email: email.text,
-              password: password.text,
-            );
-            print(result.user!.uid);
-          } on FirebaseAuthException catch (e) {
-            _scaffoldMessengerKey.currentState!.showSnackBar(
-              SnackBar(
-                content: Text('Failed with error code: ${e.code.toString()}'),
-              ),
-            );
+
+        _formKey.currentState!.save();
+        ScaffoldMessenger.of(context).showSnackBar(snackBarValid);
+        try {
+          UserCredential userCredential =
+              await FirebaseAuth.instance.signInWithEmailAndPassword(
+            email: email.text,
+            password: password.text,
+          );
+          User? user = userCredential.user;
+          print(isvalid);
+          print('User is logged in: ${user!.email}');
+          print(userCredential.user!.uid);
+        } on FirebaseAuthException catch (e) {
+          _scaffoldMessengerKey.currentState!.showSnackBar(
+            SnackBar(
+              content: Text('Failed with error code: ${e.code.toString()}'),
+            ),
+          );
+          if (e.code == 'user-not-found') {
+            print('No user found for that email.');
+          } else if (e.code == 'wrong-password') {
+            print('Wrong password provided.');
           }
+          throw e;
         }
       }
     }
+
+//     // Function to validate user
+//     Future<UserCredential> validateUser(String email, String password) async {
+//       try {
+//         UserCredential userCredential =
+//             await FirebaseAuth.instance.signInWithEmailAndPassword(
+//           email: email,
+//           password: password,
+//         );
+//         return userCredential;
+//       } on FirebaseAuthException catch (e) {
+//         if (e.code == 'user-not-found') {
+//           print('No user found for that email.');
+//         } else if (e.code == 'wrong-password') {
+//           print('Wrong password provided.');
+//         }
+
+//         throw e;
+//       }
+//     }
+
+// // Usage
+//     void main() async {
+//       try {
+//         UserCredential userCredential =
+//             await validateUser('example@example.com', 'password');
+//         User? user = userCredential.user;
+//         print('User is logged in: ${user!.email}');
+//       } catch (e) {
+//         print('Error occurred: $e');
+//       }
+//     }
 
     Widget _buildAllPart() {
       return Container(
@@ -126,12 +167,12 @@ class _LoginState extends State<Login> {
               keyboardType: TextInputType.emailAddress,
             ),
             PasswordTextFormField(
-              obscureText: true,
+              obscureText: obscureText,
               controller: password,
               onTap: () {
                 FocusScope.of(context).unfocus();
                 setState(() {
-                  //obscureText = !obscureText;
+                  obscureText = !obscureText;
                 });
               },
               name: 'Password',

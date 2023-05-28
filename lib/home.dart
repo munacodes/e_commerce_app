@@ -24,7 +24,7 @@ class _HomeState extends State<Home> {
         } else if (snapshot.hasData) {
           return const HomePage();
         } else {
-          return Login();
+          return const Login();
         }
       },
     );

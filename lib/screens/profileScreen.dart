@@ -405,12 +405,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
               myDoc.forEach((checkDocs) {
                 if (checkDocs.data()['UserId'] == user!.uid) {
                   userModel = UserModel(
-                    userEmail: checkDocs.data()['UserId'],
-                    userGender: checkDocs.data()['UserId'],
-                    userName: checkDocs.data()['UserId'],
-                    userPhoneNumber: checkDocs.data()['UserId'],
-                    userImage: checkDocs.data()['UserId'],
-                    userAddress: checkDocs.data()['UserId'],
+                    userEmail: checkDocs.data()['UserEmail'],
+                    userGender: checkDocs.data()['UserGender'],
+                    userName: checkDocs.data()['UserName'],
+                    userPhoneNumber: checkDocs.data()['UserPhoneNumber'],
+                    userImage: checkDocs.data()['UserImage'],
+                    userAddress: checkDocs.data()['UserAddress'],
                   );
                 }
                 print(userModel!.userImage);
@@ -439,6 +439,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         : NetworkImage(userModel!.userImage)
                                             as ImageProvider
                                     : FileImage(_pickedImage!),
+                                // backgroundImage: const AssetImage(
+                                //     'assets/images/User Image.png'),
                               ),
                             ],
                           ),
