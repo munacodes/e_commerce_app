@@ -104,7 +104,7 @@ class _CheckOutState extends State<CheckOut> {
 
   @override
   Widget build(BuildContext context) {
-    user = FirebaseAuth.instance.currentUser;
+    user = FirebaseAuth.instance.currentUser!;
     double subTotal = 0;
     double discount = 3;
     double discountRupees;
@@ -154,6 +154,7 @@ class _CheckOutState extends State<CheckOut> {
       bottomNavigationBar: Container(
         height: 70,
         width: 100,
+        color: Colors.red,
         margin: const EdgeInsets.symmetric(horizontal: 10),
         padding: const EdgeInsets.only(bottom: 15),
         child: _buildButton(),
@@ -164,7 +165,6 @@ class _CheckOutState extends State<CheckOut> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ////////////////////////////////////////////////////////////////////////////////////////////////
               Container(
                 height: 400,
                 child: ListView.builder(

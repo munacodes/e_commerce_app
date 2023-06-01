@@ -56,7 +56,7 @@ class _CartSingleProductState extends State<CartSingleProduct> {
                 ),
                 Container(
                   height: 140,
-                  width: widget.isCount == true ? 244 : 330,
+                  width: widget.isCount == true ? 250 : 282,
                   child: ListTile(
                     title: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
