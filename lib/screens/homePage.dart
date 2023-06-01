@@ -135,6 +135,11 @@ class _HomePageState extends State<HomePage> {
                 profileColor = false;
                 homeColor = false;
               });
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => const AboutUs(),
+                ),
+              );
             },
             leading: const Icon(Icons.info),
             title: const Text('About'),
