@@ -223,7 +223,7 @@ class _SignUpState extends State<SignUp> {
 
   Widget _buildButtonPart() {
     return Container(
-      height: 150,
+      height: 120,
       margin: const EdgeInsets.symmetric(horizontal: 10),
       width: double.infinity,
       child: Column(
@@ -240,7 +240,7 @@ class _SignUpState extends State<SignUp> {
             onTap: () {
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
-                  builder: (ctx) => Login(),
+                  builder: (ctx) => const Login(),
                   /* ctx means or is a shortform of context*/
                 ),
               );
