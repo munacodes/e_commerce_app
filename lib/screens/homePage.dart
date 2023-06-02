@@ -72,8 +72,8 @@ class _HomePageState extends State<HomePage> {
             color: Color(0xfff8f8f8),
           ),
           currentAccountPicture: CircleAvatar(
-            backgroundImage: e.userImage == null
-                ? const AssetImage('assets/images/User Image.png')
+            backgroundImage: e.userImage == false
+                ? AssetImage('assets/images/User Image.png')
                 : NetworkImage(e.userImage) as ImageProvider,
             //  backgroundImage: const AssetImage('assets/images/User Image.png'),
           ),
@@ -142,7 +142,7 @@ class _HomePageState extends State<HomePage> {
               );
             },
             leading: const Icon(Icons.info),
-            title: const Text('About'),
+            title: const Text('About Us'),
           ),
           ListTile(
             selected: profileColor,

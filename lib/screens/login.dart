@@ -26,26 +26,6 @@ class _LoginState extends State<Login> {
     final TextEditingController email = TextEditingController();
     final TextEditingController password = TextEditingController();
 
-// A popup message that displays at the bottom of the screen using scaffoldMessengerKey
-    const snackBarValid = SnackBar(
-      content: Center(
-        child: Text(
-          'Processing...',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-      backgroundColor: Color(0xff746bc9),
-      shape: StadiumBorder(),
-      padding: EdgeInsets.all(10),
-      margin: EdgeInsets.only(right: 100, left: 100),
-      behavior: SnackBarBehavior.floating,
-      duration: Duration(
-        seconds: 1,
-      ),
-    );
-
     void validation() async {
       if (email.text.isEmpty && password.text.isEmpty) {
         _scaffoldMessengerKey.currentState!.showSnackBar(
@@ -83,25 +63,18 @@ class _LoginState extends State<Login> {
           ),
         );
       } else {
-        bool isvalid;
-        isvalid = _formKey.currentState!.validate();
-        print(isvalid);
-        if (isvalid) {
-          _formKey.currentState!.save();
-          ScaffoldMessenger.of(context).showSnackBar(snackBarValid);
-          try {
-            final UserCredential result = await auth.signInWithEmailAndPassword(
-              email: email.text,
-              password: password.text,
-            );
-            print(result.user!.uid);
-          } on FirebaseAuthException catch (e) {
-            _scaffoldMessengerKey.currentState!.showSnackBar(
-              SnackBar(
-                content: Text('Failed with error code: ${e.code.toString()}'),
-              ),
-            );
-          }
+        try {
+          final UserCredential result = await auth.signInWithEmailAndPassword(
+            email: email.text,
+            password: password.text,
+          );
+          print(result.user!.uid);
+        } on FirebaseAuthException catch (e) {
+          _scaffoldMessengerKey.currentState!.showSnackBar(
+            SnackBar(
+              content: Text('Failed with error code: ${e.code.toString()}'),
+            ),
+          );
         }
       }
     }

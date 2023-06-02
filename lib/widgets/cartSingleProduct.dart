@@ -8,7 +8,7 @@ class CartSingleProduct extends StatefulWidget {
   final String name;
   int quantity;
   final double price;
-  bool? isCount;
+  final bool isCount;
   final int index;
   final String color;
   final String size;
@@ -19,7 +19,7 @@ class CartSingleProduct extends StatefulWidget {
     required this.name,
     required this.quantity,
     required this.price,
-    this.isCount,
+    required this.isCount,
     required this.index,
     required this.color,
     required this.size,
@@ -117,6 +117,7 @@ class _CartSingleProductState extends State<CartSingleProduct> {
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
                                     GestureDetector(
+                                      child: const Icon(Icons.remove),
                                       onTap: () {
                                         setState(() {
                                           if (widget.quantity > 1) {
@@ -132,7 +133,6 @@ class _CartSingleProductState extends State<CartSingleProduct> {
                                           }
                                         });
                                       },
-                                      child: const Icon(Icons.remove),
                                     ),
                                     Text(
                                       widget.quantity.toString(),

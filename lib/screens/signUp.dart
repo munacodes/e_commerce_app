@@ -28,26 +28,6 @@ class _SignUpState extends State<SignUp> {
   final _scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
   final _formKey = GlobalKey<FormState>();
 
-  // A popup message that displays at the bottom of the screen scaffoldMessengerKey
-  final snackBarValid = const SnackBar(
-    content: Center(
-      child: Text(
-        'Processing...',
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-    ),
-    backgroundColor: Color(0xff746bc9),
-    shape: StadiumBorder(),
-    padding: EdgeInsets.all(10),
-    margin: EdgeInsets.only(right: 100, left: 100),
-    behavior: SnackBarBehavior.floating,
-    duration: Duration(
-      seconds: 1,
-    ),
-  );
-
   void validation() async {
     if (userName.text.isEmpty &&
         email.text.isEmpty &&
@@ -110,36 +90,29 @@ class _SignUpState extends State<SignUp> {
         ),
       );
     } else {
-      bool isvalid;
-      isvalid = _formKey.currentState!.validate();
-
-      if (isvalid) {
-        _formKey.currentState!.save();
-        ScaffoldMessenger.of(context).showSnackBar(snackBarValid);
-        try {
-          final UserCredential result =
-              await FirebaseAuth.instance.createUserWithEmailAndPassword(
-            email: email.text,
-            password: password.text,
-          );
-          FirebaseFirestore.instance
-              .collection('Users')
-              .doc(result.user!.uid)
-              .set({
-            'UserName': userName.text,
-            'UserId': result.user!.uid,
-            'UserEmail': email.text,
-            'UserAddress': address.text,
-            'UserGender': isMale == true ? 'Male' : 'Female',
-            'Phone Number': phoneNumber.text,
-          });
-        } on FirebaseException catch (e) {
-          _scaffoldMessengerKey.currentState!.showSnackBar(
-            SnackBar(
-              content: Text('Failed with error code: ${e.code.toString()}'),
-            ),
-          );
-        }
+      try {
+        UserCredential result =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: email.text,
+          password: password.text,
+        );
+        FirebaseFirestore.instance
+            .collection('Users')
+            .doc(result.user!.uid)
+            .set({
+          'UserName': userName.text,
+          'UserId': result.user!.uid,
+          'UserEmail': email.text,
+          'UserAddress': address.text,
+          'UserGender': isMale == true ? 'Male' : 'Female',
+          'Phone Number': phoneNumber.text,
+        });
+      } on FirebaseException catch (e) {
+        _scaffoldMessengerKey.currentState!.showSnackBar(
+          SnackBar(
+            content: Text('Failed with error code: ${e.code.toString()}'),
+          ),
+        );
       }
     }
   }
@@ -153,7 +126,7 @@ class _SignUpState extends State<SignUp> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             MyTextFormField(
-              name: 'UserName',
+              name: 'User Name',
               controller: userName,
               keyboardType: TextInputType.name,
             ),

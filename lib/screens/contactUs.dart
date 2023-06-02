@@ -83,16 +83,17 @@ class _ContactUsState extends State<ContactUs> {
   Widget build(BuildContext context) {
     print(name);
     return WillPopScope(
-      // onWillPop: () {
-      //   Navigator.of(context).pushReplacement(
-      //     MaterialPageRoute(
-      //       builder: (context) => const HomePage(),
-      //     ),
-      //   );
-      // },
       onWillPop: () async {
-        return false;
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const HomePage(),
+          ),
+        );
+        return true;
       },
+      // onWillPop: () async {
+      //   return true;
+      // },
       child: Scaffold(
         key: _scaffoldMessengerKey,
         appBar: AppBar(

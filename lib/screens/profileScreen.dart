@@ -45,13 +45,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
     _uploadImage(image: _pickedImage!);
     _userDetailUpdate();
     setState(() {
-      edit = false;
+      edit = true;
     });
   }
 
   Future<void> _userDetailUpdate() async {
     User? user = FirebaseAuth.instance.currentUser;
-    await FirebaseFirestore.instance.collection('Users').doc(user!.uid).set({
+    await FirebaseFirestore.instance.collection('Users').doc(user!.uid).update({
       'UserName': userName!.text,
       'UserGender': isMale == true ? 'Male' : 'Female',
       'UserNumber': phoneNumber!.text,
@@ -112,26 +112,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     });
   }
 
-// A popup message that displays at the bottom of the screen scaffoldMessengerKey
-  final snackBarValid = const SnackBar(
-    content: Center(
-      child: Text(
-        'Processing...',
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-    ),
-    backgroundColor: Color(0xff746bc9),
-    shape: StadiumBorder(),
-    padding: EdgeInsets.all(10),
-    margin: EdgeInsets.only(right: 100, left: 100),
-    behavior: SnackBarBehavior.floating,
-    duration: Duration(
-      seconds: 1,
-    ),
-  );
-
   void validation() async {
     if (userName!.text.isEmpty && phoneNumber!.text.isEmpty) {
       _scaffoldMessengerKey.currentState!.showSnackBar(
@@ -190,13 +170,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 color: Colors.black45,
               ),
             ),
-            Expanded(
-              child: Text(
-                endText,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
+            Text(
+              endText,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
               ),
             ),
           ],
@@ -403,14 +381,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
               }
               var myDoc = snapshot.data!.docs;
               myDoc.forEach((checkDocs) {
-                if (checkDocs.data()['UserId'] == user!.uid) {
+                if (checkDocs.data()['UserId'].toString() == user!.uid) {
                   userModel = UserModel(
-                    userEmail: checkDocs.data()['UserEmail'],
-                    userGender: checkDocs.data()['UserGender'],
-                    userName: checkDocs.data()['UserName'],
-                    userPhoneNumber: checkDocs.data()['UserPhoneNumber'],
-                    userImage: checkDocs.data()['UserImage'],
-                    userAddress: checkDocs.data()['UserAddress'],
+                    userEmail: checkDocs.data()['UserEmail'].toString(),
+                    userGender: checkDocs.data()['UserGender'].toString(),
+                    userName: checkDocs.data()['UserName'].toString(),
+                    userPhoneNumber:
+                        checkDocs.data()['UserPhoneNumber'].toString(),
+                    userImage: checkDocs.data()['UserImage'].toString(),
+                    userAddress: checkDocs.data()['UserAddress'].toString(),
                   );
                 }
                 print(userModel!.userImage);
@@ -432,15 +411,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             children: [
                               CircleAvatar(
                                 maxRadius: 65,
-                                backgroundImage: _pickedImage == null
-                                    ? userModel!.userImage == null
-                                        ? const AssetImage(
+                                backgroundImage: _pickedImage == false
+                                    ? userModel!.userImage == false
+                                        ? AssetImage(
                                             'assets/images/User Image.png')
                                         : NetworkImage(userModel!.userImage)
                                             as ImageProvider
                                     : FileImage(_pickedImage!),
-                                // backgroundImage: const AssetImage(
-                                //     'assets/images/User Image.png'),
+                                // backgroundImage: _pickedImage == null ?
+                                //
+                                //const AssetImage(
+                                // 'assets/images/User Image.png'):
                               ),
                             ],
                           ),

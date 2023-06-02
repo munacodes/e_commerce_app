@@ -152,7 +152,7 @@ class _CheckOutState extends State<CheckOut> {
         ],
       ),
       bottomNavigationBar: Container(
-        height: 70,
+        height: 50,
         width: 100,
         color: Colors.red,
         margin: const EdgeInsets.symmetric(horizontal: 10),
