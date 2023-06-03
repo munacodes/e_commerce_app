@@ -4,6 +4,7 @@ import 'package:e_commerce_app/screens/cartScreen.dart';
 import 'package:e_commerce_app/screens/contactUs.dart';
 import 'package:e_commerce_app/screens/detailScreen.dart';
 import 'package:e_commerce_app/screens/listProduct.dart';
+import 'package:e_commerce_app/screens/profileScreen2.dart';
 import 'package:e_commerce_app/screens/screensExports.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -72,7 +73,7 @@ class _HomePageState extends State<HomePage> {
             color: Color(0xfff8f8f8),
           ),
           currentAccountPicture: CircleAvatar(
-            backgroundImage: e.userImage == false
+            backgroundImage: e.userImage == ''
                 ? AssetImage('assets/images/User Image.png')
                 : NetworkImage(e.userImage) as ImageProvider,
             //  backgroundImage: const AssetImage('assets/images/User Image.png'),
@@ -156,7 +157,7 @@ class _HomePageState extends State<HomePage> {
               });
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
-                  builder: (context) => const ProfileScreen(),
+                  builder: (context) => const ProfileScreen2(),
                 ),
               );
             },

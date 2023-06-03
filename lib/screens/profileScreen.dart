@@ -411,8 +411,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             children: [
                               CircleAvatar(
                                 maxRadius: 65,
-                                backgroundImage: _pickedImage == false
-                                    ? userModel!.userImage == false
+                                backgroundImage: _pickedImage == null
+                                    ? userModel!.userImage == ''
                                         ? AssetImage(
                                             'assets/images/User Image.png')
                                         : NetworkImage(userModel!.userImage)

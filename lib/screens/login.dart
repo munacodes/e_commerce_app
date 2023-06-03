@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:e_commerce_app/screens/screensExports.dart';
 import 'package:e_commerce_app/screens/signUp.dart';
 import 'package:e_commerce_app/widgets/widgetsExports.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -69,13 +70,64 @@ class _LoginState extends State<Login> {
             password: password.text,
           );
           print(result.user!.uid);
-        } on FirebaseAuthException catch (e) {
-          _scaffoldMessengerKey.currentState!.showSnackBar(
-            SnackBar(
-              content: Text('Failed with error code: ${e.code.toString()}'),
-            ),
-          );
+        } catch (e) {
+          if (e is FirebaseAuthException) {
+            // Handle FirebaseAuthException
+            FirebaseAuthException authException = e;
+            // Handle different error codes or scenarios
+            switch (authException.code) {
+              case 'invalid-email':
+                // Handle invalid email error
+                break;
+              case 'user-not-found':
+                // Handle user not found error
+                break;
+              case 'wrong-password':
+                // Handle wrong password error
+                break;
+              // Add more cases as needed
+              default:
+                // Handle other FirebaseAuthException errors
+                break;
+            }
+          } else {
+            // Handle other types of exceptions or errors
+          }
         }
+
+        // on FirebaseAuthException catch (e) {
+        //   _scaffoldMessengerKey.currentState!.showSnackBar(
+        //     SnackBar(
+        //       content: Text('Failed with error code: ${e.code.toString()}'),
+        //     ),
+        //   );
+        // }
+//        try {
+        // Code that may throw a FirebaseAuthException
+// } catch (e) {
+//   if (e is FirebaseAuthException) {
+//     // Handle FirebaseAuthException
+//     FirebaseAuthException authException = e;
+//     // Handle different error codes or scenarios
+//     switch (authException.code) {
+//       case 'invalid-email':
+//         // Handle invalid email error
+//         break;
+//       case 'user-not-found':
+//         // Handle user not found error
+//         break;
+//       case 'wrong-password':
+//         // Handle wrong password error
+//         break;
+//       // Add more cases as needed
+//       default:
+//         // Handle other FirebaseAuthException errors
+//         break;
+//     }
+//   } else {
+//     // Handle other types of exceptions or errors
+//   }
+// }
       }
     }
 
@@ -117,6 +169,11 @@ class _LoginState extends State<Login> {
               name: 'Login',
               onPressed: () {
                 validation();
+                // Navigator.of(context).pushReplacement(
+                //   MaterialPageRoute(
+                //     builder: (context) => const HomePage(),
+                //   ),
+                // );
               },
             ),
             ChangeScreen(

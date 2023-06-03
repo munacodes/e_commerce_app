@@ -342,7 +342,7 @@ class _ProfileScreen2State extends State<ProfileScreen2> {
 
   void _finalValidation() {
     uploadImage(image: _pickedImage!);
-    //updateUserDetails();
+    // updateUserDetails();
     checkIconUpdate();
     setState(() {
       edit = false;
@@ -419,8 +419,8 @@ class _ProfileScreen2State extends State<ProfileScreen2> {
                       children: [
                         CircleAvatar(
                           maxRadius: 65,
-                          backgroundImage: _pickedImage == false
-                              ? userModel!.userImage == false
+                          backgroundImage: _pickedImage == null
+                              ? userModel!.userImage == ''
                                   ? AssetImage('assets/images/User Image.png')
                                   : NetworkImage(userModel!.userImage)
                                       as ImageProvider
