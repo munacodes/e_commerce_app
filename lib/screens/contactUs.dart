@@ -68,7 +68,7 @@ class _ContactUsState extends State<ContactUs> {
   @override
   void initState() {
     ProductProvider? provider;
-    List<UserModel> user = provider!.userModeList;
+    List<UserModel> user = provider!.userModelList;
     user.map((e) {
       name = e.userName;
       email = e.userEmail;

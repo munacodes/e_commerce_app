@@ -56,7 +56,7 @@ class _HomePageState extends State<HomePage> {
   bool profileColor = false;
 
   Widget _buildUserAccountsDrawerHeader() {
-    List<UserModel> userModel = productProvider!.userModeList;
+    List<UserModel> userModel = productProvider!.userModelList;
     return Column(
       children: userModel.map((e) {
         return UserAccountsDrawerHeader(
@@ -64,17 +64,17 @@ class _HomePageState extends State<HomePage> {
             e.userName,
             style: const TextStyle(color: Colors.black),
           ),
-          accountEmail: Text(
-            e.userEmail,
-            style: const TextStyle(color: Colors.black),
-          ),
-          decoration: const BoxDecoration(
-            color: Color(0xfff8f8f8),
-          ),
           currentAccountPicture: CircleAvatar(
             backgroundImage: e.userImage == ''
                 ? AssetImage('assets/images/User Image.png')
                 : NetworkImage(e.userImage) as ImageProvider,
+          ),
+          decoration: const BoxDecoration(
+            color: Color(0xfff8f8f8),
+          ),
+          accountEmail: Text(
+            e.userEmail,
+            style: const TextStyle(color: Colors.black),
           ),
         );
       }).toList(),

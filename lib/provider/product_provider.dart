@@ -10,7 +10,7 @@ class ProductProvider with ChangeNotifier {
   CartModel? cartModel;
   List<CartModel> checkOutModelList = [];
   CartModel? checkOutModel;
-  List<UserModel> userModeList = [];
+  List<UserModel> userModelList = [];
   UserModel? userModel;
 
   Future<void> getUserData() async {
@@ -31,14 +31,14 @@ class ProductProvider with ChangeNotifier {
           );
           newList.add(userModel!);
         }
-        userModeList = newList;
+        userModelList = newList;
       },
     );
     notifyListeners();
   }
 
   List<UserModel> get getUserModelList {
-    return userModeList;
+    return userModelList;
   }
 
   void deleteCartProduct(int index) {

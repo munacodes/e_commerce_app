@@ -42,6 +42,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   TextEditingController? address;
 
   void _finalValidation() {
+    // asdfg(image: _pickedImage!);
     _uploadImage(image: _pickedImage!);
     _userDetailUpdate();
     setState(() {
@@ -49,6 +50,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     });
   }
 
+  ProductProvider? productProvider;
   Future<void> _userDetailUpdate() async {
     User? user = FirebaseAuth.instance.currentUser;
     await FirebaseFirestore.instance.collection('Users').doc(user!.uid).update({
@@ -62,23 +64,57 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   FirebaseStorage storage = FirebaseStorage.instance;
   File? _pickedImage;
-  String? imageUrl;
   PickedFile? _image;
   Future<void> _getImage({required ImageSource source}) async {
-    final picker = ImagePicker();
-    final _image = await picker.pickImage(source: source);
+    _image = await ImagePicker().pickImage(source: source) as PickedFile?;
+    // final picker = ImagePicker();
+    // final _image = await picker.pickImage(source: source);
     if (_image != null) {
       setState(() {
-        _pickedImage = File(_image.path);
+        _pickedImage = File(_image!.path);
       });
     }
   }
 
-  Future<void> _uploadImage({required File image}) async {
+  String? imageUrl;
+  void _uploadImage({required File image}) async {
     User? user = FirebaseAuth.instance.currentUser;
-    if (_image == null) {
-      return;
-    }
+    Reference storageReference =
+        FirebaseStorage.instance.ref().child("userImage/${user!.uid}");
+    UploadTask uploadTask = storageReference.putFile(image);
+    TaskSnapshot snapshot = await uploadTask;
+    imageUrl = await snapshot.ref.getDownloadURL();
+    // Listen for state changes, errors, and completion of the upload.
+    uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
+      switch (taskSnapshot.state) {
+        case TaskState.running:
+          final progress =
+              100.0 * (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
+          print("Upload is $progress% complete.");
+          break;
+        case TaskState.paused:
+          print("Upload is paused.");
+          break;
+        case TaskState.canceled:
+          print("Upload was canceled");
+          break;
+        case TaskState.error:
+          print("Upload error");
+
+          break;
+        case TaskState.success:
+          print("Upload Successful");
+          // ...
+          break;
+      }
+    });
+  }
+
+  Future<void> asdfg({required File image}) async {
+    User? user = FirebaseAuth.instance.currentUser;
+    // if (_image == null) {
+    //   return null;
+    // }
     // Reference the profile picture path in Firebase Storage
     final uploadTask = storage
         .ref()
@@ -320,6 +356,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    productProvider = Provider.of(context);
     User? user = FirebaseAuth.instance.currentUser;
     return Scaffold(
       key: _formKey,

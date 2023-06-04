@@ -46,7 +46,7 @@ class _CheckOutState extends State<CheckOut> {
 
   Widget _buildButton() {
     return Column(
-        children: productProvider!.userModeList.map((e) {
+        children: productProvider!.userModelList.map((e) {
       return Container(
         height: 55,
         width: double.infinity,
