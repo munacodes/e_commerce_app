@@ -17,13 +17,13 @@ class WelcomeScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  height: 600,
+                  height: 600.h,
                   width: double.infinity,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Container(
-                        height: 350,
+                        height: 350.h,
                         width: double.infinity,
                         decoration: const BoxDecoration(
                           image: DecorationImage(
@@ -41,7 +41,7 @@ class WelcomeScreen extends StatelessWidget {
                         ),
                       ),
                       Container(
-                        height: 60,
+                        height: 60.h,
                         width: double.infinity,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -61,7 +61,7 @@ class WelcomeScreen extends StatelessWidget {
                       Column(
                         children: [
                           Container(
-                            height: 45,
+                            height: 45.h,
                             width: double.infinity,
                             child: ElevatedButton(
                               style: ButtonStyle(
@@ -91,6 +91,9 @@ class WelcomeScreen extends StatelessWidget {
                                 ),
                               ),
                             ),
+                          ),
+                          SizedBox(
+                            height: 10.h,
                           ),
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,

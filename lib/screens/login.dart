@@ -50,7 +50,7 @@ class _LoginState extends State<Login> {
           ),
         );
       } else if (password.text.isEmpty) {
-        _scaffoldMessengerKey.currentState!.showSnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Password Is Empty'),
             backgroundColor: Color(0xff746bc9),
@@ -69,6 +69,13 @@ class _LoginState extends State<Login> {
             email: email.text,
             password: password.text,
           );
+          if (FirebaseAuth.instance.currentUser != null) {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => const HomePage(),
+              ),
+            );
+          }
           print(result.user!.uid);
         } catch (e) {
           if (e is FirebaseAuthException) {
@@ -185,7 +192,7 @@ class _LoginState extends State<Login> {
                   ),
                 );
               },
-              whichAccount: 'Dont Have An Account?',
+              whichAccount: 'Don\'t Have An Account?',
             ),
           ],
         ),

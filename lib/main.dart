@@ -1,5 +1,4 @@
 import 'package:e_commerce_app/home.dart';
-import 'package:e_commerce_app/screens/profileScreen2.dart';
 import 'package:e_commerce_app/screens/screensExports.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -20,23 +19,27 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider<ProductProvider>(
-          create: (context) => ProductProvider(),
-        ),
-        ChangeNotifierProvider<CategoryProvider>(
-          create: (context) => CategoryProvider(),
-        ),
-      ],
-      child: MaterialApp(
-        title: 'E-Commerce',
-        theme: ThemeData(
-          iconTheme: const IconThemeData(color: Colors.black),
-        ),
-        debugShowCheckedModeBanner: false,
-        home: const Home(),
-      ),
+    return Sizer(
+      builder: (context, orientation, deviceType) {
+        return MultiProvider(
+          providers: [
+            ChangeNotifierProvider<ProductProvider>(
+              create: (context) => ProductProvider(),
+            ),
+            ChangeNotifierProvider<CategoryProvider>(
+              create: (context) => CategoryProvider(),
+            ),
+          ],
+          child: MaterialApp(
+            title: 'E-Commerce',
+            theme: ThemeData(
+              iconTheme: const IconThemeData(color: Colors.black),
+            ),
+            debugShowCheckedModeBanner: false,
+            home: const Home(),
+          ),
+        );
+      },
     );
   }
 }

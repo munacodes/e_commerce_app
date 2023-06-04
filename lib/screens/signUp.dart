@@ -105,8 +105,15 @@ class _SignUpState extends State<SignUp> {
           'UserEmail': email.text,
           'UserAddress': address.text,
           'UserGender': isMale == true ? 'Male' : 'Female',
-          'Phone Number': phoneNumber.text,
+          'UserNumber': phoneNumber.text,
         });
+        if (FirebaseAuth.instance.currentUser != null) {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => const HomePage(),
+            ),
+          );
+        }
       } catch (e) {
         if (e is FirebaseAuthException) {
           // Handle FirebaseAuthException

@@ -81,75 +81,76 @@ class _ContactUsState extends State<ContactUs> {
 
   @override
   Widget build(BuildContext context) {
-    print(name);
-    return WillPopScope(
-      onWillPop: () async {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => const HomePage(),
+    // print(name);
+    return
+        // WillPopScope(
+        //   onWillPop: () async {
+        //     Navigator.of(context).pushReplacement(
+        //       MaterialPageRoute(
+        //         builder: (context) => const HomePage(),
+        //       ),
+        //     );
+        //     return true;
+        //   },
+        //   // onWillPop: () async {
+        //   //   return true;
+        //   // },
+        //   child:
+        Scaffold(
+      key: _scaffoldMessengerKey,
+      appBar: AppBar(
+        elevation: 0.0,
+        backgroundColor: const Color(0xfff8f8f8),
+        title: IconButton(
+          icon: const Icon(
+            Icons.arrow_back,
+            color: Color(0xff746bc9),
           ),
-        );
-        return true;
-      },
-      // onWillPop: () async {
-      //   return true;
-      // },
-      child: Scaffold(
-        key: _scaffoldMessengerKey,
-        appBar: AppBar(
-          elevation: 0.0,
-          backgroundColor: const Color(0xfff8f8f8),
-          title: IconButton(
-            icon: const Icon(
-              Icons.arrow_back,
-              color: Color(0xff746bc9),
-            ),
-            onPressed: () {
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                  builder: (context) => const HomePage(),
-                ),
-              );
-            },
-          ),
+          onPressed: () {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => const HomePage(),
+              ),
+            );
+          },
         ),
-        body: SafeArea(
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 27),
-            height: 600,
-            width: double.infinity,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                const Text(
-                  'Send Us Your Message',
-                  style: TextStyle(
-                    color: Color(0xff746bc9),
-                    fontSize: 28,
+      ),
+      body: SafeArea(
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 27),
+          height: 600,
+          width: double.infinity,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              const Text(
+                'Send Us Your Message',
+                style: TextStyle(
+                  color: Color(0xff746bc9),
+                  fontSize: 28,
+                ),
+              ),
+              _buildSingleField(name: name!),
+              _buildSingleField(name: email!),
+              Container(
+                height: 200,
+                child: TextFormField(
+                  expands: true,
+                  maxLines: null,
+                  textAlignVertical: TextAlignVertical.top,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: 'Message',
                   ),
                 ),
-                _buildSingleField(name: name!),
-                _buildSingleField(name: email!),
-                Container(
-                  height: 200,
-                  child: TextFormField(
-                    expands: true,
-                    maxLines: null,
-                    textAlignVertical: TextAlignVertical.top,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'Message',
-                    ),
-                  ),
-                ),
-                MyButton(
-                  name: 'Submit',
-                  onPressed: () {
-                    validation();
-                  },
-                ),
-              ],
-            ),
+              ),
+              MyButton(
+                name: 'Submit',
+                onPressed: () {
+                  validation();
+                },
+              ),
+            ],
           ),
         ),
       ),
