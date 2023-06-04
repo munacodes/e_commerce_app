@@ -45,7 +45,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     _uploadImage(image: _pickedImage!);
     _userDetailUpdate();
     setState(() {
-      edit = true;
+      edit = false;
     });
   }
 
@@ -54,7 +54,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     await FirebaseFirestore.instance.collection('Users').doc(user!.uid).update({
       'UserName': userName!.text,
       'UserGender': isMale == true ? 'Male' : 'Female',
-      'UserNumber': phoneNumber!.text,
+      'UserPhoneNumber': phoneNumber!.text,
       'userImage': imageUrl,
       'UserAddress': address!.text,
     });
@@ -102,10 +102,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
           print("Upload was canceled");
           break;
         case TaskState.error:
-          // Handle unsuccessful uploads
+          print("Upload error");
+
           break;
         case TaskState.success:
-          // Handle successful uploads on complete
+          print("Upload Successful");
           // ...
           break;
       }
@@ -418,10 +419,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         : NetworkImage(userModel!.userImage)
                                             as ImageProvider
                                     : FileImage(_pickedImage!),
-                                // backgroundImage: _pickedImage == null ?
-                                //
-                                //const AssetImage(
-                                // 'assets/images/User Image.png'):
                               ),
                             ],
                           ),

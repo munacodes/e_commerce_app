@@ -75,7 +75,6 @@ class _HomePageState extends State<HomePage> {
             backgroundImage: e.userImage == ''
                 ? AssetImage('assets/images/User Image.png')
                 : NetworkImage(e.userImage) as ImageProvider,
-            //  backgroundImage: const AssetImage('assets/images/User Image.png'),
           ),
         );
       }).toList(),

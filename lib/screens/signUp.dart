@@ -105,7 +105,7 @@ class _SignUpState extends State<SignUp> {
           'UserEmail': email.text,
           'UserAddress': address.text,
           'UserGender': isMale == true ? 'Male' : 'Female',
-          'UserNumber': phoneNumber.text,
+          'UserPhoneNumber': phoneNumber.text,
         });
         if (FirebaseAuth.instance.currentUser != null) {
           Navigator.of(context).pushReplacement(
@@ -116,36 +116,26 @@ class _SignUpState extends State<SignUp> {
         }
       } catch (e) {
         if (e is FirebaseAuthException) {
-          // Handle FirebaseAuthException
           FirebaseAuthException authException = e;
-          // Handle different error codes or scenarios
+
           switch (authException.code) {
             case 'invalid-email':
-              // Handle invalid email error
               break;
             case 'user-not-found':
-              // Handle user not found error
               break;
             case 'wrong-password':
-              // Handle wrong password error
               break;
-            // Add more cases as needed
+
             default:
-              // Handle other FirebaseAuthException errors
+              _scaffoldMessengerKey.currentState!.showSnackBar(
+                SnackBar(
+                  content: Text('Failed with error code: ${e.code.toString()}'),
+                ),
+              );
               break;
           }
-        } else {
-          // Handle other types of exceptions or errors
         }
       }
-
-      // on FirebaseException catch (e) {
-      //   _scaffoldMessengerKey.currentState!.showSnackBar(
-      //     SnackBar(
-      //       content: Text('Failed with error code: ${e.code.toString()}'),
-      //     ),
-      //   );
-      // }
     }
   }
 
@@ -238,11 +228,6 @@ class _SignUpState extends State<SignUp> {
             name: 'SignUp',
             onPressed: () {
               validation();
-              // Navigator.of(context).pushReplacement(
-              //   MaterialPageRoute(
-              //     builder: (context) => const HomePage(),
-              //   ),
-              // );
             },
           ),
           ChangeScreen(

@@ -27,7 +27,7 @@ class ProductProvider with ChangeNotifier {
             userEmail: element['UserEmail'],
             userGender: element['UserGender'],
             userName: element['UserName'],
-            userPhoneNumber: element['UserNumber'],
+            userPhoneNumber: element['UserPhoneNumber'],
           );
           newList.add(userModel!);
         }
