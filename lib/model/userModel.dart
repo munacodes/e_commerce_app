@@ -5,7 +5,7 @@ class UserModel {
   String userEmail;
   String userGender;
   String userPhoneNumber;
-  String userImage;
+  String? userImage;
   String userAddress;
   UserModel({
     required this.userEmail,

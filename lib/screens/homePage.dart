@@ -65,9 +65,9 @@ class _HomePageState extends State<HomePage> {
             style: const TextStyle(color: Colors.black),
           ),
           currentAccountPicture: CircleAvatar(
-            backgroundImage: e.userImage == ''
+            backgroundImage: e.userImage == null
                 ? AssetImage('assets/images/User Image.png')
-                : NetworkImage(e.userImage) as ImageProvider,
+                : NetworkImage(e.userImage ?? "") as ImageProvider,
           ),
           decoration: const BoxDecoration(
             color: Color(0xfff8f8f8),

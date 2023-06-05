@@ -41,9 +41,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   TextEditingController? userName;
   TextEditingController? address;
 
-  void _finalValidation() {
+  void _finalValidation() async {
     // asdfg(image: _pickedImage!);
-    _uploadImage(image: _pickedImage!);
+    await _uploadImage(image: _pickedImage!);
     _userDetailUpdate();
     setState(() {
       edit = false;
@@ -66,88 +66,63 @@ class _ProfileScreenState extends State<ProfileScreen> {
   File? _pickedImage;
   PickedFile? _image;
   Future<void> _getImage({required ImageSource source}) async {
-    _image = await ImagePicker().pickImage(source: source) as PickedFile?;
-    // final picker = ImagePicker();
-    // final _image = await picker.pickImage(source: source);
+    final picker = ImagePicker();
+    final _image = await picker.pickImage(source: source);
     if (_image != null) {
       setState(() {
-        _pickedImage = File(_image!.path);
+        _pickedImage = File(_image.path);
       });
     }
   }
 
   String? imageUrl;
-  void _uploadImage({required File image}) async {
+  Future<void> _uploadImage({required File image}) async {
     User? user = FirebaseAuth.instance.currentUser;
     Reference storageReference =
         FirebaseStorage.instance.ref().child("userImage/${user!.uid}");
     UploadTask uploadTask = storageReference.putFile(image);
     TaskSnapshot snapshot = await uploadTask;
     imageUrl = await snapshot.ref.getDownloadURL();
-    // Listen for state changes, errors, and completion of the upload.
-    uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
-      switch (taskSnapshot.state) {
-        case TaskState.running:
-          final progress =
-              100.0 * (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
-          print("Upload is $progress% complete.");
-          break;
-        case TaskState.paused:
-          print("Upload is paused.");
-          break;
-        case TaskState.canceled:
-          print("Upload was canceled");
-          break;
-        case TaskState.error:
-          print("Upload error");
-
-          break;
-        case TaskState.success:
-          print("Upload Successful");
-          // ...
-          break;
-      }
-    });
+    print('profile $imageUrl');
   }
 
-  Future<void> asdfg({required File image}) async {
-    User? user = FirebaseAuth.instance.currentUser;
-    // if (_image == null) {
-    //   return null;
-    // }
-    // Reference the profile picture path in Firebase Storage
-    final uploadTask = storage
-        .ref()
-        .child('UserImage/${user!.uid}')
-        // Upload the image file to Firebase Storage
-        .putFile(image);
-    TaskSnapshot snapshot = await uploadTask;
-    imageUrl = await snapshot.ref.getDownloadURL();
-    // Listen for state changes, errors, and completion of the upload.
-    uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
-      switch (taskSnapshot.state) {
-        case TaskState.running:
-          final progress =
-              100.0 * (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
-          print("Upload is $progress% complete.");
-          break;
-        case TaskState.paused:
-          print("Upload is paused.");
-          break;
-        case TaskState.canceled:
-          print("Upload was canceled");
-          break;
-        case TaskState.error:
-          print("Upload error");
-
-          break;
-        case TaskState.success:
-          print("Upload Successful");
-          // ...
-          break;
-      }
-    });
-  }
+  // Future<void> asdfg({required File image}) async {
+  //   User? user = FirebaseAuth.instance.currentUser;
+  //   // if (_image == null) {
+  //   //   return null;
+  //   // }
+  //   // Reference the profile picture path in Firebase Storage
+  //   final uploadTask = storage
+  //       .ref()
+  //       .child('UserImage/${user!.uid}')
+  //       // Upload the image file to Firebase Storage
+  //       .putFile(image);
+  //   TaskSnapshot snapshot = await uploadTask;
+  //   imageUrl = await snapshot.ref.getDownloadURL();
+  //   // Listen for state changes, errors, and completion of the upload.
+  //   uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
+  //     switch (taskSnapshot.state) {
+  //       case TaskState.running:
+  //         final progress =
+  //             100.0 * (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
+  //         print("Upload is $progress% complete.");
+  //         break;
+  //       case TaskState.paused:
+  //         print("Upload is paused.");
+  //         break;
+  //       case TaskState.canceled:
+  //         print("Upload was canceled");
+  //         break;
+  //       case TaskState.error:
+  //         print("Upload error");
+  //         break;
+  //       case TaskState.success:
+  //         print("Upload Successful");
+  //         // ...
+  //         break;
+  //     }
+  //   });
+  // }
 
   void validation() async {
     if (userName!.text.isEmpty && phoneNumber!.text.isEmpty) {
@@ -426,7 +401,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     userName: checkDocs.data()['UserName'].toString(),
                     userPhoneNumber:
                         checkDocs.data()['UserPhoneNumber'].toString(),
-                    userImage: checkDocs.data()['UserImage'].toString(),
+                    userImage: checkDocs.data()['UserImage'],
                     userAddress: checkDocs.data()['UserAddress'].toString(),
                   );
                 }
@@ -450,10 +425,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               CircleAvatar(
                                 maxRadius: 65,
                                 backgroundImage: _pickedImage == null
-                                    ? userModel!.userImage == ''
+                                    ? userModel!.userImage == null
                                         ? AssetImage(
                                             'assets/images/User Image.png')
-                                        : NetworkImage(userModel!.userImage)
+                                        : NetworkImage(
+                                                userModel!.userImage ?? "")
                                             as ImageProvider
                                     : FileImage(_pickedImage!),
                               ),
