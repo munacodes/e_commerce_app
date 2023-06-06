@@ -1,4 +1,5 @@
 import 'package:badges/badges.dart' as badges;
+import 'package:e_commerce_app/screens/screensExports.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:e_commerce_app/provider/providerExports.dart';
@@ -23,7 +24,13 @@ class NotificationButton extends StatelessWidget {
         badgeColor: Colors.red,
       ),
       child: IconButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => const CheckOut(),
+            ),
+          );
+        },
         icon: const Icon(
           Icons.notifications_none,
           color: Colors.black,
