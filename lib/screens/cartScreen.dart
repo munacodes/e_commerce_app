@@ -32,6 +32,7 @@ class _CartScreenState extends State<CartScreen> {
             ),
           ),
           onPressed: () {
+            productProvider!.addNotification('Notification');
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(
                 builder: (context) => const CheckOut(),
@@ -68,7 +69,7 @@ class _CartScreenState extends State<CartScreen> {
             );
           },
         ),
-        actions: const [
+        actions: [
           NotificationButton(),
         ],
       ),

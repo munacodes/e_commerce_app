@@ -47,11 +47,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   bool homeColor = true;
-
   bool cartColor = false;
-
   bool aboutColor = false;
-
   bool contactUsColor = false;
   bool profileColor = false;
 
@@ -597,7 +594,7 @@ class _HomePageState extends State<HomePage> {
             _key.currentState!.openDrawer();
           },
         ),
-        actions: const [
+        actions: [
           NotificationButton(),
         ],
       ),

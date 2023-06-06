@@ -21,8 +21,6 @@ class ProductProvider with ChangeNotifier {
     userSnapShot.docs.forEach(
       (element) {
         if (currentUser == element['UserId']) {
-          print('cooking beans');
-          print("cooking beans: ${element['UserImage']}");
           userModel = UserModel(
             userAddress: element['UserAddress'],
             userImage: element['UserImage'],

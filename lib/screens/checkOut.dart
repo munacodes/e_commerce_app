@@ -57,7 +57,7 @@ class _CheckOutState extends State<CheckOut> {
             ),
           ),
           child: const Text(
-            'Buy',
+            'Order',
             style: TextStyle(
               color: Colors.white,
               fontSize: 18,
@@ -147,14 +147,13 @@ class _CheckOutState extends State<CheckOut> {
             );
           },
         ),
-        actions: const [
+        actions: [
           NotificationButton(),
         ],
       ),
       bottomNavigationBar: Container(
         height: 50,
         width: 100,
-        color: Colors.red,
         margin: const EdgeInsets.symmetric(horizontal: 10),
         padding: const EdgeInsets.only(bottom: 15),
         child: _buildButton(),
@@ -166,7 +165,7 @@ class _CheckOutState extends State<CheckOut> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                height: 400,
+                height: 430,
                 child: ListView.builder(
                   itemCount: productProvider!.getCheckOutModelListLength,
                   itemBuilder: (context, myIndex) {
@@ -196,7 +195,7 @@ class _CheckOutState extends State<CheckOut> {
                 ),
               ),
               Container(
-                height: 150,
+                height: 130,
                 padding: const EdgeInsets.all(10),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,

@@ -42,7 +42,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   TextEditingController? address;
 
   void _finalValidation() async {
-    // asdfg(image: _pickedImage!);
     await _uploadImage(image: _pickedImage!);
     _userDetailUpdate();
     setState(() {
@@ -64,7 +63,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   FirebaseStorage storage = FirebaseStorage.instance;
   File? _pickedImage;
-  PickedFile? _image;
+  // PickedFile? _image;
   Future<void> _getImage({required ImageSource source}) async {
     final picker = ImagePicker();
     final _image = await picker.pickImage(source: source);
@@ -85,44 +84,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     imageUrl = await snapshot.ref.getDownloadURL();
     print('profile $imageUrl');
   }
-
-  // Future<void> asdfg({required File image}) async {
-  //   User? user = FirebaseAuth.instance.currentUser;
-  //   // if (_image == null) {
-  //   //   return null;
-  //   // }
-  //   // Reference the profile picture path in Firebase Storage
-  //   final uploadTask = storage
-  //       .ref()
-  //       .child('UserImage/${user!.uid}')
-  //       // Upload the image file to Firebase Storage
-  //       .putFile(image);
-  //   TaskSnapshot snapshot = await uploadTask;
-  //   imageUrl = await snapshot.ref.getDownloadURL();
-  //   // Listen for state changes, errors, and completion of the upload.
-  //   uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
-  //     switch (taskSnapshot.state) {
-  //       case TaskState.running:
-  //         final progress =
-  //             100.0 * (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
-  //         print("Upload is $progress% complete.");
-  //         break;
-  //       case TaskState.paused:
-  //         print("Upload is paused.");
-  //         break;
-  //       case TaskState.canceled:
-  //         print("Upload was canceled");
-  //         break;
-  //       case TaskState.error:
-  //         print("Upload error");
-  //         break;
-  //       case TaskState.success:
-  //         print("Upload Successful");
-  //         // ...
-  //         break;
-  //     }
-  //   });
-  // }
 
   void validation() async {
     if (userName!.text.isEmpty && phoneNumber!.text.isEmpty) {
@@ -195,25 +156,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  // Widget _buildSingleTextFormField({
-  //   required String name,
-  //   required Function onChanged,
-  //   required Function validator,
-  //   required String initialValue,
-  // }) {
-  //   return TextFormField(
-  //     initialValue: initialValue,
-  //     onChanged: onChanged(),
-  //     validator: validator(),
-  //     decoration: InputDecoration(
-  //       hintText: name,
-  //       border: OutlineInputBorder(
-  //         borderRadius: BorderRadius.circular(20),
-  //       ),
-  //     ),
-  //   );
-  // }
-
   Future<void> myDialogBox() {
     return showDialog<void>(
       context: context,
@@ -225,7 +167,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               children: [
                 ListTile(
                   leading: const Icon(Icons.camera_alt),
-                  title: const Text('Pick Form Camera'),
+                  title: const Text('Pick From Camera'),
                   onTap: () {
                     _getImage(source: ImageSource.camera);
                     Navigator.of(context).pop();
@@ -233,7 +175,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 ListTile(
                   leading: const Icon(Icons.photo_library),
-                  title: const Text('Pick Form Gallery'),
+                  title: const Text('Pick From Gallery'),
                   onTap: () {
                     _getImage(source: ImageSource.gallery);
                     Navigator.of(context).pop();

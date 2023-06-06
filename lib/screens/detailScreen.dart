@@ -355,7 +355,7 @@ class _DetailScreenState extends State<DetailScreen> {
             );
           },
         ),
-        actions: const [
+        actions: [
           NotificationButton(),
         ],
       ),

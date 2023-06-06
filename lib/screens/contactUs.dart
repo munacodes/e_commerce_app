@@ -15,9 +15,8 @@ class ContactUs extends StatefulWidget {
 }
 
 class _ContactUsState extends State<ContactUs> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final _scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
-  final _formKey = GlobalKey<FormState>();
-
   final TextEditingController message = TextEditingController();
   String? name, email;
 
@@ -67,8 +66,9 @@ class _ContactUsState extends State<ContactUs> {
 
   @override
   void initState() {
-    ProductProvider? provider;
-    List<UserModel> user = provider!.userModelList;
+    ProductProvider provider;
+    provider = Provider.of<ProductProvider>(context, listen: false);
+    List<UserModel> user = provider.userModelList;
     user.map((e) {
       name = e.userName;
       email = e.userEmail;
@@ -100,6 +100,7 @@ class _ContactUsState extends State<ContactUs> {
             icon: const Icon(
               Icons.arrow_back,
               color: Color(0xff746bc9),
+              size: 35,
             ),
             onPressed: () {
               Navigator.of(context).pushReplacement(
@@ -130,6 +131,7 @@ class _ContactUsState extends State<ContactUs> {
                 Container(
                   height: 200,
                   child: TextFormField(
+                    controller: message,
                     expands: true,
                     maxLines: null,
                     textAlignVertical: TextAlignVertical.top,
