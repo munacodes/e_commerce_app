@@ -89,7 +89,7 @@ class _ContactUsState extends State<ContactUs> {
             builder: (context) => const HomePage(),
           ),
         );
-        return false;
+        return true;
       },
       child: Scaffold(
         key: _scaffoldMessengerKey,

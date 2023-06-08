@@ -21,7 +21,7 @@ class _CartScreenState extends State<CartScreen> {
     productProvider = Provider.of<ProductProvider>(context);
     return Scaffold(
       bottomNavigationBar: Container(
-        height: 70,
+        height: 60,
         width: 100,
         margin: const EdgeInsets.symmetric(horizontal: 10),
         padding: const EdgeInsets.only(bottom: 10),
