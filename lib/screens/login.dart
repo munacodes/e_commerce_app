@@ -30,35 +30,35 @@ class _LoginState extends State<Login> {
     void validation() async {
       if (email.text.isEmpty && password.text.isEmpty) {
         _scaffoldMessengerKey.currentState!.showSnackBar(
-          const SnackBar(
+          SnackBar(
             content: Text('Both Field Are Empty'),
             backgroundColor: Color(0xff746bc9),
           ),
         );
       } else if (email.text.isEmpty) {
         _scaffoldMessengerKey.currentState!.showSnackBar(
-          const SnackBar(
+          SnackBar(
             content: Text("Email Is Empty"),
             backgroundColor: Color(0xff746bc9),
           ),
         );
       } else if (!regExp.hasMatch(email.text)) {
         _scaffoldMessengerKey.currentState!.showSnackBar(
-          const SnackBar(
+          SnackBar(
             content: Text('Please Try Valid Email'),
             backgroundColor: Color(0xff746bc9),
           ),
         );
       } else if (password.text.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
+          SnackBar(
             content: Text('Password Is Empty'),
             backgroundColor: Color(0xff746bc9),
           ),
         );
       } else if (password.text.length < 8) {
         _scaffoldMessengerKey.currentState!.showSnackBar(
-          const SnackBar(
+          SnackBar(
             content: Text('Password Is Too Short'),
             backgroundColor: Color(0xff746bc9),
           ),
@@ -109,7 +109,7 @@ class _LoginState extends State<Login> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            const Text(
+            Text(
               'Login',
               style: TextStyle(
                 fontSize: 50,
@@ -131,7 +131,7 @@ class _LoginState extends State<Login> {
                 });
               },
               name: 'Password',
-              keyboardType: const TextInputType.numberWithOptions(
+              keyboardType: TextInputType.numberWithOptions(
                 signed: true,
                 decimal: true,
               ),
@@ -164,7 +164,7 @@ class _LoginState extends State<Login> {
         child: Form(
           key: _formKey,
           child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 10),
+            margin: EdgeInsets.symmetric(horizontal: 10),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

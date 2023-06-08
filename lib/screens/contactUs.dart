@@ -23,7 +23,7 @@ class _ContactUsState extends State<ContactUs> {
   void validation() async {
     if (message.text.isEmpty) {
       _scaffoldMessengerKey.currentState!.showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Text('Please Fill Message'),
           backgroundColor: Color(0xff746bc9),
         ),
@@ -63,6 +63,19 @@ class _ContactUsState extends State<ContactUs> {
       ),
     );
   }
+
+//  Widget _buildContainerDetailsPart() {
+//     return Container(
+//       height: 150,
+//       child: Column(
+//         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//         children: [
+//           _buildSingleField(name: userModel!.userName),
+//           _buildSingleField(name: userModel!.userEmail),
+//         ],
+//       ),
+//     );
+//   }
 
   @override
   void initState() {
@@ -135,7 +148,7 @@ class _ContactUsState extends State<ContactUs> {
                     expands: true,
                     maxLines: null,
                     textAlignVertical: TextAlignVertical.top,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       hintText: 'Message',
                     ),

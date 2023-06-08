@@ -35,56 +35,56 @@ class _SignUpState extends State<SignUp> {
         phoneNumber.text.isEmpty &&
         address.text.isEmpty) {
       _scaffoldMessengerKey.currentState!.showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Text('All Field Are Empty'),
           backgroundColor: Color(0xff746bc9),
         ),
       );
     } else if (userName.text.length < 6) {
       _scaffoldMessengerKey.currentState!.showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Text('Name Must Be 6'),
           backgroundColor: Color(0xff746bc9),
         ),
       );
     } else if (email.text.isEmpty) {
       _scaffoldMessengerKey.currentState!.showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Text("Email Is Empty"),
           backgroundColor: Color(0xff746bc9),
         ),
       );
     } else if (!regExp.hasMatch(email.text)) {
       _scaffoldMessengerKey.currentState!.showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Text('Please Try Valid Email'),
           backgroundColor: Color(0xff746bc9),
         ),
       );
     } else if (password.text.isEmpty) {
       _scaffoldMessengerKey.currentState!.showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Text('Password Is Empty'),
           backgroundColor: Color(0xff746bc9),
         ),
       );
     } else if (password.text.length < 8) {
       _scaffoldMessengerKey.currentState!.showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Text('Password Is Too Short'),
           backgroundColor: Color(0xff746bc9),
         ),
       );
     } else if (phoneNumber.text.length < 11 || phoneNumber.text.isEmpty) {
       _scaffoldMessengerKey.currentState!.showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Text('Phone Number Must Be 11'),
           backgroundColor: Color(0xff746bc9),
         ),
       );
     } else if (address.text.isEmpty) {
       _scaffoldMessengerKey.currentState!.showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Text('Address Is Empty'),
           backgroundColor: Color(0xff746bc9),
         ),
@@ -141,7 +141,7 @@ class _SignUpState extends State<SignUp> {
 
   Widget _buildAllTextFormField() {
     return Padding(
-      padding: const EdgeInsets.all(10.0),
+      padding: EdgeInsets.all(10.0),
       child: Container(
         height: 400,
         child: Column(
@@ -167,7 +167,7 @@ class _SignUpState extends State<SignUp> {
                   obscureText = !obscureText;
                 });
               },
-              keyboardType: const TextInputType.numberWithOptions(
+              keyboardType: TextInputType.numberWithOptions(
                 signed: true,
                 decimal: true,
               ),
@@ -181,7 +181,7 @@ class _SignUpState extends State<SignUp> {
               child: Container(
                 height: 60,
                 width: double.infinity,
-                padding: const EdgeInsets.only(left: 10),
+                padding: EdgeInsets.only(left: 10),
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.grey),
                 ),
@@ -190,7 +190,7 @@ class _SignUpState extends State<SignUp> {
                     children: [
                       Text(
                         isMale == true ? 'Male' : 'Female',
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: Colors.black87,
                           fontSize: 18,
                         ),
@@ -219,7 +219,7 @@ class _SignUpState extends State<SignUp> {
   Widget _buildButtonPart() {
     return Container(
       height: 120,
-      margin: const EdgeInsets.symmetric(horizontal: 10),
+      margin: EdgeInsets.symmetric(horizontal: 10),
       width: double.infinity,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -263,7 +263,7 @@ class _SignUpState extends State<SignUp> {
                   width: double.infinity,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
-                    children: const [
+                    children: [
                       Text(
                         'Register',
                         style: TextStyle(
@@ -274,7 +274,7 @@ class _SignUpState extends State<SignUp> {
                     ],
                   ),
                 ),
-                const SizedBox(
+                SizedBox(
                   height: 20,
                 ),
                 _buildAllTextFormField(),

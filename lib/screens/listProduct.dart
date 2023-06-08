@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_commerce_app/model/modelExports.dart';
 import 'package:e_commerce_app/provider/providerExports.dart';
 import 'package:e_commerce_app/screens/homePage.dart';
@@ -75,71 +76,82 @@ class ListProduct extends StatelessWidget {
         ],
       ),
       body: SafeArea(
-        child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 20),
-          child: ListView(
-            children: [
-              Column(
-                children: [
-                  Container(
-                    height: 50,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
+        child: StreamBuilder(
+            stream:
+                FirebaseFirestore.instance.collection('products').snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              return Container(
+                margin: const EdgeInsets.symmetric(horizontal: 20),
+                child: ListView(
+                  children: [
+                    Column(
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              name,
-                              style: const TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
+                        Container(
+                          height: 50,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    name,
+                                    style: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Container(
+                          height: 640,
+                          child: GridView.count(
+                            crossAxisCount:
+                                orientation == Orientation.portrait ? 2 : 3,
+                            childAspectRatio: 0.6,
+                            scrollDirection: Axis.vertical,
+                            children: snapShot
+                                .map(
+                                  (e) => GestureDetector(
+                                    onTap: () {
+                                      Navigator.of(context).pushReplacement(
+                                        MaterialPageRoute(
+                                          builder: (context) => DetailScreen(
+                                            image: e.image,
+                                            name: e.name,
+                                            price: e.price,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    child: SingleProduct(
+                                      image: e.image,
+                                      price: e.price,
+                                      name: e.name,
+                                    ),
+                                  ),
+                                )
+                                .toList(),
+                          ),
                         ),
                       ],
                     ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    height: 640,
-                    child: GridView.count(
-                      crossAxisCount:
-                          orientation == Orientation.portrait ? 2 : 3,
-                      childAspectRatio: 0.6,
-                      scrollDirection: Axis.vertical,
-                      children: snapShot
-                          .map(
-                            (e) => GestureDetector(
-                              onTap: () {
-                                Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(
-                                    builder: (context) => DetailScreen(
-                                      image: e.image,
-                                      name: e.name,
-                                      price: e.price,
-                                    ),
-                                  ),
-                                );
-                              },
-                              child: SingleProduct(
-                                image: e.image,
-                                price: e.price,
-                                name: e.name,
-                              ),
-                            ),
-                          )
-                          .toList(),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
+                  ],
+                ),
+              );
+            }),
       ),
     );
   }

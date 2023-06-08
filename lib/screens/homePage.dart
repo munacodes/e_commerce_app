@@ -599,30 +599,39 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       body: SafeArea(
-        child: Container(
-          height: double.infinity,
-          width: double.infinity,
-          margin: const EdgeInsets.symmetric(horizontal: 10),
-          child: ListView(
-            children: [
-              Container(
+        child: StreamBuilder(
+            stream: FirebaseFirestore.instance.collection('Users').snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              return Container(
+                height: double.infinity,
                 width: double.infinity,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                margin: const EdgeInsets.symmetric(horizontal: 10),
+                child: ListView(
                   children: [
-                    _buildImageSlider(),
-                    _buildCategory(),
-                    const SizedBox(
-                      height: 20,
+                    Container(
+                      width: double.infinity,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildImageSlider(),
+                          _buildCategory(),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          _buildFeature(),
+                          _buildNewAchives(),
+                        ],
+                      ),
                     ),
-                    _buildFeature(),
-                    _buildNewAchives(),
                   ],
                 ),
-              ),
-            ],
-          ),
-        ),
+              );
+            }),
       ),
     );
   }

@@ -4,10 +4,7 @@ import 'package:e_commerce_app/provider/providerExports.dart';
 import 'package:e_commerce_app/screens/homePage.dart';
 import 'package:e_commerce_app/widgets/mybutton.dart';
 import 'package:e_commerce_app/widgets/widgetsExports.dart';
-import 'package:e_commerce_app/model/modelExports.dart';
-import 'package:e_commerce_app/provider/providerExports.dart';
 import 'package:e_commerce_app/screens/screensExports.dart';
-import 'package:e_commerce_app/widgets/widgetsExports.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -88,28 +85,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void validation() async {
     if (userName!.text.isEmpty && phoneNumber!.text.isEmpty) {
       _scaffoldMessengerKey.currentState!.showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Text('All Field Are Empty'),
           backgroundColor: Color(0xff746bc9),
         ),
       );
     } else if (userName!.text.isEmpty) {
       _scaffoldMessengerKey.currentState!.showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Text('Name Is Empty'),
           backgroundColor: Color(0xff746bc9),
         ),
       );
     } else if (userName!.text.length < 6) {
       _scaffoldMessengerKey.currentState!.showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Text('Name Must Be 6'),
           backgroundColor: Color(0xff746bc9),
         ),
       );
     } else if (phoneNumber!.text.length < 11 || phoneNumber!.text.isEmpty) {
       _scaffoldMessengerKey.currentState!.showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Text('Phone Number Must Be 11'),
           backgroundColor: Color(0xff746bc9),
         ),
@@ -128,7 +125,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: Container(
         height: 50,
         width: double.infinity,
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        padding: EdgeInsets.symmetric(horizontal: 20),
         decoration: BoxDecoration(
           color: edit == true ? color : Colors.white,
           borderRadius: BorderRadius.circular(30),
@@ -138,14 +135,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
           children: [
             Text(
               startText,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 17,
                 color: Colors.black45,
               ),
             ),
             Text(
               endText,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
