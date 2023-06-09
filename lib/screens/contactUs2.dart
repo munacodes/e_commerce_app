@@ -110,53 +110,50 @@ class _ContactUs2State extends State<ContactUs2> {
         ),
       ),
       body: SafeArea(
-        child: StreamBuilder(
-            stream:
-                FirebaseFirestore.instance.collection('Message').snapshots(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-              return Container(
-                padding: const EdgeInsets.symmetric(horizontal: 27),
-                height: 600,
-                width: double.infinity,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    const Text(
-                      'Send Us Your Message',
-                      style: TextStyle(
-                        color: Color(0xff746bc9),
-                        fontSize: 28,
-                      ),
-                    ),
-                    _buildContainerDetailsPart(),
-                    Container(
-                      height: 200,
-                      child: TextFormField(
-                        controller: message,
-                        expands: true,
-                        maxLines: null,
-                        textAlignVertical: TextAlignVertical.top,
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: 'Message',
-                        ),
-                      ),
-                    ),
-                    MyButton(
-                      name: 'Submit',
-                      onPressed: () {
-                        validation();
-                      },
-                    ),
-                  ],
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 27),
+          height: 600,
+          width: double.infinity,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              const Text(
+                'Send Us Your Message',
+                style: TextStyle(
+                  color: Color(0xff746bc9),
+                  fontSize: 28,
                 ),
-              );
-            }),
+              ),
+              _buildContainerDetailsPart(),
+              Container(
+                height: 200,
+                child: TextFormField(
+                  controller: message,
+                  expands: true,
+                  maxLines: null,
+                  textAlignVertical: TextAlignVertical.top,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: 'Message',
+                  ),
+                ),
+              ),
+              MyButton(
+                name: 'Submit',
+                onPressed: () {
+                  setState(() {
+                    validation();
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (context) => const HomePage(),
+                      ),
+                    );
+                  });
+                },
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

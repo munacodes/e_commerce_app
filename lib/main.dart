@@ -1,4 +1,4 @@
-import 'package:e_commerce_app/connectionPage/checkConnectionPage.dart';
+import 'package:e_commerce_app/connectionPage/checkConnection.dart';
 import 'package:e_commerce_app/home.dart';
 import 'package:e_commerce_app/screens/contactUs.dart';
 import 'package:e_commerce_app/screens/contactUs2.dart';
@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
           iconTheme: const IconThemeData(color: Colors.black),
         ),
         debugShowCheckedModeBanner: false,
-        home: const CheckConnectionPage(),
+        home: const Home(),
       ),
     );
   }

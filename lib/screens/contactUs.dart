@@ -64,19 +64,6 @@ class _ContactUsState extends State<ContactUs> {
     );
   }
 
-//  Widget _buildContainerDetailsPart() {
-//     return Container(
-//       height: 150,
-//       child: Column(
-//         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//         children: [
-//           _buildSingleField(name: userModel!.userName),
-//           _buildSingleField(name: userModel!.userEmail),
-//         ],
-//       ),
-//     );
-//   }
-
   @override
   void initState() {
     ProductProvider provider;
