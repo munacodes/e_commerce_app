@@ -23,9 +23,7 @@ class _ContactUs2State extends State<ContactUs2> {
 
   ProductProvider? productProvider;
 
-  String? name, email;
-
-  Widget _buildSingleField({required String name}) {
+  Widget _buildSingleField({required String startText}) {
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(30),
@@ -43,7 +41,7 @@ class _ContactUs2State extends State<ContactUs2> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(
-              name,
+              startText,
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -61,8 +59,10 @@ class _ContactUs2State extends State<ContactUs2> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          _buildSingleField(name: userModel!.userName),
-          _buildSingleField(name: userModel!.userEmail),
+          _buildSingleField(
+              startText: userModel?.userName ?? 'UserName Not Found'),
+          _buildSingleField(
+              startText: userModel?.userEmail ?? 'Email Not Found'),
         ],
       ),
     );
@@ -78,9 +78,13 @@ class _ContactUs2State extends State<ContactUs2> {
       );
     } else {
       User? user = FirebaseAuth.instance.currentUser;
-      FirebaseFirestore.instance.collection('Message').doc(user!.uid).set({
-        'UserName': name,
-        'UserEmail': email,
+      FirebaseFirestore.instance.collection('Messages').doc(user!.uid).set({
+        'FeedBacks': productProvider!.userModelList
+            .map((e) => {
+                  'UserName': e.userName,
+                  'UserEmail': e.userEmail,
+                })
+            .toList(),
         'Message': message.text,
       });
     }
@@ -109,6 +113,7 @@ class _ContactUs2State extends State<ContactUs2> {
           },
         ),
       ),
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 27),
@@ -143,11 +148,11 @@ class _ContactUs2State extends State<ContactUs2> {
                 onPressed: () {
                   setState(() {
                     validation();
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (context) => const HomePage(),
-                      ),
-                    );
+                    // Navigator.of(context).pushReplacement(
+                    //   MaterialPageRoute(
+                    //     builder: (context) => const HomePage(),
+                    //   ),
+                    // );
                   });
                 },
               ),

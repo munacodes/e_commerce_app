@@ -15,9 +15,9 @@ class ContactUs extends StatefulWidget {
 }
 
 class _ContactUsState extends State<ContactUs> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final _scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
   final TextEditingController message = TextEditingController();
+
   String? name, email;
 
   void validation() async {
@@ -31,8 +31,8 @@ class _ContactUsState extends State<ContactUs> {
     } else {
       User? user = FirebaseAuth.instance.currentUser;
       FirebaseFirestore.instance.collection('Message').doc(user!.uid).set({
-        'Name': name,
-        'Email': email,
+        'UserName': name,
+        'UserEmail': email,
         'Message': message.text,
       });
     }
@@ -126,8 +126,8 @@ class _ContactUsState extends State<ContactUs> {
                     fontSize: 28,
                   ),
                 ),
-                _buildSingleField(name: name!),
-                _buildSingleField(name: email!),
+                _buildSingleField(name: name ?? 'UserName Not Found'),
+                _buildSingleField(name: email ?? 'Email Not Found'),
                 Container(
                   height: 200,
                   child: TextFormField(

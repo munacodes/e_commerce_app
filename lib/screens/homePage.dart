@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_commerce_app/provider/providerExports.dart';
 import 'package:e_commerce_app/screens/cartScreen.dart';
 import 'package:e_commerce_app/screens/contactUs.dart';
+import 'package:e_commerce_app/screens/contactUs2.dart';
 import 'package:e_commerce_app/screens/detailScreen.dart';
 import 'package:e_commerce_app/screens/listProduct.dart';
 import 'package:e_commerce_app/screens/screensExports.dart';
@@ -357,25 +358,108 @@ class _HomePageState extends State<HomePage> {
 
     homeFeatureProduct = productProvider!.getHomeFeatureList;
     featureProduct = productProvider!.getFeatureList;
-    return StreamBuilder(
-        stream: FirebaseFirestore.instance
-            .collection('products')
-            .doc('86qW7GLuZTzoDa7HdRQD')
-            .collection('featureproduct')
-            .snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          return Column(
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text(
+              'Featured',
+              style: TextStyle(
+                fontSize: 17,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) => ListProduct(
+                      name: 'Featured',
+                      isCategory: false,
+                      snapShot: featureProduct,
+                    ),
+                  ),
+                );
+              },
+              child: const Text(
+                'View more',
+                style: TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
+        ),
+        Row(
+          children: homeFeatureProduct.map(
+            (e) {
+              return Expanded(
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => DetailScreen(
+                                image: e.image,
+                                price: e.price,
+                                name: e.name,
+                              ),
+                            ),
+                          );
+                        },
+                        child: SingleProduct(
+                          image: e.image,
+                          price: e.price,
+                          name: e.name,
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (context) => DetailScreen(
+                              image: e.image,
+                              price: e.price,
+                              name: e.name,
+                            ),
+                          ),
+                        );
+                      },
+                      child: SingleProduct(
+                        image: e.image,
+                        price: e.price,
+                        name: e.name,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ).toList(),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildNewAchives() {
+    List<Product> newAchivesProduct = productProvider!.getNewAchivesList;
+    return Column(
+      children: [
+        Container(
+          height: 50,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
-                    'Featured',
+                    'New Achives',
                     style: TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.bold,
@@ -386,15 +470,15 @@ class _HomePageState extends State<HomePage> {
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
                           builder: (context) => ListProduct(
-                            name: 'Featured',
+                            name: 'New Achives',
                             isCategory: false,
-                            snapShot: featureProduct,
+                            snapShot: newAchivesProduct,
                           ),
                         ),
                       );
                     },
                     child: const Text(
-                      'View more',
+                      "View more",
                       style: TextStyle(
                         fontSize: 17,
                         fontWeight: FontWeight.bold,
@@ -403,14 +487,41 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ],
               ),
-              Row(
-                children: homeFeatureProduct.map(
-                  (e) {
-                    return Expanded(
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: GestureDetector(
+            ],
+          ),
+        ),
+        Row(
+          children: productProvider!.getHomeAchiveList.map((e) {
+            return Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                      builder: (context) => DetailScreen(
+                                        image: e.image,
+                                        price: e.price,
+                                        name: e.name,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: SingleProduct(
+                                  image: e.image,
+                                  price: e.price,
+                                  name: e.name,
+                                ),
+                              ),
+                            ),
+                            GestureDetector(
                               onTap: () {
                                 Navigator.of(context).pushReplacement(
                                   MaterialPageRoute(
@@ -428,154 +539,18 @@ class _HomePageState extends State<HomePage> {
                                 name: e.name,
                               ),
                             ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                  builder: (context) => DetailScreen(
-                                    image: e.image,
-                                    price: e.price,
-                                    name: e.name,
-                                  ),
-                                ),
-                              );
-                            },
-                            child: SingleProduct(
-                              image: e.image,
-                              price: e.price,
-                              name: e.name,
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ).toList(),
-              ),
-            ],
-          );
-        });
-  }
-
-  Widget _buildNewAchives() {
-    List<Product> newAchivesProduct = productProvider!.getNewAchivesList;
-    return StreamBuilder(
-        stream: FirebaseFirestore.instance
-            .collection('products')
-            .doc('86qW7GLuZTzoDa7HdRQD')
-            .collection('newachives')
-            .snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          return Column(
-            children: [
-              Container(
-                height: 50,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          'New Achives',
-                          style: TextStyle(
-                            fontSize: 17,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                builder: (context) => ListProduct(
-                                  name: 'New Achives',
-                                  isCategory: false,
-                                  snapShot: newAchivesProduct,
-                                ),
-                              ),
-                            );
-                          },
-                          child: const Text(
-                            "View more",
-                            style: TextStyle(
-                              fontSize: 17,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              Row(
-                children: productProvider!.getHomeAchiveList.map((e) {
-                  return Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        Navigator.of(context).pushReplacement(
-                                          MaterialPageRoute(
-                                            builder: (context) => DetailScreen(
-                                              image: e.image,
-                                              price: e.price,
-                                              name: e.name,
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                      child: SingleProduct(
-                                        image: e.image,
-                                        price: e.price,
-                                        name: e.name,
-                                      ),
-                                    ),
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      Navigator.of(context).pushReplacement(
-                                        MaterialPageRoute(
-                                          builder: (context) => DetailScreen(
-                                            image: e.image,
-                                            price: e.price,
-                                            name: e.name,
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    child: SingleProduct(
-                                      image: e.image,
-                                      price: e.price,
-                                      name: e.name,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
                           ],
                         ),
-                      ],
-                    ),
-                  );
-                }).toList(),
+                      ),
+                    ],
+                  ),
+                ],
               ),
-            ],
-          );
-        });
+            );
+          }).toList(),
+        ),
+      ],
+    );
   }
 
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
@@ -625,39 +600,30 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       body: SafeArea(
-        child: StreamBuilder(
-            stream: FirebaseFirestore.instance.collection('Users').snapshots(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-              return Container(
-                height: double.infinity,
+        child: Container(
+          height: double.infinity,
+          width: double.infinity,
+          margin: const EdgeInsets.symmetric(horizontal: 10),
+          child: ListView(
+            children: [
+              Container(
                 width: double.infinity,
-                margin: const EdgeInsets.symmetric(horizontal: 10),
-                child: ListView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      width: double.infinity,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          _buildImageSlider(),
-                          _buildCategory(),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          _buildFeature(),
-                          _buildNewAchives(),
-                        ],
-                      ),
+                    _buildImageSlider(),
+                    _buildCategory(),
+                    const SizedBox(
+                      height: 20,
                     ),
+                    _buildFeature(),
+                    _buildNewAchives(),
                   ],
                 ),
-              );
-            }),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
