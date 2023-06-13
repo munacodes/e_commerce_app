@@ -172,7 +172,7 @@ class _HomePageState extends State<HomePage> {
               });
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
-                  builder: (context) => const ContactUs(),
+                  builder: (context) => const ContactUs2(),
                 ),
               );
             },

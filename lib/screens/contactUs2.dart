@@ -88,6 +88,11 @@ class _ContactUs2State extends State<ContactUs2> {
         'Message': message.text,
       });
     }
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (context) => const HomePage(),
+      ),
+    );
   }
 
   @override
@@ -146,14 +151,11 @@ class _ContactUs2State extends State<ContactUs2> {
               MyButton(
                 name: 'Submit',
                 onPressed: () {
-                  setState(() {
-                    validation();
-                    // Navigator.of(context).pushReplacement(
-                    //   MaterialPageRoute(
-                    //     builder: (context) => const HomePage(),
-                    //   ),
-                    // );
-                  });
+                  setState(
+                    () {
+                      validation();
+                    },
+                  );
                 },
               ),
             ],

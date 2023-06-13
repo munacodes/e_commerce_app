@@ -18,7 +18,22 @@ class _ContactUsState extends State<ContactUs> {
   final _scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
   final TextEditingController message = TextEditingController();
 
-  String? name, email;
+  var name, email;
+
+  @override
+  void initState() {
+    ProductProvider provider;
+    provider = Provider.of<ProductProvider>(context, listen: false);
+    List<UserModel> user = provider.userModelList;
+    user.map((e) {
+      name = e.userName;
+      email = e.userEmail;
+
+      return Container();
+    }).toList();
+
+    super.initState();
+  }
 
   void validation() async {
     if (message.text.isEmpty) {
@@ -36,6 +51,11 @@ class _ContactUsState extends State<ContactUs> {
         'Message': message.text,
       });
     }
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (context) => const HomePage(),
+      ),
+    );
   }
 
   Widget _buildSingleField({required String name}) {
@@ -62,21 +82,6 @@ class _ContactUsState extends State<ContactUs> {
         ],
       ),
     );
-  }
-
-  @override
-  void initState() {
-    ProductProvider provider;
-    provider = Provider.of<ProductProvider>(context, listen: false);
-    List<UserModel> user = provider.userModelList;
-    user.map((e) {
-      name = e.userName;
-      email = e.userEmail;
-
-      return Container();
-    }).toList();
-
-    super.initState();
   }
 
   @override
