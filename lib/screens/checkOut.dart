@@ -46,11 +46,8 @@ class _CheckOutState extends State<CheckOut> {
 
   Widget _buildButton() {
     return Column(
-        children: productProvider!.userModelList.map((e) {
-      return Container(
-        height: 55,
-        width: double.infinity,
-        child: ElevatedButton(
+      children: productProvider!.userModelList.map((e) {
+        return ElevatedButton(
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all<Color>(
               const Color(0xff746bc9),
@@ -97,9 +94,9 @@ class _CheckOutState extends State<CheckOut> {
               );
             }
           },
-        ),
-      );
-    }).toList());
+        );
+      }).toList(),
+    );
   }
 
   Widget _buildButton2() {
@@ -120,7 +117,14 @@ class _CheckOutState extends State<CheckOut> {
           ),
         ),
         onPressed: () {
-          if (productProvider!.checkOutModelList.isNotEmpty) {
+          if (productProvider!.checkOutModelList.isEmpty) {
+            _scaffoldMessengerKey.currentState!.showSnackBar(
+              SnackBar(
+                content: Text('No Item Yet'),
+                backgroundColor: Color(0xff746bc9),
+              ),
+            );
+          } else if (productProvider!.checkOutModelList.isNotEmpty) {
             FirebaseFirestore.instance.collection('Order').doc(user!.uid).set(
               {
                 'Product': productProvider!.checkOutModelList
@@ -136,6 +140,10 @@ class _CheckOutState extends State<CheckOut> {
                 'TotalPrice': total!.toStringAsFixed(2),
               },
             );
+            productProvider!.clearCheckoutProduct();
+            productProvider!.addNotification('Notification');
+          }
+          try {
             FirebaseFirestore.instance.collection('Order').doc(user!.uid).set(
               {
                 'UserDetails': productProvider!.userModelList
@@ -150,18 +158,76 @@ class _CheckOutState extends State<CheckOut> {
               },
               SetOptions(merge: true),
             );
-            productProvider!.clearCheckoutProduct();
-            productProvider!.addNotification('Notification');
-          } else {
-            _scaffoldMessengerKey.currentState!.showSnackBar(
-              const SnackBar(
-                content: Text('No Item Yet'),
-                backgroundColor: Color(0xff746bc9),
-              ),
-            );
+          } on FirebaseException catch (e) {
+            print(e);
           }
         },
       ),
+    );
+  }
+
+  Widget _buildButton3() {
+    return Column(
+      children: productProvider!.userModelList.map((e) {
+        return Container(
+          height: 55,
+          width: double.infinity,
+          child: ElevatedButton(
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(
+                const Color(0xff746bc9),
+              ),
+            ),
+            onPressed: () {
+              if (productProvider!.checkOutModelList.isNotEmpty) {
+                FirebaseFirestore.instance
+                    .collection('Order')
+                    .doc(user!.uid)
+                    .set({
+                  'Product': productProvider!.checkOutModelList
+                      .map((c) => {
+                            'ProductName': c.name,
+                            'ProductPrice': c.price,
+                            'ProductQuantity': c.quantity,
+                            'ProductImage': c.image,
+                            'Product Color': c.color,
+                            'Prduct Size': c.size,
+                          })
+                      .toList(),
+                  'TotalPrice': total!.toStringAsFixed(2),
+                  'UserName': e.userName,
+                  'UserEmail': e.userEmail,
+                  'UserNumber': e.userPhoneNumber,
+                  'UserAddress': e.userAddress,
+                  'UserUid': user!.uid,
+                });
+                productProvider!.clearCheckoutProduct();
+                productProvider!.addNotification('Notification');
+              } else {
+                _scaffoldMessengerKey.currentState!.showSnackBar(
+                  const SnackBar(
+                    content: Text('No Item Yet'),
+                    backgroundColor: Color(0xff746bc9),
+                  ),
+                );
+              }
+            },
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Order',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                  ),
+                ),
+                // Add additional widgets here as needed
+              ],
+            ),
+          ),
+        );
+      }).toList(),
     );
   }
 
@@ -214,21 +280,29 @@ class _CheckOutState extends State<CheckOut> {
           NotificationButton(),
         ],
       ),
+      bottomNavigationBar: Container(
+        height: 50,
+        width: 100,
+        margin: const EdgeInsets.symmetric(horizontal: 10),
+        padding: const EdgeInsets.only(bottom: 15),
+        child: _buildButton(),
+      ),
+
+      // bottomNavigationBar: Container(
+      //   height: 60,
+      //   width: 100,
+      //   margin: const EdgeInsets.symmetric(horizontal: 10),
+      //   padding: const EdgeInsets.only(bottom: 15),
+      //   child: _buildButton2(),
+      // ),
+
       // bottomNavigationBar: Container(
       //   height: 50,
       //   width: 100,
       //   margin: const EdgeInsets.symmetric(horizontal: 10),
       //   padding: const EdgeInsets.only(bottom: 15),
-      //   child: _buildButton(),
+      //   child: _buildButton3(),
       // ),
-
-      bottomNavigationBar: Container(
-        height: 60,
-        width: 100,
-        margin: const EdgeInsets.symmetric(horizontal: 10),
-        padding: const EdgeInsets.only(bottom: 15),
-        child: _buildButton2(),
-      ),
 
       body: SafeArea(
         child: Container(
