@@ -18,7 +18,7 @@ class _ContactUsState extends State<ContactUs> {
   final _scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
   final TextEditingController message = TextEditingController();
 
-  var name, email;
+  String? name, email;
 
   @override
   void initState() {
