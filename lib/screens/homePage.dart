@@ -58,21 +58,21 @@ class _HomePageState extends State<HomePage> {
     return Column(
       children: userModel.map((e) {
         return UserAccountsDrawerHeader(
-          accountName: Text(
-            e.userName,
-            style: const TextStyle(color: Colors.black),
+          decoration: BoxDecoration(
+            color: Color(0xfff8f8f8),
           ),
           currentAccountPicture: CircleAvatar(
             backgroundImage: e.userImage == null
                 ? AssetImage('assets/images/User Image.png')
                 : NetworkImage(e.userImage ?? "") as ImageProvider,
           ),
-          decoration: const BoxDecoration(
-            color: Color(0xfff8f8f8),
+          accountName: Text(
+            e.userName,
+            style: TextStyle(color: Colors.black),
           ),
           accountEmail: Text(
             e.userEmail,
-            style: const TextStyle(color: Colors.black),
+            style: TextStyle(color: Colors.black),
           ),
         );
       }).toList(),
@@ -82,7 +82,7 @@ class _HomePageState extends State<HomePage> {
   Widget _buildMyDrawer() {
     return Drawer(
       child: ListView(
-        children: [
+        children: <Widget>[
           _buildUserAccountsDrawerHeader(),
           ListTile(
             selected: homeColor,

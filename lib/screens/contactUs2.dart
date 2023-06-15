@@ -68,6 +68,27 @@ class _ContactUs2State extends State<ContactUs2> {
     );
   }
 
+  Widget _buildContainerDetailsPart2() {
+    List<UserModel> user = productProvider!.userModelList;
+    return Container(
+      height: 150,
+      child: Column(
+        children: user.map((e) {
+          return Container(
+            height: 150,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _buildSingleField(startText: e.userName),
+                _buildSingleField(startText: e.userEmail),
+              ],
+            ),
+          );
+        }).toList(),
+      ),
+    );
+  }
+
   void validation() async {
     if (message.text.isEmpty) {
       _scaffoldMessengerKey.currentState!.showSnackBar(
