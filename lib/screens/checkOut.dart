@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:e_commerce_app/model/modelExports.dart';
 import 'package:e_commerce_app/provider/providerExports.dart';
 import 'package:e_commerce_app/screens/screensExports.dart';
 import 'package:e_commerce_app/widgets/widgetsExports.dart';
@@ -22,6 +23,8 @@ class _CheckOutState extends State<CheckOut> {
   final _scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
 
   ProductProvider? productProvider;
+
+  UserModel? userModel;
 
   Widget _buildButtonDetail(
       {required String startName, required String endName}) {
@@ -142,6 +145,17 @@ class _CheckOutState extends State<CheckOut> {
             );
             productProvider!.clearCheckoutProduct();
             productProvider!.addNotification('Notification');
+
+            FirebaseFirestore.instance.collection('Order').doc(user!.uid).set(
+              {
+                'UserName': userModel!.userName.toString(),
+                'UserEmail': userModel!.userEmail.toString(),
+                'UserNumber': userModel!.userPhoneNumber.toString(),
+                'UserAddress': userModel!.userAddress.toString(),
+                'UserUid': user!.uid,
+              },
+              SetOptions(merge: true),
+            );
           }
         },
       ),

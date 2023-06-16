@@ -22,8 +22,6 @@ class _ContactUs2State extends State<ContactUs2> {
 
   UserModel? userModel;
 
-  ProductProvider? productProvider;
-
   Widget _buildSingleField({required String startText}) {
     return Card(
       shape: RoundedRectangleBorder(
@@ -82,12 +80,8 @@ class _ContactUs2State extends State<ContactUs2> {
     } else {
       User? user = FirebaseAuth.instance.currentUser;
       FirebaseFirestore.instance.collection('Messages').doc(user!.uid).set({
-        'FeedBacks': productProvider!.userModelList
-            .map((e) => {
-                  'UserName': e.userName,
-                  'UserEmail': e.userEmail,
-                })
-            .toList(),
+        'UserName': userModel!.userName.toString(),
+        'UserEmail': userModel!.userEmail.toString(),
         'Message': message.text,
       });
     }
@@ -101,85 +95,100 @@ class _ContactUs2State extends State<ContactUs2> {
   @override
   Widget build(BuildContext context) {
     User? user = FirebaseAuth.instance.currentUser;
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0.0,
-        backgroundColor: const Color(0xfff8f8f8),
-        title: IconButton(
-          icon: const Icon(
-            Icons.arrow_back,
-            color: Color(0xff746bc9),
-            size: 35,
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const HomePage(),
           ),
-          onPressed: () {
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
-                builder: (context) => const HomePage(),
-              ),
-            );
-          },
-        ),
-      ),
-      resizeToAvoidBottomInset: false,
-      body: SafeArea(
-        child: StreamBuilder(
-          stream: FirebaseFirestore.instance.collection('Users').snapshots(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
-                child: CircularProgressIndicator(),
+        );
+        return true;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          elevation: 0.0,
+          backgroundColor: const Color(0xfff8f8f8),
+          title: IconButton(
+            icon: const Icon(
+              Icons.arrow_back,
+              color: Color(0xff746bc9),
+              size: 35,
+            ),
+            onPressed: () {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => const HomePage(),
+                ),
               );
-            }
-
-            var myDoc = snapshot.data!.docs;
-            myDoc.forEach((checkDocs) {
-              if (checkDocs.data()['UserId'].toString() == user!.uid) {
-                userModel = UserModel(
-                  userEmail: checkDocs.data()['UserEmail'].toString(),
-                  userName: checkDocs.data()['UserName'].toString(),
+            },
+          ),
+        ),
+        resizeToAvoidBottomInset: false,
+        body: SafeArea(
+          child: StreamBuilder(
+            stream: FirebaseFirestore.instance.collection('Users').snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: CircularProgressIndicator(),
                 );
               }
-              print(userModel!.userName);
-              print(userModel!.userEmail);
-            });
-            return Container(
-              padding: const EdgeInsets.symmetric(horizontal: 27),
-              height: 600,
-              width: double.infinity,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  const Text(
-                    'Send Us Your Message',
-                    style: TextStyle(
-                      color: Color(0xff746bc9),
-                      fontSize: 28,
-                    ),
-                  ),
-                  _buildContainerDetailsPart(),
-                  Container(
-                    height: 200,
-                    child: TextFormField(
-                      controller: message,
-                      expands: true,
-                      maxLines: null,
-                      textAlignVertical: TextAlignVertical.top,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'Message',
+
+              var myDoc = snapshot.data!.docs;
+              myDoc.forEach((checkDocs) {
+                if (checkDocs.data()['UserId'].toString() == user!.uid) {
+                  userModel = UserModel(
+                    userEmail: checkDocs.data()['UserEmail'].toString(),
+                    userGender: checkDocs.data()['UserGender'].toString(),
+                    userName: checkDocs.data()['UserName'].toString(),
+                    userPhoneNumber:
+                        checkDocs.data()['UserPhoneNumber'].toString(),
+                    userImage: checkDocs.data()['UserImage'],
+                    userAddress: checkDocs.data()['UserAddress'].toString(),
+                  );
+                }
+                // print(userModel!.userName);
+                // print(userModel!.userEmail);
+              });
+              return Container(
+                padding: const EdgeInsets.symmetric(horizontal: 27),
+                height: 600,
+                width: double.infinity,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    const Text(
+                      'Send Us Your Message',
+                      style: TextStyle(
+                        color: Color(0xff746bc9),
+                        fontSize: 28,
                       ),
                     ),
-                  ),
-                  MyButton(
-                    name: 'Submit',
-                    onPressed: () {
-                      validation();
-                    },
-                  ),
-                ],
-              ),
-            );
-          },
+                    _buildContainerDetailsPart(),
+                    Container(
+                      height: 200,
+                      child: TextFormField(
+                        controller: message,
+                        expands: true,
+                        maxLines: null,
+                        textAlignVertical: TextAlignVertical.top,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: 'Message',
+                        ),
+                      ),
+                    ),
+                    MyButton(
+                      name: 'Submit',
+                      onPressed: () {
+                        validation();
+                      },
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
         ),
       ),
     );

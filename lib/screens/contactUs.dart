@@ -26,8 +26,8 @@ class _ContactUsState extends State<ContactUs> {
     provider = Provider.of<ProductProvider>(context, listen: false);
     List<UserModel> user = provider.userModelList;
     user.map((e) {
-      name = e.userName;
-      email = e.userEmail;
+      name = e.userName.toString();
+      email = e.userEmail.toString();
 
       return Container();
     }).toList();

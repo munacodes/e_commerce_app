@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_commerce_app/model/modelExports.dart';
 import 'package:e_commerce_app/provider/providerExports.dart';
 import 'package:e_commerce_app/screens/homePage.dart';
-import 'package:e_commerce_app/widgets/mybutton.dart';
 import 'package:e_commerce_app/widgets/widgetsExports.dart';
 import 'package:e_commerce_app/screens/screensExports.dart';
 import 'package:firebase_auth/firebase_auth.dart';
