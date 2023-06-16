@@ -67,11 +67,11 @@ class _HomePageState extends State<HomePage> {
                 : NetworkImage(e.userImage ?? "") as ImageProvider,
           ),
           accountName: Text(
-            e.userName,
+            e.userName!,
             style: TextStyle(color: Colors.black),
           ),
           accountEmail: Text(
-            e.userEmail,
+            e.userEmail!,
             style: TextStyle(color: Colors.black),
           ),
         );

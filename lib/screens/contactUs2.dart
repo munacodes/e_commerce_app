@@ -3,6 +3,7 @@ import 'package:e_commerce_app/model/modelExports.dart';
 import 'package:e_commerce_app/provider/providerExports.dart';
 import 'package:e_commerce_app/screens/homePage.dart';
 import 'package:e_commerce_app/model/modelExports.dart';
+import 'package:e_commerce_app/screens/screensExports.dart';
 import 'package:e_commerce_app/widgets/widgetsExports.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -60,31 +61,12 @@ class _ContactUs2State extends State<ContactUs2> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           _buildSingleField(
-              startText: userModel?.userName ?? 'UserName Not Found'),
+            startText: userModel!.userName!,
+          ),
           _buildSingleField(
-              startText: userModel?.userEmail ?? 'Email Not Found'),
+            startText: userModel!.userEmail!,
+          ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildContainerDetailsPart2() {
-    List<UserModel> user = productProvider!.userModelList;
-    return Container(
-      height: 150,
-      child: Column(
-        children: user.map((e) {
-          return Container(
-            height: 150,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _buildSingleField(startText: e.userName),
-                _buildSingleField(startText: e.userEmail),
-              ],
-            ),
-          );
-        }).toList(),
       ),
     );
   }
@@ -118,9 +100,8 @@ class _ContactUs2State extends State<ContactUs2> {
 
   @override
   Widget build(BuildContext context) {
-    productProvider = Provider.of(context);
+    User? user = FirebaseAuth.instance.currentUser;
     return Scaffold(
-      key: _scaffoldMessengerKey,
       appBar: AppBar(
         elevation: 0.0,
         backgroundColor: const Color(0xfff8f8f8),
@@ -141,46 +122,64 @@ class _ContactUs2State extends State<ContactUs2> {
       ),
       resizeToAvoidBottomInset: false,
       body: SafeArea(
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 27),
-          height: 600,
-          width: double.infinity,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              const Text(
-                'Send Us Your Message',
-                style: TextStyle(
-                  color: Color(0xff746bc9),
-                  fontSize: 28,
-                ),
-              ),
-              _buildContainerDetailsPart(),
-              Container(
-                height: 200,
-                child: TextFormField(
-                  controller: message,
-                  expands: true,
-                  maxLines: null,
-                  textAlignVertical: TextAlignVertical.top,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Message',
+        child: StreamBuilder(
+          stream: FirebaseFirestore.instance.collection('Users').snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+
+            var myDoc = snapshot.data!.docs;
+            myDoc.forEach((checkDocs) {
+              if (checkDocs.data()['UserId'].toString() == user!.uid) {
+                userModel = UserModel(
+                  userEmail: checkDocs.data()['UserEmail'].toString(),
+                  userName: checkDocs.data()['UserName'].toString(),
+                );
+              }
+              print(userModel!.userName);
+              print(userModel!.userEmail);
+            });
+            return Container(
+              padding: const EdgeInsets.symmetric(horizontal: 27),
+              height: 600,
+              width: double.infinity,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  const Text(
+                    'Send Us Your Message',
+                    style: TextStyle(
+                      color: Color(0xff746bc9),
+                      fontSize: 28,
+                    ),
                   ),
-                ),
-              ),
-              MyButton(
-                name: 'Submit',
-                onPressed: () {
-                  setState(
-                    () {
+                  _buildContainerDetailsPart(),
+                  Container(
+                    height: 200,
+                    child: TextFormField(
+                      controller: message,
+                      expands: true,
+                      maxLines: null,
+                      textAlignVertical: TextAlignVertical.top,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: 'Message',
+                      ),
+                    ),
+                  ),
+                  MyButton(
+                    name: 'Submit',
+                    onPressed: () {
                       validation();
                     },
-                  );
-                },
+                  ),
+                ],
               ),
-            ],
-          ),
+            );
+          },
         ),
       ),
     );

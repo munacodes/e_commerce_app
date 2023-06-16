@@ -201,23 +201,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           _buildSingleContainer(
-            endText: userModel!.userName,
+            endText: userModel!.userName!,
             startText: 'Name',
           ),
           _buildSingleContainer(
-            endText: userModel!.userEmail,
+            endText: userModel!.userEmail!,
             startText: 'Email',
           ),
           _buildSingleContainer(
-            endText: userModel!.userGender,
+            endText: userModel!.userGender!,
             startText: 'Gender',
           ),
           _buildSingleContainer(
-            endText: userModel!.userPhoneNumber,
+            endText: userModel!.userPhoneNumber!,
             startText: 'Phone Number',
           ),
           _buildSingleContainer(
-            endText: userModel!.userAddress,
+            endText: userModel!.userAddress!,
             startText: 'Address',
           ),
         ],
@@ -238,7 +238,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           _buildSingleContainer(
             color: Colors.grey[300],
-            endText: userModel!.userEmail,
+            endText: userModel!.userEmail!,
             startText: 'Email',
           ),
           GestureDetector(

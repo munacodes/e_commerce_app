@@ -131,8 +131,8 @@ class _ContactUsState extends State<ContactUs> {
                     fontSize: 28,
                   ),
                 ),
-                _buildSingleField(name: name ?? 'UserName Not Found'),
-                _buildSingleField(name: email ?? 'Email Not Found'),
+                _buildSingleField(name: name.toString()),
+                _buildSingleField(name: email.toString()),
                 Container(
                   height: 200,
                   child: TextFormField(
