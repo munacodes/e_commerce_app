@@ -30,35 +30,35 @@ class _LoginState extends State<Login> {
     void validation() async {
       if (email.text.isEmpty && password.text.isEmpty) {
         _scaffoldMessengerKey.currentState!.showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text('Both Field Are Empty'),
             backgroundColor: Color(0xff746bc9),
           ),
         );
       } else if (email.text.isEmpty) {
         _scaffoldMessengerKey.currentState!.showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text("Email Is Empty"),
             backgroundColor: Color(0xff746bc9),
           ),
         );
       } else if (!regExp.hasMatch(email.text)) {
         _scaffoldMessengerKey.currentState!.showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text('Please Try Valid Email'),
             backgroundColor: Color(0xff746bc9),
           ),
         );
       } else if (password.text.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text('Password Is Empty'),
             backgroundColor: Color(0xff746bc9),
           ),
         );
       } else if (password.text.length < 8) {
         _scaffoldMessengerKey.currentState!.showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text('Password Is Too Short'),
             backgroundColor: Color(0xff746bc9),
           ),
