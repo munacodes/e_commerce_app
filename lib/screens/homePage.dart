@@ -90,6 +90,8 @@ class _HomePageState extends State<HomePage> {
           myDoc.forEach((checkDocs) {
             if (checkDocs.data()['UserId'].toString() == user!.uid) {
               userModel = UserModel(
+                userName: checkDocs.data()['UserName'].toString(),
+                userEmail: checkDocs.data()['UserEmail'].toString(),
                 userImage: checkDocs.data()['UserImage'],
               );
             }
@@ -107,11 +109,11 @@ class _HomePageState extends State<HomePage> {
                           as ImageProvider,
                 ),
                 accountName: Text(
-                  userModel!.userName.toString(),
+                  userModel!.userName!,
                   style: TextStyle(color: Colors.black),
                 ),
                 accountEmail: Text(
-                  userModel!.userEmail.toString(),
+                  userModel!.userEmail!,
                   style: TextStyle(color: Colors.black),
                 ),
               ),
