@@ -144,18 +144,7 @@ class _CheckOutState extends State<CheckOut> {
               },
             );
             productProvider!.clearCheckoutProduct();
-            productProvider!.addNotification('Notification');
-
-            FirebaseFirestore.instance.collection('Order').doc(user!.uid).set(
-              {
-                'UserName': userModel!.userName.toString(),
-                'UserEmail': userModel!.userEmail.toString(),
-                'UserNumber': userModel!.userPhoneNumber.toString(),
-                'UserAddress': userModel!.userAddress.toString(),
-                'UserUid': user!.uid,
-              },
-              SetOptions(merge: true),
-            );
+            // productProvider!.addNotification('Notification');
           }
         },
       ),

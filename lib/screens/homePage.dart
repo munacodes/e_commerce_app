@@ -32,6 +32,8 @@ var newAchivesSnapShot;
 CategoryProvider? categoryProvider;
 ProductProvider? productProvider;
 
+UserModel? userModel;
+
 class _HomePageState extends State<HomePage> {
   Widget _buildCategoryProduct({required String image, required int color}) {
     return CircleAvatar(
@@ -79,11 +81,50 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Widget _buildUserAccountsDrawerHeader2() {
+    User? user = FirebaseAuth.instance.currentUser;
+    return StreamBuilder(
+        stream: FirebaseFirestore.instance.collection('Users').snapshots(),
+        builder: (context, snapshot) {
+          var myDoc = snapshot.data!.docs;
+          myDoc.forEach((checkDocs) {
+            if (checkDocs.data()['UserId'].toString() == user!.uid) {
+              userModel = UserModel(
+                userImage: checkDocs.data()['UserImage'],
+              );
+            }
+          });
+          return Column(
+            children: [
+              UserAccountsDrawerHeader(
+                decoration: BoxDecoration(
+                  color: Color(0xfff8f8f8),
+                ),
+                currentAccountPicture: CircleAvatar(
+                  backgroundImage: userModel!.userImage == null
+                      ? AssetImage('assets/images/User Image.png')
+                      : NetworkImage(userModel!.userImage ?? "")
+                          as ImageProvider,
+                ),
+                accountName: Text(
+                  userModel!.userName.toString(),
+                  style: TextStyle(color: Colors.black),
+                ),
+                accountEmail: Text(
+                  userModel!.userEmail.toString(),
+                  style: TextStyle(color: Colors.black),
+                ),
+              ),
+            ],
+          );
+        });
+  }
+
   Widget _buildMyDrawer() {
     return Drawer(
       child: ListView(
         children: <Widget>[
-          _buildUserAccountsDrawerHeader(),
+          _buildUserAccountsDrawerHeader2(),
           ListTile(
             selected: homeColor,
             onTap: () {
