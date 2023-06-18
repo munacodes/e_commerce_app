@@ -27,42 +27,93 @@ class _LoginState extends State<Login> {
     final TextEditingController email = TextEditingController();
     final TextEditingController password = TextEditingController();
 
+    snackBar({required String name}) {
+      return SnackBar(
+        content: Text(name),
+      );
+    }
+
+    // TODO: FormValidator;
+
+    validation2() async {
+      if (email.text.isEmpty) {
+        return 'Enter Email Address';
+      } else if (!regExp.hasMatch(email.text)) {
+        return 'Enter Valid Email';
+      } else if (password.text.isEmpty) {
+        return 'Enter Password';
+      } else if (_formKey.currentState!.validate()) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(snackBar(name: 'Successful'));
+      } else {
+        try {
+          final UserCredential result = await auth.signInWithEmailAndPassword(
+            email: email.text,
+            password: password.text,
+          );
+          if (FirebaseAuth.instance.currentUser != null) {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => const HomePage(),
+              ),
+            );
+          }
+          print(result.user!.uid);
+        } catch (e) {
+          if (e is FirebaseAuthException) {
+            FirebaseAuthException authException = e;
+
+            switch (authException.code) {
+              case 'invalid-email':
+                break;
+              case 'user-not-found':
+                break;
+              case 'wrong-password':
+                break;
+              default:
+                final snackBar = SnackBar(
+                  content: Text('Failed with error code: ${e.code.toString()}'),
+                );
+                _scaffoldMessengerKey.currentState!.showSnackBar(snackBar);
+
+                break;
+            }
+          }
+        }
+      }
+    }
+
     void validation() async {
       if (email.text.isEmpty && password.text.isEmpty) {
-        _scaffoldMessengerKey.currentState!.showSnackBar(
-          const SnackBar(
-            content: Text('Both Field Are Empty'),
-            backgroundColor: Color(0xff746bc9),
-          ),
+        final snackBar = SnackBar(
+          content: Text('Both Field Are Empty'),
         );
+        _scaffoldMessengerKey.currentState!.showSnackBar(snackBar);
       } else if (email.text.isEmpty) {
-        _scaffoldMessengerKey.currentState!.showSnackBar(
-          const SnackBar(
-            content: Text("Email Is Empty"),
-            backgroundColor: Color(0xff746bc9),
-          ),
+        final snackBar = SnackBar(
+          content: Text('Email Is Empty'),
         );
+        _scaffoldMessengerKey.currentState!.showSnackBar(snackBar);
       } else if (!regExp.hasMatch(email.text)) {
-        _scaffoldMessengerKey.currentState!.showSnackBar(
-          const SnackBar(
-            content: Text('Please Try Valid Email'),
-            backgroundColor: Color(0xff746bc9),
-          ),
+        final snackBar = SnackBar(
+          content: Text('Please Try Valid Email'),
         );
+        _scaffoldMessengerKey.currentState!.showSnackBar(snackBar);
       } else if (password.text.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Password Is Empty'),
-            backgroundColor: Color(0xff746bc9),
-          ),
+        final snackBar = SnackBar(
+          content: Text('Password Is Empty'),
         );
+        _scaffoldMessengerKey.currentState!.showSnackBar(snackBar);
       } else if (password.text.length < 8) {
-        _scaffoldMessengerKey.currentState!.showSnackBar(
-          const SnackBar(
-            content: Text('Password Is Too Short'),
-            backgroundColor: Color(0xff746bc9),
-          ),
+        final snackBar = SnackBar(
+          content: Text('Password Is Too Short'),
         );
+        _scaffoldMessengerKey.currentState!.showSnackBar(snackBar);
+      } else if (_formKey.currentState!.validate()) {
+        final snackBar = SnackBar(
+          content: Text('Successful'),
+        );
+        _scaffoldMessengerKey.currentState!.showSnackBar(snackBar);
       } else {
         try {
           final UserCredential result = await auth.signInWithEmailAndPassword(
@@ -102,6 +153,67 @@ class _LoginState extends State<Login> {
       }
     }
 
+    Widget _buildForm() {
+      return Container(
+        height: 350,
+        width: double.infinity,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Text(
+              'Login',
+              style: TextStyle(
+                fontSize: 50,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            TextFormField(
+              controller: email,
+              decoration: InputDecoration(
+                border: const OutlineInputBorder(),
+                labelText: 'Email',
+                labelStyle: const TextStyle(
+                  color: Colors.black,
+                ),
+              ),
+              validator: (value) {
+                if (value == null) {
+                  return 'Enter Email Address';
+                } else if (!regExp.hasMatch(value)) {
+                  return 'Enter Valid Email';
+                } else {
+                  return null;
+                }
+              },
+              keyboardType: TextInputType.emailAddress,
+            ),
+            TextFormField(
+              controller: password,
+              decoration: InputDecoration(
+                border: const OutlineInputBorder(),
+                labelText: 'Password',
+                labelStyle: const TextStyle(
+                  color: Colors.black,
+                ),
+              ),
+              validator: (value) {
+                if (value == null) {
+                  return 'Enter Password';
+                }
+              },
+              keyboardType: TextInputType.text,
+            ),
+            MyButton(
+              name: 'Login',
+              onPressed: () {
+                validation2();
+              },
+            ),
+          ],
+        ),
+      );
+    }
+
     Widget _buildAllPart() {
       return Container(
         height: 350,
@@ -131,15 +243,12 @@ class _LoginState extends State<Login> {
                 });
               },
               name: 'Password',
-              keyboardType: TextInputType.numberWithOptions(
-                signed: true,
-                decimal: true,
-              ),
+              keyboardType: TextInputType.text,
             ),
             MyButton(
               name: 'Login',
               onPressed: () {
-                validation();
+                validation2();
               },
             ),
             ChangeScreen(
@@ -168,7 +277,8 @@ class _LoginState extends State<Login> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                _buildAllPart(),
+                _buildForm(),
+                // _buildAllPart(),
               ],
             ),
           ),

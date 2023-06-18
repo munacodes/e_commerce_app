@@ -89,6 +89,11 @@ class _SignUpState extends State<SignUp> {
           backgroundColor: Color(0xff746bc9),
         ),
       );
+    } else if (_formKey.currentState!.validate()) {
+      final snackBar = SnackBar(
+        content: Text('Successful'),
+      );
+      _scaffoldMessengerKey.currentState!.showSnackBar(snackBar);
     } else {
       try {
         UserCredential result =
@@ -167,10 +172,7 @@ class _SignUpState extends State<SignUp> {
                   obscureText = !obscureText;
                 });
               },
-              keyboardType: TextInputType.numberWithOptions(
-                signed: true,
-                decimal: true,
-              ),
+              keyboardType: TextInputType.text,
             ),
             GestureDetector(
               onTap: () {
