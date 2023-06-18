@@ -177,13 +177,12 @@ class _LoginState extends State<Login> {
                 ),
               ),
               validator: (value) {
-                if (value == null) {
+                if (value == null || value.isEmpty) {
                   return 'Enter Email Address';
                 } else if (!regExp.hasMatch(value)) {
                   return 'Enter Valid Email';
-                } else {
-                  return null;
                 }
+                return null;
               },
               keyboardType: TextInputType.emailAddress,
             ),
@@ -197,9 +196,10 @@ class _LoginState extends State<Login> {
                 ),
               ),
               validator: (value) {
-                if (value == null) {
+                if (value == null || value.isEmpty) {
                   return 'Enter Password';
                 }
+                return null;
               },
               keyboardType: TextInputType.text,
             ),
