@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_commerce_app/screens/screensExports.dart';
 import 'package:e_commerce_app/screens/signUp.dart';
@@ -27,13 +29,58 @@ class _LoginState extends State<Login> {
     final TextEditingController email = TextEditingController();
     final TextEditingController password = TextEditingController();
 
-    snackBar({required String name}) {
+    qwer({required String name}) {
       return SnackBar(
-        content: Text(name),
+        content: Container(
+          padding: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            color: const Color(0xff746bc9),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Center(
+            child: Text(
+              name,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
+        behavior: SnackBarBehavior.floating,
       );
     }
 
-    // TODO: FormValidator;
+    snackBar({required String name}) {
+      return SnackBar(
+        content: Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: const Color(0xff746bc9),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black,
+                spreadRadius: 2.0,
+                blurRadius: 8.0,
+                offset: Offset(2, 4),
+              ),
+            ],
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                name,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ),
+        behavior: SnackBarBehavior.floating,
+      );
+    }
 
     validation2() async {
       if (email.text.isEmpty) {
@@ -43,8 +90,20 @@ class _LoginState extends State<Login> {
       } else if (password.text.isEmpty) {
         return 'Enter Password';
       } else if (_formKey.currentState!.validate()) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(snackBar(name: 'Successful'));
+        final formState = _formKey.currentState;
+        formState!.save();
+        final UserCredential result = await auth.signInWithEmailAndPassword(
+          email: email.text,
+          password: password.text,
+        );
+        if (FirebaseAuth.instance.currentUser != null) {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => const HomePage(),
+            ),
+          );
+        }
+        print(result.user!.uid);
       } else {
         try {
           final UserCredential result = await auth.signInWithEmailAndPassword(
@@ -62,7 +121,6 @@ class _LoginState extends State<Login> {
         } catch (e) {
           if (e is FirebaseAuthException) {
             FirebaseAuthException authException = e;
-
             switch (authException.code) {
               case 'invalid-email':
                 break;
@@ -74,8 +132,7 @@ class _LoginState extends State<Login> {
                 final snackBar = SnackBar(
                   content: Text('Failed with error code: ${e.code.toString()}'),
                 );
-                _scaffoldMessengerKey.currentState!.showSnackBar(snackBar);
-
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 break;
             }
           }
@@ -85,133 +142,43 @@ class _LoginState extends State<Login> {
 
     void validation() async {
       if (email.text.isEmpty && password.text.isEmpty) {
-        final snackBar = SnackBar(
-          content: Text('Both Field Are Empty'),
-        );
-        _scaffoldMessengerKey.currentState!.showSnackBar(snackBar);
+        ScaffoldMessenger.of(context)
+            .showSnackBar(snackBar(name: 'Both Fields Are Empty'));
       } else if (email.text.isEmpty) {
-        final snackBar = SnackBar(
-          content: Text('Email Is Empty'),
-        );
-        _scaffoldMessengerKey.currentState!.showSnackBar(snackBar);
+        ScaffoldMessenger.of(context)
+            .showSnackBar(snackBar(name: 'Enter Email'));
       } else if (!regExp.hasMatch(email.text)) {
-        final snackBar = SnackBar(
-          content: Text('Please Try Valid Email'),
-        );
-        _scaffoldMessengerKey.currentState!.showSnackBar(snackBar);
+        ScaffoldMessenger.of(context)
+            .showSnackBar(snackBar(name: 'Enter Valid Email'));
       } else if (password.text.isEmpty) {
-        final snackBar = SnackBar(
-          content: Text('Password Is Empty'),
-        );
-        _scaffoldMessengerKey.currentState!.showSnackBar(snackBar);
+        ScaffoldMessenger.of(context)
+            .showSnackBar(snackBar(name: 'Enter Password'));
       } else if (password.text.length < 8) {
-        final snackBar = SnackBar(
-          content: Text('Password Is Too Short'),
-        );
-        _scaffoldMessengerKey.currentState!.showSnackBar(snackBar);
+        ScaffoldMessenger.of(context)
+            .showSnackBar(snackBar(name: 'Password Is Too Short'));
       } else if (_formKey.currentState!.validate()) {
-        final snackBar = SnackBar(
-          content: Text('Successful'),
-        );
-        _scaffoldMessengerKey.currentState!.showSnackBar(snackBar);
-      } else {
         try {
           final UserCredential result = await auth.signInWithEmailAndPassword(
             email: email.text,
             password: password.text,
           );
-          if (FirebaseAuth.instance.currentUser != null) {
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
-                builder: (context) => const HomePage(),
-              ),
-            );
-          }
           print(result.user!.uid);
-        } catch (e) {
-          if (e is FirebaseAuthException) {
-            FirebaseAuthException authException = e;
-
-            switch (authException.code) {
-              case 'invalid-email':
-                break;
-              case 'user-not-found':
-                break;
-              case 'wrong-password':
-                break;
-              default:
-                _scaffoldMessengerKey.currentState!.showSnackBar(
-                  SnackBar(
-                    content:
-                        Text('Failed with error code: ${e.code.toString()}'),
-                  ),
-                );
-                break;
-            }
+        } on FirebaseAuthException catch (e) {
+          FirebaseAuthException authException = e;
+          switch (authException.code) {
+            case 'invalid-email':
+              break;
+            case 'user-not-found':
+              break;
+            case 'wrong-password':
+              break;
+            default:
+              ScaffoldMessenger.of(context).showSnackBar(snackBar(
+                  name: 'Failed with error code: ${e.code.toString()}'));
+              break;
           }
         }
       }
-    }
-
-    Widget _buildForm() {
-      return Container(
-        height: 350,
-        width: double.infinity,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Text(
-              'Login',
-              style: TextStyle(
-                fontSize: 50,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            TextFormField(
-              controller: email,
-              decoration: InputDecoration(
-                border: const OutlineInputBorder(),
-                labelText: 'Email',
-                labelStyle: const TextStyle(
-                  color: Colors.black,
-                ),
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Enter Email Address';
-                } else if (!regExp.hasMatch(value)) {
-                  return 'Enter Valid Email';
-                }
-                return null;
-              },
-              keyboardType: TextInputType.emailAddress,
-            ),
-            TextFormField(
-              controller: password,
-              decoration: InputDecoration(
-                border: const OutlineInputBorder(),
-                labelText: 'Password',
-                labelStyle: const TextStyle(
-                  color: Colors.black,
-                ),
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Enter Password';
-                }
-                return null;
-              },
-              keyboardType: TextInputType.text,
-            ),
-            MyButton(
-              name: 'Login',
-              onPressed: () {
-                validation2();
-              },
-            ),
-          ],
-        ),
-      );
     }
 
     Widget _buildAllPart() {
@@ -236,19 +203,19 @@ class _LoginState extends State<Login> {
             PasswordTextFormField(
               obscureText: obscureText,
               controller: password,
+              name: 'Password',
               onTap: () {
                 FocusScope.of(context).unfocus();
                 setState(() {
                   obscureText = !obscureText;
                 });
               },
-              name: 'Password',
               keyboardType: TextInputType.text,
             ),
             MyButton(
               name: 'Login',
               onPressed: () {
-                validation2();
+                validation();
               },
             ),
             ChangeScreen(
@@ -277,8 +244,7 @@ class _LoginState extends State<Login> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                _buildForm(),
-                // _buildAllPart(),
+                _buildAllPart(),
               ],
             ),
           ),

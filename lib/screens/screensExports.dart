@@ -9,3 +9,4 @@ export 'package:e_commerce_app/screens/checkOut.dart';
 export 'package:e_commerce_app/screens/search_category.dart';
 export 'package:e_commerce_app/screens/search_product.dart';
 export 'package:e_commerce_app/screens/aboutUs.dart';
+export 'package:e_commerce_app/screens/splashScreen.dart';

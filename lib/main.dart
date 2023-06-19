@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
           iconTheme: const IconThemeData(color: Colors.black),
         ),
         debugShowCheckedModeBanner: false,
-        home: const Home(),
+        home: const SplashScreen(),
       ),
     );
   }

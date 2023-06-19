@@ -22,7 +22,7 @@ class _HomeState extends State<Home> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const WelcomeScreen();
         } else if (snapshot.hasData) {
-          return const HomePage();
+          return const SplashScreen();
         } else {
           return const Login();
         }
