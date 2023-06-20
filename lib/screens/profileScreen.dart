@@ -59,7 +59,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   FirebaseStorage storage = FirebaseStorage.instance;
   File? _pickedImage;
-  // PickedFile? _image;
+  PickedFile? _image;
   Future<void> _getImage({required ImageSource source}) async {
     final picker = ImagePicker();
     final _image = await picker.pickImage(source: source);

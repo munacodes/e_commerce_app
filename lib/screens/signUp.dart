@@ -34,56 +34,56 @@ class _SignUpState extends State<SignUp> {
         password.text.isEmpty &&
         phoneNumber.text.isEmpty &&
         address.text.isEmpty) {
-      _scaffoldMessengerKey.currentState!.showSnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('All Field Are Empty'),
           backgroundColor: Color(0xff746bc9),
         ),
       );
     } else if (userName.text.length < 6) {
-      _scaffoldMessengerKey.currentState!.showSnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Name Must Be 6'),
           backgroundColor: Color(0xff746bc9),
         ),
       );
     } else if (email.text.isEmpty) {
-      _scaffoldMessengerKey.currentState!.showSnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text("Email Is Empty"),
           backgroundColor: Color(0xff746bc9),
         ),
       );
     } else if (!regExp.hasMatch(email.text)) {
-      _scaffoldMessengerKey.currentState!.showSnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Please Try Valid Email'),
           backgroundColor: Color(0xff746bc9),
         ),
       );
     } else if (password.text.isEmpty) {
-      _scaffoldMessengerKey.currentState!.showSnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Password Is Empty'),
           backgroundColor: Color(0xff746bc9),
         ),
       );
     } else if (password.text.length < 8) {
-      _scaffoldMessengerKey.currentState!.showSnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Password Is Too Short'),
           backgroundColor: Color(0xff746bc9),
         ),
       );
     } else if (phoneNumber.text.length < 11 || phoneNumber.text.isEmpty) {
-      _scaffoldMessengerKey.currentState!.showSnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Phone Number Must Be 11'),
           backgroundColor: Color(0xff746bc9),
         ),
       );
     } else if (address.text.isEmpty) {
-      _scaffoldMessengerKey.currentState!.showSnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Address Is Empty'),
           backgroundColor: Color(0xff746bc9),
@@ -93,7 +93,7 @@ class _SignUpState extends State<SignUp> {
       final snackBar = SnackBar(
         content: Text('Successful'),
       );
-      _scaffoldMessengerKey.currentState!.showSnackBar(snackBar);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     } else {
       try {
         UserCredential result =
@@ -132,7 +132,7 @@ class _SignUpState extends State<SignUp> {
               break;
 
             default:
-              _scaffoldMessengerKey.currentState!.showSnackBar(
+              ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text('Failed with error code: ${e.code.toString()}'),
                 ),
