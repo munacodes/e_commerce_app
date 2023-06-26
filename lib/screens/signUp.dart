@@ -94,7 +94,6 @@ class _SignUpState extends State<SignUp> {
         content: Text('Successful'),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    } else {
       try {
         UserCredential result =
             await FirebaseAuth.instance.createUserWithEmailAndPassword(

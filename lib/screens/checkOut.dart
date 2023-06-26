@@ -143,6 +143,15 @@ class _CheckOutState extends State<CheckOut> {
                 'TotalPrice': total!.toStringAsFixed(2),
               },
             );
+            // productProvider!.userModelList
+            //     .map((e) => {
+            //           'UserName': e.userName.toString(),
+            //           'UserEmail': e.userEmail.toString(),
+            //           'UserNumber': e.userPhoneNumber.toString(),
+            //           'UserAddress': e.userAddress.toString(),
+            //           'UserUid': user!.uid.toString(),
+            //         })
+            //     .toList();
             productProvider!.clearCheckoutProduct();
             // productProvider!.addNotification('Notification');
           }

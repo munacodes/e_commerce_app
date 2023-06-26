@@ -83,12 +83,20 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildUserAccountsDrawerHeader2() {
     User? user = FirebaseAuth.instance.currentUser;
-    return StreamBuilder(
+    print('munachi ${user}');
+    return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
         stream: FirebaseFirestore.instance.collection('Users').snapshots(),
         builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
           var myDoc = snapshot.data!.docs;
+
           myDoc.forEach((checkDocs) {
             if (checkDocs.data()['UserId'].toString() == user!.uid) {
+              print('munachi ${snapshot.data}');
               userModel = UserModel(
                 userName: checkDocs.data()['UserName'].toString(),
                 userEmail: checkDocs.data()['UserEmail'].toString(),

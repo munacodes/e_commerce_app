@@ -14,7 +14,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
 
-    Future.delayed(const Duration(seconds: 3)).then(
+    Future.delayed(const Duration(seconds: 5)).then(
       (value) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
@@ -34,10 +34,12 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image(
-              fit: BoxFit.cover,
-              image: AssetImage('assets/images/Company Logo.png'),
-              width: 300,
+            Container(
+              child: CircleAvatar(
+                radius: 180,
+                backgroundColor: Colors.white,
+                backgroundImage: AssetImage('assets/images/Company Logo.png'),
+              ),
             ),
             SizedBox(
               height: 50,
