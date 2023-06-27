@@ -52,33 +52,14 @@ class _LoginState extends State<Login> {
 
     snackBar({required String name}) {
       return SnackBar(
-        content: Container(
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: const Color(0xff746bc9),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black,
-                spreadRadius: 2.0,
-                blurRadius: 8.0,
-                offset: Offset(2, 4),
-              ),
-            ],
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                name,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
+        backgroundColor: const Color(0xff746bc9),
+        content: Text(
+          name,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
           ),
         ),
-        behavior: SnackBarBehavior.floating,
+        //   behavior: SnackBarBehavior.floating,
       );
     }
 
@@ -215,7 +196,7 @@ class _LoginState extends State<Login> {
             MyButton(
               name: 'Login',
               onPressed: () {
-                validation();
+                validation2();
               },
             ),
             ChangeScreen(
