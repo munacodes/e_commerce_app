@@ -5,3 +5,4 @@ export 'package:e_commerce_app/widgets/passwordTextFormField.dart';
 export 'package:e_commerce_app/widgets/singleProduct.dart';
 export 'package:e_commerce_app/widgets/cartSingleProduct.dart';
 export 'package:e_commerce_app/widgets/notificationButton.dart';
+export 'package:e_commerce_app/widgets/loadingWidgets.dart';

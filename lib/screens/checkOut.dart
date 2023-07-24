@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_commerce_app/model/modelExports.dart';
 import 'package:e_commerce_app/provider/providerExports.dart';
+import 'package:e_commerce_app/screens/cartScreen.dart';
 import 'package:e_commerce_app/screens/screensExports.dart';
 import 'package:e_commerce_app/widgets/widgetsExports.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -200,7 +201,7 @@ class _CheckOutState extends State<CheckOut> {
           onPressed: () {
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(
-                builder: (context) => const HomePage(),
+                builder: (context) => const CartScreen(),
               ),
             );
           },

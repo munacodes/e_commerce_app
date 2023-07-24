@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:e_commerce_app/admin/adminLogin.dart';
 import 'package:e_commerce_app/screens/screensExports.dart';
 import 'package:e_commerce_app/screens/signUp.dart';
 import 'package:e_commerce_app/widgets/widgetsExports.dart';
@@ -62,6 +63,9 @@ class _LoginState extends State<Login> {
         //   behavior: SnackBarBehavior.floating,
       );
     }
+
+    // TODO: Instead of using snackbar widget use flutterToast widget
+    // flutterToast(msg:'All Fields are Empty');
 
     validation2() async {
       if (email.text.isEmpty) {
@@ -176,11 +180,13 @@ class _LoginState extends State<Login> {
                 fontWeight: FontWeight.bold,
               ),
             ),
+            const SizedBox(height: 10),
             MyTextFormField(
               name: 'Email',
               controller: email,
               keyboardType: TextInputType.emailAddress,
             ),
+            const SizedBox(height: 10),
             PasswordTextFormField(
               obscureText: obscureText,
               controller: password,
@@ -193,12 +199,14 @@ class _LoginState extends State<Login> {
               },
               keyboardType: TextInputType.text,
             ),
+            const SizedBox(height: 10),
             MyButton(
               name: 'Login',
               onPressed: () {
                 validation2();
               },
             ),
+            const SizedBox(height: 10),
             ChangeScreen(
               name: 'Register',
               onTap: () {
@@ -209,6 +217,32 @@ class _LoginState extends State<Login> {
                 );
               },
               whichAccount: 'Don\'t Have An Account?',
+            ),
+            const SizedBox(height: 20),
+            // Add Admin Register
+            const Divider(
+              thickness: 3.0,
+              color: Colors.grey,
+            ),
+            Center(
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (ctx) => const AdminLogin(),
+                      /* ctx means or is a shortform of context*/
+                    ),
+                  );
+                },
+                child: Text(
+                  'I am Admin',
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
             ),
           ],
         ),

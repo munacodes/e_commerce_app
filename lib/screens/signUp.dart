@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:e_commerce_app/admin/adminLogin.dart';
 import 'package:e_commerce_app/screens/screensExports.dart';
 import 'package:e_commerce_app/widgets/widgetsExports.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -27,6 +28,9 @@ RegExp regExp = RegExp(p);
 class _SignUpState extends State<SignUp> {
   final _scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
   final _formKey = GlobalKey<FormState>();
+
+  // TODO: Instead of using snackbar widget use flutterToast widget
+  // flutterToast(msg:'All Fields are Empty');
 
   void validation() async {
     if (userName.text.isEmpty &&
@@ -242,6 +246,31 @@ class _SignUpState extends State<SignUp> {
               );
             },
             whichAccount: 'Already Have An Account?',
+          ),
+          // Add Admin Register
+          const Divider(
+            thickness: 3.0,
+            color: Colors.red,
+          ),
+          Center(
+            child: GestureDetector(
+              onTap: () {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (ctx) => const AdminLogin(),
+                    /* ctx means or is a shortform of context*/
+                  ),
+                );
+              },
+              child: Text(
+                'I am Admin',
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
           ),
         ],
       ),
