@@ -1,6 +1,9 @@
 import 'package:e_commerce_app/admin/adminExport.dart';
+import 'package:e_commerce_app/model/modelExports.dart';
+import 'package:e_commerce_app/provider/providerExports.dart';
 import 'package:e_commerce_app/screens/screensExports.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class AdminHomePage extends StatefulWidget {
   const AdminHomePage({super.key});
@@ -10,8 +13,17 @@ class AdminHomePage extends StatefulWidget {
 }
 
 class _AdminHomePageState extends State<AdminHomePage> {
+  CategoryProvider? categoryProvider;
+  ProductProvider? productProvider;
+
+  UserModel? userModel;
+  CartModel? cartModel;
+
   @override
   Widget build(BuildContext context) {
+    productProvider = Provider.of<ProductProvider>(context);
+    productProvider!.getUserData();
+
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -58,7 +70,8 @@ class _AdminHomePageState extends State<AdminHomePage> {
           child: TabBarView(
             children: [
               AdminUploadItems(),
-              AdminOrderItems(),
+              // AdminOrderItems(),
+              AdminOrder(),
             ],
           ),
         ),

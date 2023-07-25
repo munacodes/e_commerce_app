@@ -258,11 +258,26 @@ class _AdminUploadItemsState extends State<AdminUploadItems> {
             padding: const EdgeInsets.all(8.0),
             child: ListView(
               children: [
-                decoractionBox(name: 'Dress'),
-                decoractionBox(name: 'Pants'),
-                decoractionBox(name: 'Shoes'),
-                decoractionBox(name: 'Tie'),
-                decoractionBox(name: 'Shirt'),
+                GestureDetector(
+                  onTap: () {},
+                  child: decoractionBox(name: 'Dress'),
+                ),
+                GestureDetector(
+                  onTap: () {},
+                  child: decoractionBox(name: 'Pants'),
+                ),
+                GestureDetector(
+                  onTap: () {},
+                  child: decoractionBox(name: 'Shoes'),
+                ),
+                GestureDetector(
+                  onTap: () {},
+                  child: decoractionBox(name: 'Tie'),
+                ),
+                GestureDetector(
+                  onTap: () {},
+                  child: decoractionBox(name: 'Shirt'),
+                ),
               ],
             ),
           ),

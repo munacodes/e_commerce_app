@@ -97,7 +97,7 @@ class _HomePageState extends State<HomePage> {
 
           myDoc.forEach((checkDocs) {
             if (checkDocs.data()['UserId'].toString() == user!.uid) {
-              print('munachi ${snapshot.data}');
+              print('munachim ${snapshot.data}');
               userModel = UserModel(
                 userName: checkDocs.data()['UserName'].toString(),
                 userEmail: checkDocs.data()['UserEmail'].toString(),

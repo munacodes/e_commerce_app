@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class SingleOrderProduct extends StatelessWidget {
+  final int? index;
   final String name;
   final double price;
   final String image;
@@ -15,13 +16,14 @@ class SingleOrderProduct extends StatelessWidget {
     required this.size,
     required this.color,
     required this.quantity,
+    this.index,
   });
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text('Product Name: $name'),
+        // Text(name),
         Center(
           child: Row(
             children: [
@@ -31,6 +33,7 @@ class SingleOrderProduct extends StatelessWidget {
                   child: Container(
                     height: 220,
                     decoration: BoxDecoration(
+                      color: Colors.blue,
                       image: DecorationImage(
                         fit: BoxFit.fill,
                         image: NetworkImage(image),
@@ -42,10 +45,14 @@ class SingleOrderProduct extends StatelessWidget {
             ],
           ),
         ),
-        Text('Product Price: N $price'),
-        Text('Product Size: $size'),
-        Text('Product Color: $color'),
-        Text('Product Quantity: $quantity'),
+        Text(
+          price.toString(),
+        ),
+        Text(size),
+        Text(color),
+        Text(
+          quantity.toString(),
+        ),
       ],
     );
   }
