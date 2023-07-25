@@ -5,37 +5,8 @@ import 'package:e_commerce_app/screens/screensExports.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class AdminOrderItems extends StatefulWidget {
+class AdminOrderItems extends StatelessWidget {
   const AdminOrderItems({super.key});
-
-  @override
-  State<AdminOrderItems> createState() => _AdminOrderItemsState();
-}
-
-class _AdminOrderItemsState extends State<AdminOrderItems> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: ListView.builder(
-          itemCount: productProvider!.getCheckOutModelListLength,
-          itemBuilder: (context, index) => SingleOrderProduct(
-            index: index,
-            color: productProvider!.getCheckOutModelList[index].color,
-            size: productProvider!.getCheckOutModelList[index].size,
-            image: productProvider!.getCheckOutModelList[index].image,
-            name: productProvider!.getCheckOutModelList[index].name,
-            price: productProvider!.getCheckOutModelList[index].price,
-            quantity: productProvider!.getCheckOutModelList[index].quantity,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class AdminOrder extends StatelessWidget {
-  const AdminOrder({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +35,14 @@ class AdminOrder extends StatelessWidget {
                 );
               } else {
                 return const Center(
-                  child: Text('No order yet'),
+                  child: Text(
+                    'No order yet',
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 30,
+                    ),
+                  ),
                 );
               }
             }),

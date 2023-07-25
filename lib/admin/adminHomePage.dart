@@ -70,8 +70,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
           child: TabBarView(
             children: [
               AdminUploadItems(),
-              // AdminOrderItems(),
-              AdminOrder(),
+              AdminOrderItems(),
             ],
           ),
         ),

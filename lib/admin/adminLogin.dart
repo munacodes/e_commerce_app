@@ -21,7 +21,7 @@ class _AdminLoginState extends State<AdminLogin> {
   final TextEditingController adminID = TextEditingController();
   final TextEditingController password = TextEditingController();
 
-  bool obscureText = false;
+  bool obscureText = true;
 
   validation() {
     showDialog(

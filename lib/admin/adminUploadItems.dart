@@ -226,11 +226,36 @@ class _AdminUploadItemsState extends State<AdminUploadItems> {
                 ),
               ),
               const Divider(color: Colors.black),
+              // zxcvbnm(),
+              poipu(),
             ],
           ),
         ),
       ),
     );
+  }
+
+  poipu() {
+    return Container(
+      height: 40,
+      width: 60,
+      color: Colors.blue,
+      child: Text(''),
+    );
+  }
+
+  zxcvbnm() async {
+    if (qwertyuiop == 'Dress') {
+      return poipu;
+    } else if (qwertyuiop == 'Pants') {
+      return poipu;
+    } else if (qwertyuiop == 'Shoes') {
+      return poipu;
+    } else if (qwertyuiop == 'Tie') {
+      return poipu;
+    } else if (qwertyuiop == 'Shirt') {
+      return poipu;
+    }
   }
 
   decoractionBox({required String name}) {
@@ -248,6 +273,10 @@ class _AdminUploadItemsState extends State<AdminUploadItems> {
     );
   }
 
+  qwertyuiop({required String text}) {
+    return Text(text);
+  }
+
   showMessage() {
     return showDialog(
       context: context,
@@ -259,23 +288,23 @@ class _AdminUploadItemsState extends State<AdminUploadItems> {
             child: ListView(
               children: [
                 GestureDetector(
-                  onTap: () {},
+                  onTap: qwertyuiop(text: 'Dress'),
                   child: decoractionBox(name: 'Dress'),
                 ),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: qwertyuiop(text: 'Pants'),
                   child: decoractionBox(name: 'Pants'),
                 ),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: qwertyuiop(text: 'Shoes'),
                   child: decoractionBox(name: 'Shoes'),
                 ),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: qwertyuiop(text: 'Tie'),
                   child: decoractionBox(name: 'Tie'),
                 ),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: qwertyuiop(text: 'Shirt'),
                   child: decoractionBox(name: 'Shirt'),
                 ),
               ],

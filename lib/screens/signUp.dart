@@ -258,7 +258,7 @@ class _SignUpState extends State<SignUp> {
           // Add Admin Register
           const Divider(
             thickness: 3.0,
-            color: Colors.red,
+            color: Colors.grey,
           ),
           Center(
             child: GestureDetector(
