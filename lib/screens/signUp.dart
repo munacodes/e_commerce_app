@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_commerce_app/admin/adminLogin.dart';
+import 'package:e_commerce_app/dialogBox/dialogBoxExpoets.dart';
 import 'package:e_commerce_app/screens/screensExports.dart';
 import 'package:e_commerce_app/widgets/widgetsExports.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -33,6 +34,13 @@ class _SignUpState extends State<SignUp> {
   // flutterToast(msg:'All Fields are Empty');
 
   void validation() async {
+    showDialog(
+      context: context,
+      builder: (c) {
+        return const LoadingAlertDialog(
+            message: 'Authenticating, Please wait....');
+      },
+    );
     if (userName.text.isEmpty &&
         email.text.isEmpty &&
         password.text.isEmpty &&

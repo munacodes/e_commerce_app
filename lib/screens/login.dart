@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_commerce_app/admin/adminLogin.dart';
+import 'package:e_commerce_app/dialogBox/dialogBoxExpoets.dart';
 import 'package:e_commerce_app/screens/screensExports.dart';
 import 'package:e_commerce_app/screens/signUp.dart';
 import 'package:e_commerce_app/widgets/widgetsExports.dart';
@@ -68,6 +69,13 @@ class _LoginState extends State<Login> {
     // flutterToast(msg:'All Fields are Empty');
 
     validation2() async {
+      showDialog(
+        context: context,
+        builder: (c) {
+          return const LoadingAlertDialog(
+              message: 'Authenticating, Please wait....');
+        },
+      );
       if (email.text.isEmpty) {
         return 'Enter Email Address';
       } else if (!regExp.hasMatch(email.text)) {

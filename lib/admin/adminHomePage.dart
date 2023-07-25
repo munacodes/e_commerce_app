@@ -12,32 +12,57 @@ class AdminHomePage extends StatefulWidget {
 class _AdminHomePageState extends State<AdminHomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: Colors.black,
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.black),
+            onPressed: () {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => AdminLogin(),
+                ),
+              );
+            },
           ),
-          onPressed: () {
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
-                builder: (context) => AdminLogin(),
+          title: const Text(
+            'eShop',
+            style: TextStyle(
+              fontSize: 25.0,
+              color: Colors.black,
+            ),
+          ),
+          centerTitle: true,
+          bottom: TabBar(
+            tabs: [
+              Tab(
+                child: Text(
+                  'Upload Items',
+                  style: TextStyle(color: Colors.grey, fontSize: 20),
+                ),
               ),
-            );
-          },
+              Tab(
+                child: Text(
+                  'Ordered Items',
+                  style: TextStyle(color: Colors.grey, fontSize: 20),
+                ),
+              ),
+            ],
+            indicatorColor: Colors.black38,
+            indicatorWeight: 5.0,
+          ),
         ),
-        centerTitle: true,
-        title: const Text(
-          'Admin HomePage',
-          style: TextStyle(
-            fontSize: 20.0,
-            color: Colors.black,
+        body: Container(
+          child: TabBarView(
+            children: [
+              AdminUploadItems(),
+              AdminOrderItems(),
+            ],
           ),
         ),
       ),
-      body: Container(),
     );
   }
 }

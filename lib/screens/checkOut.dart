@@ -138,7 +138,7 @@ class _CheckOutState extends State<CheckOut> {
                           'ProductQuantity': c.quantity,
                           'ProductImage': c.image,
                           'Product Color': c.color,
-                          'Prduct Size': c.size,
+                          'Product Size': c.size,
                         })
                     .toList(),
                 'TotalPrice': total!.toStringAsFixed(2),

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:e_commerce_app/dialogBox/dialogBoxExpoets.dart';
 import 'package:e_commerce_app/provider/providerExports.dart';
 import 'package:e_commerce_app/screens/cartScreen.dart';
 import 'package:e_commerce_app/screens/contactUs.dart';
@@ -233,6 +234,13 @@ class _HomePageState extends State<HomePage> {
           ListTile(
             onTap: () {
               FirebaseAuth.instance.signOut();
+              // showDialog(
+              //   context: context,
+              //   builder: (c) {
+              //     return const LoadingAlertDialog(
+              //         message: 'Logging Out, Please wait....');
+              //   },
+              // );
             },
             leading: const Icon(Icons.exit_to_app),
             title: const Text('Logout'),
