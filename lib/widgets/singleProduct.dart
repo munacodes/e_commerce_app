@@ -22,7 +22,7 @@ class SingleProduct extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: Container(
-                height: 190,
+                height: 130,
                 width: 160,
                 decoration: BoxDecoration(
                   image: DecorationImage(

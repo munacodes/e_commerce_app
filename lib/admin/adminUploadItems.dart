@@ -207,108 +207,7 @@ class _AdminUploadItemsState extends State<AdminUploadItems> {
                 ],
               ),
               const Divider(color: Colors.black),
-              GestureDetector(
-                onTap: () => showMessage(),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Icon(Icons.category, color: Colors.blue),
-                    const SizedBox(width: 10),
-                    Container(
-                      height: 50,
-                      width: 250.0,
-                      child: Text(
-                        'Category',
-                        style: TextStyle(color: Colors.black),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const Divider(color: Colors.black),
-              // zxcvbnm(),
-              poipu(),
             ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  poipu() {
-    return Container(
-      height: 40,
-      width: 60,
-      color: Colors.blue,
-      child: Text(''),
-    );
-  }
-
-  zxcvbnm() async {
-    if (qwertyuiop == 'Dress') {
-      return poipu;
-    } else if (qwertyuiop == 'Pants') {
-      return poipu;
-    } else if (qwertyuiop == 'Shoes') {
-      return poipu;
-    } else if (qwertyuiop == 'Tie') {
-      return poipu;
-    } else if (qwertyuiop == 'Shirt') {
-      return poipu;
-    }
-  }
-
-  decoractionBox({required String name}) {
-    return Container(
-      height: 50,
-      child: Card(
-        color: Colors.grey[300],
-        child: Center(
-          child: Text(
-            name,
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ),
-      ),
-    );
-  }
-
-  qwertyuiop({required String text}) {
-    return Text(text);
-  }
-
-  showMessage() {
-    return showDialog(
-      context: context,
-      builder: (context) => Dialog(
-        child: Container(
-          height: 280,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ListView(
-              children: [
-                GestureDetector(
-                  onTap: qwertyuiop(text: 'Dress'),
-                  child: decoractionBox(name: 'Dress'),
-                ),
-                GestureDetector(
-                  onTap: qwertyuiop(text: 'Pants'),
-                  child: decoractionBox(name: 'Pants'),
-                ),
-                GestureDetector(
-                  onTap: qwertyuiop(text: 'Shoes'),
-                  child: decoractionBox(name: 'Shoes'),
-                ),
-                GestureDetector(
-                  onTap: qwertyuiop(text: 'Tie'),
-                  child: decoractionBox(name: 'Tie'),
-                ),
-                GestureDetector(
-                  onTap: qwertyuiop(text: 'Shirt'),
-                  child: decoractionBox(name: 'Shirt'),
-                ),
-              ],
-            ),
           ),
         ),
       ),
@@ -342,8 +241,23 @@ class _AdminUploadItemsState extends State<AdminUploadItems> {
   }
 
   saveItemInfo(String downloadUrl) {
-    final itemRef = FirebaseFirestore.instance.collection('items');
-    itemRef.doc(productId).set({
+    final featureproductRef = FirebaseFirestore.instance.collection('products');
+    featureproductRef
+        .doc('86qW7GLuZTzoDa7HdRQD')
+        .collection('featureproduct')
+        .doc(productId)
+        .set({
+      'price': double.parse(_priceTextEditingController.text),
+      'image': downloadUrl,
+      'name': _nameTextEditingController.text.trim(),
+    });
+
+    final newachivesRef = FirebaseFirestore.instance.collection('products');
+    newachivesRef
+        .doc('86qW7GLuZTzoDa7HdRQD')
+        .collection('newachives')
+        .doc(productId)
+        .set({
       'price': double.parse(_priceTextEditingController.text),
       'image': downloadUrl,
       'name': _nameTextEditingController.text.trim(),

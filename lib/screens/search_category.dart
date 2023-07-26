@@ -30,8 +30,8 @@ class SearchCategory extends SearchDelegate<void> {
 
   @override
   Widget buildResults(BuildContext context) {
-    CategoryProvider categoryprovider = Provider.of<CategoryProvider>(context);
-    List<Product> searchCategory = categoryprovider.searchCategoryList(query);
+    CategoryProvider categoryProvider = Provider.of<CategoryProvider>(context);
+    List<Product> searchCategory = categoryProvider.searchCategoryList(query);
     return GridView.count(
       childAspectRatio: 0.67,
       crossAxisCount: 2,
@@ -51,8 +51,8 @@ class SearchCategory extends SearchDelegate<void> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    CategoryProvider categoryprovider = Provider.of<CategoryProvider>(context);
-    List<Product> searchCategory = categoryprovider.searchCategoryList(query);
+    CategoryProvider categoryProvider = Provider.of<CategoryProvider>(context);
+    List<Product> searchCategory = categoryProvider.searchCategoryList(query);
     return GridView.count(
       childAspectRatio: 0.87,
       crossAxisCount: 2,
