@@ -140,7 +140,7 @@ class _AdminUploadItemsState extends State<AdminUploadItems> {
               'Add',
               style: TextStyle(
                 color: Colors.black,
-                fontSize: 16.0,
+                fontSize: 20.0,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -181,7 +181,7 @@ class _AdminUploadItemsState extends State<AdminUploadItems> {
                       decoration: BoxDecoration(
                         image: DecorationImage(
                           image: FileImage(_imageFile!),
-                          fit: BoxFit.cover,
+                          fit: BoxFit.fill,
                         ),
                       ),
                     ),
