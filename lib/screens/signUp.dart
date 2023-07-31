@@ -30,17 +30,7 @@ class _SignUpState extends State<SignUp> {
   final _scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
   final _formKey = GlobalKey<FormState>();
 
-  // TODO: Instead of using snackbar widget use flutterToast widget
-  // flutterToast(msg:'All Fields are Empty');
-
   void validation() async {
-    showDialog(
-      context: context,
-      builder: (c) {
-        return const LoadingAlertDialog(
-            message: 'Authenticating, Please wait....');
-      },
-    );
     if (userName.text.isEmpty &&
         email.text.isEmpty &&
         password.text.isEmpty &&
@@ -48,7 +38,7 @@ class _SignUpState extends State<SignUp> {
         address.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('All Field Are Empty'),
+          content: Text('All Fields Are Empty'),
           backgroundColor: Color(0xff746bc9),
         ),
       );
@@ -102,6 +92,13 @@ class _SignUpState extends State<SignUp> {
         ),
       );
     } else if (_formKey.currentState!.validate()) {
+      showDialog(
+        context: context,
+        builder: (c) {
+          return const LoadingAlertDialog(
+              message: 'Authenticating, Please wait....');
+        },
+      );
       final snackBar = SnackBar(
         content: Text('Successful'),
       );

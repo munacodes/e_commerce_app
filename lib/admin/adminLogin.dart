@@ -24,13 +24,6 @@ class _AdminLoginState extends State<AdminLogin> {
   bool obscureText = true;
 
   validation() {
-    showDialog(
-      context: context,
-      builder: (c) {
-        return const LoadingAlertDialog(
-            message: 'Authenticating, Please wait....');
-      },
-    );
     FirebaseFirestore.instance.collection('admins').get().then((snapshot) {
       snapshot.docs.forEach((result) {
         if (result.data()['id'] != adminID.text.trim()) {
@@ -46,6 +39,13 @@ class _AdminLoginState extends State<AdminLogin> {
             ),
           );
         } else {
+          showDialog(
+            context: context,
+            builder: (c) {
+              return const LoadingAlertDialog(
+                  message: 'Authenticating, Please wait....');
+            },
+          );
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Welcome Dear Admin ${result.data()['name']}'),

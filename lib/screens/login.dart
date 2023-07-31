@@ -65,24 +65,43 @@ class _LoginState extends State<Login> {
       );
     }
 
-    // TODO: Instead of using snackbar widget use flutterToast widget
-    // flutterToast(msg:'All Fields are Empty');
-
     validation2() async {
-      showDialog(
-        context: context,
-        builder: (c) {
-          return const LoadingAlertDialog(
-              message: 'Authenticating, Please wait....');
-        },
-      );
-      if (email.text.isEmpty) {
-        return 'Enter Email Address';
+      if (email.text.isEmpty && password.text.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('All Fields Are Empty'),
+            backgroundColor: Color(0xff746bc9),
+          ),
+        );
+      } else if (email.text.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Enter Email Address'),
+            backgroundColor: Color(0xff746bc9),
+          ),
+        );
       } else if (!regExp.hasMatch(email.text)) {
-        return 'Enter Valid Email';
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Enter Valid Email'),
+            backgroundColor: Color(0xff746bc9),
+          ),
+        );
       } else if (password.text.isEmpty) {
-        return 'Enter Password';
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Enter Password'),
+            backgroundColor: Color(0xff746bc9),
+          ),
+        );
       } else if (_formKey.currentState!.validate()) {
+        showDialog(
+          context: context,
+          builder: (c) {
+            return const LoadingAlertDialog(
+                message: 'Authenticating, Please wait....');
+          },
+        );
         final formState = _formKey.currentState;
         formState!.save();
         final UserCredential result = await auth.signInWithEmailAndPassword(

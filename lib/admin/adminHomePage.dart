@@ -25,7 +25,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
     productProvider!.getUserData();
 
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
@@ -39,6 +39,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
               );
             },
           ),
+          centerTitle: true,
           title: const Text(
             'eShop',
             style: TextStyle(
@@ -46,9 +47,20 @@ class _AdminHomePageState extends State<AdminHomePage> {
               color: Colors.black,
             ),
           ),
-          centerTitle: true,
+          actions: [
+            IconButton(
+              onPressed: () {},
+              icon: Icon(Icons.logout),
+            ),
+          ],
           bottom: TabBar(
             tabs: [
+              Tab(
+                child: Text(
+                  'Uploaded Items',
+                  style: TextStyle(color: Colors.grey, fontSize: 20),
+                ),
+              ),
               Tab(
                 child: Text(
                   'Upload Items',
@@ -69,6 +81,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
         body: Container(
           child: TabBarView(
             children: [
+              ViewUploadedItems(),
               AdminUploadItems(),
               AdminOrderItems(),
             ],
