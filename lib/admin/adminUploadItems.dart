@@ -250,6 +250,7 @@ class _AdminUploadItemsState extends State<AdminUploadItems> {
       'price': double.parse(_priceTextEditingController.text),
       'image': downloadUrl,
       'name': _nameTextEditingController.text.trim(),
+      'timestamp': Timestamp.now(),
     });
 
     final newachivesRef = FirebaseFirestore.instance.collection('products');
@@ -261,6 +262,7 @@ class _AdminUploadItemsState extends State<AdminUploadItems> {
       'price': double.parse(_priceTextEditingController.text),
       'image': downloadUrl,
       'name': _nameTextEditingController.text.trim(),
+      'timestamp': Timestamp.now(),
     });
 
     setState(() {
