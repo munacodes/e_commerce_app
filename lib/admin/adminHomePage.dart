@@ -50,7 +50,10 @@ class _AdminHomePageState extends State<AdminHomePage> {
           actions: [
             IconButton(
               onPressed: () {},
-              icon: Icon(Icons.logout),
+              icon: Icon(
+                Icons.logout,
+                color: Colors.black,
+              ),
             ),
           ],
           bottom: TabBar(

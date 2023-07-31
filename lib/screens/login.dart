@@ -246,7 +246,8 @@ class _LoginState extends State<Login> {
               whichAccount: 'Don\'t Have An Account?',
             ),
             const SizedBox(height: 20),
-            // Add Admin Register
+
+            // Add Admin Login
             const Divider(
               thickness: 3.0,
               color: Colors.grey,

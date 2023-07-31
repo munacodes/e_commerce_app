@@ -70,22 +70,9 @@ class _AdminLoginState extends State<AdminLogin> {
       key: _scaffoldMessengerKey,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: Colors.black,
-          ),
-          onPressed: () {
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
-                builder: (context) => Login(),
-              ),
-            );
-          },
-        ),
         centerTitle: true,
         title: const Text(
-          'eCommerce Admin Page',
+          'Admin Page',
           style: TextStyle(
             fontSize: 20.0,
             color: Colors.black,
@@ -147,6 +134,30 @@ class _AdminLoginState extends State<AdminLogin> {
                         },
                       ),
                       const SizedBox(height: 10),
+                      const Divider(
+                        thickness: 3.0,
+                        color: Colors.grey,
+                      ),
+                      Center(
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                builder: (ctx) => const Login(),
+                                /* ctx means or is a shortform of context*/
+                              ),
+                            );
+                          },
+                          child: Text(
+                            'I am not Admin',
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
